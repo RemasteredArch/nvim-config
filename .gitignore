@@ -1,0 +1,3 @@
+# ignore jdt.ls associated things (use build.sh to retrieve)
+/jdtls/repository/
+/jdtls/eclipse.jdt.ls/

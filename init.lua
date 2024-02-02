@@ -86,7 +86,7 @@ require("lazy").setup({
 
 	-- code formatting
 	{
-		"sbdchd/neoformat"
+		"dense-analysis/ale"
 	}
 })
 
