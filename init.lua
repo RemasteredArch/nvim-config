@@ -82,6 +82,11 @@ require("lazy").setup({
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000
+	},
+
+	-- code formatting
+	{
+		"sbdchd/neoformat"
 	}
 })
 
