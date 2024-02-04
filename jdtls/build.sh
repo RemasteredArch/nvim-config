@@ -36,7 +36,7 @@ fi
 
 cd ..
 
-announce "Coping result to $script_dir/respository/..."
+announce "Copying result to $script_dir/respository/..."
 
 mv "$git_dir/org.eclipse.jdt.ls.product/target/repository/" .
 
