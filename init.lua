@@ -85,9 +85,9 @@ require("lazy").setup({
 	},
 
 	-- code formatting
-	{
-		"dense-analysis/ale"
-	}
+	--[[{
+		"mfussenegger/nvim-jdtls"
+	}]]--
 })
 
 -- colorscheme
