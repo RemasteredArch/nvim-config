@@ -27,7 +27,7 @@ function SetColorscheme (colorscheme) -- allows setting colorscheme to fail loud
 		return
 	end
 end
-SetColorscheme("slate") -- set colorscheme using a built-in as a backup
+SetColorscheme("slate") -- set colorscheme using a built-in as a fallback 
 
 --[ PLUGINS ]--
 
@@ -84,14 +84,47 @@ require("lazy").setup({
 		priority = 1000
 	},
 
-	-- code formatting
-	--[[{
-		"mfussenegger/nvim-jdtls"
-	}]]--
+	-- LSP
+	{"williamboman/mason.nvim"},
+	{"williamboman/mason-lspconfig.nvim"},
+	{"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
+	{"neovim/nvim-lspconfig"},
+	{"hrsh7th/cmp-nvim-lsp"},
+	{"hrsh7th/nvim-cmp"},
+	{"L3MON4D3/LuaSnip"}
 })
 
 -- colorscheme
 SetColorscheme("catppuccin")
 
--- prettier
--- (or other code formatter)
+--[ LSPs ]--
+local lsp_zero = require("lsp-zero")
+
+-- lspzero https://lsp-zero.netlify.app/v3.x/getting-started.html
+
+lsp_zero.on_attach(function (client, buffnr)
+	-- :help lsp-zero-keybindings
+	lsp_zero.default_keymaps({buffer = buffnr})
+end)
+
+-- for more on mason + lspzero: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
+require("mason").setup({})
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"jdtls", -- java, see also see mfussenegger/nvim-jdtls
+		"bashls",
+		"lua_ls",
+		"markman" -- markdown
+	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+	handlers = {
+		lsp_zero.default_setup
+	}
+})
+
+--[[
+-- Automatically set unusual filetypes
+vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = {*.extension},
+        command = "set filetype=lang"
+}
+]]--
