@@ -72,10 +72,60 @@ local function jdtls_on_attach(client, buffnr)
 		enable_codelens(buffnr)
 	end
 
+	-- https://github.com/mfussenegger/nvim-jdtls#usage
+
+	-- in normal mode, press alt+o[rganize] to organize imports
+	vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
+
+	-- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
+	vim.keymap.set("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts) 
+	vim.keymap.set("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+
+	-- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
+	vim.keymap.set("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
+	vim.keymap.set("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+
+	-- in visual mode, press c,r[efactor],m[ethod] to extract a method
+	vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 end
 
 local function jdtls_setup(event)
 	local jdtls = require("jdtls")
+
+	local path = get_jdtls_paths()
+	local data_dir = path.data_dir .. "/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+
+	if cache_vars.capabilities == nil then
+		jdtls.extendClientCapabilities.resolveAdditionalTextEditsSupport = true
+
+		local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+		cache_vars.capabilities = vim.tbl_deep_extend(
+			"force",
+			vim.lsp.protocol.make_client_capabilities() or {}
+		)
+	end
+
+	local cmd = { -- command to start the language server
+		"java", -- execution path for the JRE
+
+		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+		"-Dosgi.bundles.defaultStartLevel=4",
+		"-Declipse.product=org.eclipse.jdt.ls.core.product",
+		"-Dlog.protocol=true",
+		"-Dlog.level=ALL",
+		"-Xmx1g",
+		"--add-modules=ALL-SYSTEM",
+		"--add-opens", "java.base/java.util=ALL-UNNAMED",
+		"--add-opens", "java.base/java.lang=ALL-UNNAMED",
+
+		"-jar", path.launcher_jar,
+		"-configuration", path.platform_config,
+
+		"-data", data_dir
+	}
+
+	local lsp_settings = {
+	}
 
 	local config = {
 		cmd = {"<imagine-this-is-the-command-that-starts-jdtls>"},
