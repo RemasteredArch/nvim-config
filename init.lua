@@ -84,14 +84,17 @@ require("lazy").setup({
 		priority = 1000
 	},
 
-	-- LSP
+	-- LSP/DAP
 	{"williamboman/mason.nvim"},
 	{"williamboman/mason-lspconfig.nvim"},
 	{"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
 	{"neovim/nvim-lspconfig"},
 	{"hrsh7th/cmp-nvim-lsp"},
 	{"hrsh7th/nvim-cmp"},
-	{"L3MON4D3/LuaSnip"}
+	{"L3MON4D3/LuaSnip"},
+	{"mfussenegger/nvim-dap"},
+	{"rcarriga/nvim-dap-ui"}
+
 })
 
 -- colorscheme
@@ -114,10 +117,11 @@ require("mason-lspconfig").setup({
 		"jdtls", -- java, see also see mfussenegger/nvim-jdtls
 		"bashls",
 		"lua_ls",
-		"markman" -- markdown
+		"marksman" -- markdown
 	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 	handlers = {
-		lsp_zero.default_setup
+		lsp_zero.default_setup,
+		jdtls = lsp_zero.noop
 	}
 })
 
