@@ -17,6 +17,18 @@ local root_files = {
 	"build.gradle"
 }
 
+local function get_codestyle_path()
+	local codestyle = vim.fn.stdpath("data") .. "/codestyles/eclipse-java-google-style.xml"
+
+	if vim.fn.filereadable(codestyle) == 0 then
+		vim.notify("Codestyle '" .. codestyle .. "' not found!")
+	end
+
+	return codestyle
+
+	-- maybe add some checking for project-specific codestyles?
+end
+
 local function get_jdtls_paths()
 	if cache_vars.paths then
 		return cache_vars.paths
@@ -90,13 +102,18 @@ local function jdtls_on_attach(client, buffnr)
 end
 
 local function jdtls_setup(event)
-	local jdtls = require("jdtls")
+	local pkg_status, jdtls = pcall(require, "jdtls")
+	if not pkg_status then
+		vim.notify("Unable to load nvim-jdtls, further, the JVM may be nonfunctional, try java -version", "error")
+		return
+	end
+	--local jdtls = require("jdtls")
 
 	local path = get_jdtls_paths()
 	local data_dir = path.data_dir .. "/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 
 	if cache_vars.capabilities == nil then
-		jdtls.extendClientCapabilities.resolveAdditionalTextEditsSupport = true
+		jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 		local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 		cache_vars.capabilities = vim.tbl_deep_extend(
@@ -125,20 +142,71 @@ local function jdtls_setup(event)
 	}
 
 	local lsp_settings = {
+		eclipse = {
+			downloadSources = true
+		},
+		configuration = {
+			updateBuildConfiguration = "interactive",
+			runtimes = path.runtimes
+		},
+		maven = {
+			downloadSources = true
+		},
+		implementationsCodeLens = {
+			enabled = true
+		},
+		referencesCodeLens = {
+			enabled = true
+		},
+		inlayHints = { -- adds hints into code, e.g. names for method inputs
+			parameterNames = {
+				enabled = "all"
+			}
+		},
+		format = {
+			enabled = true,
+			settings = {
+				profile = get_codestyle_path()
+			}
+		},
+		signatureHelp = { -- seems to provide the info for popups with method info when using it
+			enabled = true
+		},
+		-- completion = { favoriteStaticMembers = {} } -- always provide autocomplete with methods, etc. from specified packages, even if not imported
+		contentProvider = {
+			preferred = "fernflower" -- usually a third party decomplier ID
+		},
+		extendedClientCapabilities = jdtls.extendedClientCapabilities,
+		sources = { -- what does this mean/do?
+			starThreshold = 9999,
+			staticStarThreshold = 9999
+		},
+		--[[codeGeneration = {
+			toString = {
+				template = "${object.className}{${member.name()}=${$member.value}, ${otherMembers}}"
+			},
+			useBlocks = true
+		}]]--
 	}
 
-	local config = {
-		cmd = {"<imagine-this-is-the-command-that-starts-jdtls>"},
+	jdtls.start_or_attach({
+		cmd = cmd,
+		settings = lsp_settings,
+		on_attach = jdtls_on_attach,
+		capabilities = cache_vars.capabilities,
 		root_dir = jdtls.setup.find_root(root_files),
-		on_attach = jdtls_on_attach
-	}
-
-	jdtls.start_or_attach(config)
+		flags = {
+			allow_incremental_sync = true
+		},
+		init_options = {
+			bundles = path.bundles
+		}
+	})
 end
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = java_cmds,
-	pattern = {"java"},
+	pattern = {"*.java"},
 	desc = "Setup jdtls",
 	callback = jdtls_setup
 })

@@ -1,2 +1,2 @@
-# ignore jdt.ls associated things (use build.sh to retrieve)
-/jdtls/jdtls/
+# ignore jdtls associated things
+/javaExample*

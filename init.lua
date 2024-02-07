@@ -110,7 +110,9 @@ lsp_zero.on_attach(function (client, buffnr)
 	lsp_zero.default_keymaps({buffer = buffnr})
 end)
 
--- for more on mason + lspzero: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
+-- for more on mason + lspzero:
+-- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
+-- or https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {
