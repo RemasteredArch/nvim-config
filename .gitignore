@@ -1,3 +1,4 @@
+/lazy-lock.json
+
 # ignore jdtls associated things
 javaExample*
-/.lazy-lock.json
