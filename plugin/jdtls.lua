@@ -102,6 +102,7 @@ local function jdtls_on_attach(client, buffnr)
 end
 
 local function jdtls_setup(event)
+	vim.notify("setting up jtdls...")
 	local pkg_status, jdtls = pcall(require, "jdtls")
 	if not pkg_status then
 		vim.notify("Unable to load nvim-jdtls, further, the JVM may be nonfunctional, try java -version", "error")
@@ -206,7 +207,7 @@ end
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = java_cmds,
-	pattern = {"*.java"},
+	pattern = "*.java",
 	desc = "Setup jdtls",
 	callback = jdtls_setup
 })
