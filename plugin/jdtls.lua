@@ -102,13 +102,7 @@ local function jdtls_on_attach(client, buffnr)
 end
 
 local function jdtls_setup(event)
-	vim.notify("setting up jtdls...")
-	local pkg_status, jdtls = pcall(require, "jdtls")
-	if not pkg_status then
-		vim.notify("Unable to load nvim-jdtls, further, the JVM may be nonfunctional, try java -version", "error")
-		return
-	end
-	--local jdtls = require("jdtls")
+	local jdtls = require("jdtls")
 
 	local path = get_jdtls_paths()
 	local data_dir = path.data_dir .. "/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -119,7 +113,8 @@ local function jdtls_setup(event)
 		local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 		cache_vars.capabilities = vim.tbl_deep_extend(
 			"force",
-			vim.lsp.protocol.make_client_capabilities() or {}
+			vim.lsp.protocol.make_client_capabilities() or {},
+			ok_cmp and cmp_lsp.default_capabilities() or {}
 		)
 	end
 
@@ -205,7 +200,7 @@ local function jdtls_setup(event)
 	})
 end
 
-vim.api.nvim_create_autocmd("FileType", {
+vim.api.nvim_create_autocmd("BufEnter", {
 	group = java_cmds,
 	pattern = "*.java",
 	desc = "Setup jdtls",
