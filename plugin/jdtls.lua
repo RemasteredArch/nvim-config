@@ -18,13 +18,14 @@ local root_files = {
 }
 
 local function get_codestyle_path()
-	local codestyle = vim.fn.stdpath("data") .. "/codestyles/eclipse-java-google-style.xml"
+	local codestyle = "eclipse-java-google-style"
+	local codestyle_path = vim.fn.stdpath("data") .. "/codestyles/" .. codestyle .. ".xml"
 
-	if vim.fn.filereadable(codestyle) == 0 then
-		vim.notify("Codestyle '" .. codestyle .. "' not found!")
+	if vim.fn.filereadable(codestyle_path) == 0 then
+		vim.notify("Codestyle '" .. codestyle_path .. "' not found!")
 	end
 
-	return codestyle
+	return codestyle_path
 
 	-- maybe add some checking for project-specific codestyles?
 end

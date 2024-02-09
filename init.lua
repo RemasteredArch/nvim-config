@@ -88,6 +88,7 @@ require("lazy").setup({
 	{"williamboman/mason.nvim"},
 	{"williamboman/mason-lspconfig.nvim"},
 	{"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
+	{"mfussenegger/nvim-jdtls"},
 	{"neovim/nvim-lspconfig"},
 	{"hrsh7th/cmp-nvim-lsp"},
 	{"hrsh7th/nvim-cmp"},
@@ -121,6 +122,7 @@ require("mason-lspconfig").setup({
 		"lua_ls",
 		"marksman" -- markdown
 	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+	automatic_installation = false,
 	handlers = {
 		lsp_zero.default_setup,
 		jdtls = lsp_zero.noop
