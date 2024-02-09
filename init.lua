@@ -125,14 +125,27 @@ require("mason-lspconfig").setup({
 	automatic_installation = false,
 	handlers = {
 		lsp_zero.default_setup,
-		jdtls = lsp_zero.noop
+		jdtls = lsp_zero.noop,
+		lua_ls = function()
+			require("lspconfig").lua_ls.setup({
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = {
+								"vim"
+							}
+						}
+					}
+				}
+			})
+		end
 	}
 })
 
 --[[
 -- Automatically set unusual filetypes
 vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = {*.extension},
-        command = "set filetype=lang"
+	pattern = {*.extension},
+	command = "set filetype=lang"
 }
 ]]--

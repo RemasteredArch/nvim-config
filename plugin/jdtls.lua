@@ -1,4 +1,4 @@
--- almost directly copied from https://lsp-zero.netlify.app/v3.x/guide/setup-with-nvim-jdtls.html
+-- modified from https://lsp-zero.netlify.app/v3.x/guide/setup-with-nvim-jdtls.html
 
 local java_cmds = vim.api.nvim_create_augroup("java_cmds", {clear = true})
 
@@ -17,17 +17,33 @@ local root_files = {
 	"build.gradle"
 }
 
-local function get_codestyle_path()
-	local codestyle = "eclipse-java-google-style"
-	local codestyle_path = vim.fn.stdpath("data") .. "/codestyles/" .. codestyle .. ".xml"
+local function generate_codestyle_path(codestyle)
+	return vim.fn.stdpath("config") .. "/codestyles/java/" .. codestyle .. ".xml"
+end
 
-	if vim.fn.filereadable(codestyle_path) == 0 then
-		vim.notify("Codestyle '" .. codestyle_path .. "' not found!")
+local function get_codestyle_path(project_root)
+	project_root = vim.fs.basename(project_root)
+	local codestyle_path = generate_codestyle_path(project_root)
+
+	if vim.fn.filereadable(codestyle_path) == 1 then
+		local ok_project_settings = pcall(require, "codestyles/java/" .. project_root) -- project specific nvim settings, located in <config>/lua/codestyles/java/
+		if ok_project_settings then
+			vim.notify("Using codestyle '" .. project_root .. "' and settings from project.")
+		else
+			vim.notify("Using codestyle '" .. project_root .. "'.")
+		end
+	else -- revert to default codestyle
+		local codestyle = "eclipse-java-google-style"
+		codestyle_path = generate_codestyle_path(codestyle)
+		if vim.fn.filereadable(codestyle_path) == 1 then
+			vim.notify("Using codestyle '" .. codestyle .. "'.")
+		else
+			vim.notify("Could not find codestyle '" .. codestyle .. "' or '" .. project_root .. "'!")
+			-- maybe automatically download from https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml
+		end
 	end
 
 	return codestyle_path
-
-	-- maybe add some checking for project-specific codestyles?
 end
 
 local function get_jdtls_paths()
@@ -78,28 +94,28 @@ end
 
 local function jdtls_on_attach(client, buffnr)
 	--[[if features.debugger then
-		enable_debugger(bufnr)
-	end]]--
+	enable_debugger(bufnr)
+end]]--
 
-	if features.codelens then
-		enable_codelens(buffnr)
-	end
+if features.codelens then
+	enable_codelens(buffnr)
+end
 
-	-- https://github.com/mfussenegger/nvim-jdtls#usage
+-- https://github.com/mfussenegger/nvim-jdtls#usage
 
-	-- in normal mode, press alt+o[rganize] to organize imports
-	vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
+-- in normal mode, press alt+o[rganize] to organize imports
+vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
 
-	-- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-	vim.keymap.set("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts) 
-	vim.keymap.set("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+-- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
+vim.keymap.set("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts) 
+vim.keymap.set("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
 
-	-- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-	vim.keymap.set("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
-	vim.keymap.set("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+-- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
+vim.keymap.set("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
+vim.keymap.set("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
 
-	-- in visual mode, press c,r[efactor],m[ethod] to extract a method
-	vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+-- in visual mode, press c,r[efactor],m[ethod] to extract a method
+vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 end
 
 local function jdtls_setup(event)
@@ -107,15 +123,16 @@ local function jdtls_setup(event)
 
 	local path = get_jdtls_paths()
 	local data_dir = path.data_dir .. "/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+	local root_path = jdtls.setup.find_root(root_files)
 
 	if cache_vars.capabilities == nil then
 		jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 		local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 		cache_vars.capabilities = vim.tbl_deep_extend(
-			"force",
-			vim.lsp.protocol.make_client_capabilities() or {},
-			ok_cmp and cmp_lsp.default_capabilities() or {}
+		"force",
+		vim.lsp.protocol.make_client_capabilities() or {},
+		ok_cmp and cmp_lsp.default_capabilities() or {}
 		)
 	end
 
@@ -163,7 +180,7 @@ local function jdtls_setup(event)
 		format = {
 			enabled = true,
 			settings = {
-				profile = get_codestyle_path()
+				profile = get_codestyle_path(root_path)
 			}
 		},
 		signatureHelp = { -- seems to provide the info for popups with method info when using it
@@ -191,7 +208,7 @@ local function jdtls_setup(event)
 		settings = lsp_settings,
 		on_attach = jdtls_on_attach,
 		capabilities = cache_vars.capabilities,
-		root_dir = jdtls.setup.find_root(root_files),
+		root_dir = root_path,
 		flags = {
 			allow_incremental_sync = true
 		},
@@ -206,4 +223,13 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = "*.java",
 	desc = "Setup jdtls",
 	callback = jdtls_setup
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = java_cmds,
+	pattern = "*.java",
+	desc = "Format on write",
+	callback = function ()
+		vim.lsp.buf.format()
+	end
 })
