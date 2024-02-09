@@ -17,6 +17,9 @@ opt.softtabstop = 0
 opt.expandtab = false
 opt.shiftwidth = 2
 
+-- wrap lines on whitespace, etc instead of at the last character that fits
+opt.linebreak = true
+
 -- colors
 opt.termguicolors = true -- enables coloring
 opt.background = "dark"
