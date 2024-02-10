@@ -58,7 +58,7 @@ require("lazy").setup({
 
 			configs.setup({
 				-- list of parsers to always have instlaled, the first 5 are required
-				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash" },
+				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown" },
 
 				-- install the above ensured parsers synchronously
 				sync_install = false,

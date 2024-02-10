@@ -11,6 +11,7 @@ local features = {
 
 local root_files = {
 	".git",
+	".gitignore",
 	"mvnw",
 	"gradlew",
 	"pom.xml",
@@ -97,29 +98,33 @@ end
 -- <enable_debugger(bufnr)> here
 
 local function jdtls_on_attach(client, buffnr)
-	--[[if features.debugger then
-	enable_debugger(bufnr)
-end]]--
+	if features.codelens then
+		enable_codelens(buffnr)
+	end
 
-if features.codelens then
-	enable_codelens(buffnr)
-end
+	-- https://github.com/mfussenegger/nvim-jdtls#usage
 
--- https://github.com/mfussenegger/nvim-jdtls#usage
+	-- in normal mode, press alt+o[rganize] to organize imports
+	vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
 
--- in normal mode, press alt+o[rganize] to organize imports
-vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
+	-- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
+	vim.keymap.set("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
+	vim.keymap.set("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
 
--- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-vim.keymap.set("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts) 
-vim.keymap.set("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+	-- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
+	vim.keymap.set("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
+	vim.keymap.set("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
 
--- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-vim.keymap.set("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
-vim.keymap.set("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+	-- in visual mode, press c,r[efactor],m[ethod] to extract a method
+	vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 
--- in visual mode, press c,r[efactor],m[ethod] to extract a method
-vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+	-- in normal mode, press space,r[un] to run the code in the current buffer (or c[onfig]r[un] to run with input)
+	vim.keymap.set("n", "<leader>r", "<cmd>split | term java %<cr>")
+	vim.keymap.set("n", "<leader>cr", function()
+		local user_input = vim.fn.input("Args: ")
+		vim.api.nvim_command("split | term java % " .. user_input)
+	end)
+
 end
 
 local function jdtls_setup(event)
