@@ -14,7 +14,8 @@ local root_files = {
 	"mvnw",
 	"gradlew",
 	"pom.xml",
-	"build.gradle"
+	"build.gradle",
+	".classpath" -- is this only ever in the project root?
 }
 
 local function generate_codestyle_path(codestyle)
@@ -23,7 +24,10 @@ end
 
 local function get_codestyle_path(project_root)
 	project_root = vim.fs.basename(project_root)
-	local codestyle_path = generate_codestyle_path(project_root)
+	local codestyle_path
+	if not project_root == nil then -- in case jdtls can't detect a root folder
+		codestyle_path = generate_codestyle_path(project_root)
+	end
 
 	if vim.fn.filereadable(codestyle_path) == 1 then
 		local ok_project_settings = pcall(require, "codestyles/java/" .. project_root) -- project specific nvim settings, located in <config>/lua/codestyles/java/
