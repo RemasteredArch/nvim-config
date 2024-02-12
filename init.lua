@@ -102,7 +102,7 @@ require("lazy").setup({
 })
 
 -- colorscheme
-SetColorscheme("catppuccin")
+SetColorscheme("catppuccin-mocha")
 
 --[ LSPs ]--
 local lsp_zero = require("lsp-zero")
