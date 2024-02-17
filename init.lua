@@ -123,7 +123,8 @@ require("mason-lspconfig").setup({
 		"jdtls", -- java, see also see mfussenegger/nvim-jdtls
 		"bashls",
 		"lua_ls",
-		"marksman" -- markdown
+		"marksman", -- markdown
+		"biome" -- ts, js, jsx, json, jsonc, etc.
 	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 	automatic_installation = false,
 	handlers = {
