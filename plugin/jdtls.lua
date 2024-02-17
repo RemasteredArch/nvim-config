@@ -1,6 +1,6 @@
 -- modified from https://lsp-zero.netlify.app/v3.x/guide/setup-with-nvim-jdtls.html
 
-local java_cmds = vim.api.nvim_create_augroup("java_cmds", {clear = true})
+local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
 
 local cache_vars = {}
 
@@ -89,7 +89,7 @@ local function enable_codelens(buffnr)
 		buffer = buffnr,
 		group = java_cmds,
 		desc = "Refresh codelens",
-		callback = function ()
+		callback = function()
 			pcall(vim.lsp.codelens.refresh)
 		end
 	})
@@ -124,7 +124,6 @@ local function jdtls_on_attach(client, buffnr)
 		local user_input = vim.fn.input("Args: ")
 		vim.api.nvim_command("split | term java % " .. user_input)
 	end)
-
 end
 
 local function jdtls_setup(event)
@@ -139,14 +138,14 @@ local function jdtls_setup(event)
 
 		local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 		cache_vars.capabilities = vim.tbl_deep_extend(
-		"force",
-		vim.lsp.protocol.make_client_capabilities() or {},
-		ok_cmp and cmp_lsp.default_capabilities() or {}
+			"force",
+			vim.lsp.protocol.make_client_capabilities() or {},
+			ok_cmp and cmp_lsp.default_capabilities() or {}
 		)
 	end
 
 	local cmd = { -- command to start the language server
-		"java", -- execution path for the JRE
+		"java",    -- execution path for the JRE
 
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
@@ -209,7 +208,7 @@ local function jdtls_setup(event)
 				template = "${object.className}{${member.name()}=${$member.value}, ${otherMembers}}"
 			},
 			useBlocks = true
-		}]]--
+		}]] --
 	}
 
 	jdtls.start_or_attach({
@@ -238,7 +237,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	group = java_cmds,
 	pattern = "*.java",
 	desc = "Format on write",
-	callback = function ()
+	callback = function()
 		vim.lsp.buf.format()
 	end
 })

@@ -1,14 +1,14 @@
 --[ OPTIONS ]--
 
 -- global options
-local g = vim.g -- global vars and options
-g.mapleader = " " -- sets starting key for custom keybinds
+local g = vim.g     -- global vars and options
+g.mapleader = " "   -- sets starting key for custom keybinds
 
 local opt = vim.opt -- ?? how different from vim.g?
 
 -- current line behavior
-opt.cursorline = true -- highlights the current line
-opt.number = true -- sets line numbers
+opt.cursorline = true     -- highlights the current line
+opt.number = true         -- sets line numbers
 opt.relativenumber = true -- sets line numbering as relative to current line
 
 -- tabs instead of spaces
@@ -21,16 +21,17 @@ opt.shiftwidth = 2
 opt.linebreak = true
 
 -- colors
-opt.termguicolors = true -- enables coloring
+opt.termguicolors = true             -- enables coloring
 opt.background = "dark"
-function SetColorscheme (colorscheme) -- allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
+function SetColorscheme(colorscheme) -- allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
 	local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 	if not ok then
 		print("colorscheme " .. colorscheme .. " was not found!")
 		return
 	end
 end
-SetColorscheme("slate") -- set colorscheme using a built-in as a fallback 
+
+SetColorscheme("slate") -- set colorscheme using a built-in as a fallback
 
 --[ PLUGINS ]--
 
@@ -53,12 +54,15 @@ require("lazy").setup({
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		config = function ()
+		config = function()
 			local configs = require("nvim-treesitter.configs")
 
 			configs.setup({
 				-- list of parsers to always have instlaled, the first 5 are required
-				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown" },
+				ensure_installed = {
+					"c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml",
+					"json", "jsonc", "xml"
+				},
 
 				-- install the above ensured parsers synchronously
 				sync_install = false,
@@ -73,7 +77,7 @@ require("lazy").setup({
 							return true
 						end
 					end,
-					]]--
+					]] --
 					additional_vim_regex_highlighting = false
 				}
 			})
@@ -88,16 +92,16 @@ require("lazy").setup({
 	},
 
 	-- LSP/DAP
-	{"williamboman/mason.nvim"},
-	{"williamboman/mason-lspconfig.nvim"},
-	{"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
-	{"mfussenegger/nvim-jdtls"},
-	{"neovim/nvim-lspconfig"},
-	{"hrsh7th/cmp-nvim-lsp"},
-	{"hrsh7th/nvim-cmp"},
-	{"L3MON4D3/LuaSnip"},
-	{"mfussenegger/nvim-dap"},
-	{"rcarriga/nvim-dap-ui"}
+	{ "williamboman/mason.nvim" },
+	{ "williamboman/mason-lspconfig.nvim" },
+	{ "VonHeikemen/lsp-zero.nvim",        branch = "v3.x" },
+	{ "mfussenegger/nvim-jdtls" },
+	{ "neovim/nvim-lspconfig" },
+	{ "hrsh7th/cmp-nvim-lsp" },
+	{ "hrsh7th/nvim-cmp" },
+	{ "L3MON4D3/LuaSnip" },
+	{ "mfussenegger/nvim-dap" },
+	{ "rcarriga/nvim-dap-ui" }
 
 })
 
@@ -109,9 +113,9 @@ local lsp_zero = require("lsp-zero")
 
 -- lspzero https://lsp-zero.netlify.app/v3.x/getting-started.html
 
-lsp_zero.on_attach(function (client, buffnr)
+lsp_zero.on_attach(function(client, buffnr)
 	-- :help lsp-zero-keybindings
-	lsp_zero.default_keymaps({buffer = buffnr})
+	lsp_zero.default_keymaps({ buffer = buffnr })
 end)
 
 -- for more on mason + lspzero:
@@ -124,8 +128,10 @@ require("mason-lspconfig").setup({
 		"bashls",
 		"lua_ls",
 		"marksman", -- markdown
-		"biome" -- ts, js, jsx, json, jsonc, etc.
-	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+		"gradle_ls",
+		"taplo",  -- toml
+		"biome"   -- ts, js, jsx, json, jsonc, etc.
+	},          -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 	automatic_installation = false,
 	handlers = {
 		lsp_zero.default_setup,
@@ -152,6 +158,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = {*.extension},
 	command = "set filetype=lang"
 }
-]]--
+]]
+--
 
 -- spiders 🕷️ 🕸️

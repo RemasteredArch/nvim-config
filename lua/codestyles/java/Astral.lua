@@ -7,5 +7,5 @@ opt.shiftwidth = 4
 opt.expandtab = true
 opt.smarttab = true
 
-opt.tabstop = 8 -- make it obvious when a tab char is used instead of spaces
+opt.tabstop = 8     -- make it obvious when a tab char is used instead of spaces
 opt.softtabstop = 0 -- redundant, but set just in case init.lua changes
