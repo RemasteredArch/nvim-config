@@ -130,7 +130,8 @@ require("mason-lspconfig").setup({
 		"marksman", -- markdown
 		"gradle_ls",
 		"taplo",  -- toml
-		"biome"   -- ts, js, jsx, json, jsonc, etc.
+		"biome",  -- ts, js, jsx, json, jsonc, etc.
+		"lemminx"
 	},          -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 	automatic_installation = false,
 	handlers = {
