@@ -58,7 +58,7 @@ require("lazy").setup({
 			local configs = require("nvim-treesitter.configs")
 
 			configs.setup({
-				-- list of parsers to always have instlaled, the first 5 are required
+				-- list of parsers to always have installed, the first 5 are required
 				ensure_installed = {
 					"c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml",
 					"json", "jsonc", "xml"
