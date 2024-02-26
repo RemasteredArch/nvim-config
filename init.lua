@@ -157,9 +157,11 @@ require("mason-lspconfig").setup({
 })
 
 vim.g.rustaceanvim = {
-	server = {
+	-- tools = {}, -- plugins
+	server = { -- lsp
 		capabilities = lsp_zero.get_capabilities()
 	}
+	-- dap = {}
 }
 
 --[[
