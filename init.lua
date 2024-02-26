@@ -101,7 +101,8 @@ require("lazy").setup({
 	{ "hrsh7th/nvim-cmp" },
 	{ "L3MON4D3/LuaSnip" },
 	{ "mfussenegger/nvim-dap" },
-	{ "rcarriga/nvim-dap-ui" }
+	{ "rcarriga/nvim-dap-ui" },
+	{ "mrcjkb/rustaceanvim" }
 
 })
 
@@ -131,8 +132,9 @@ require("mason-lspconfig").setup({
 		"gradle_ls",
 		"taplo",  -- toml
 		"biome",  -- ts, js, jsx, json, jsonc, etc.
-		"lemminx"
-	},          -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+		"lemminx",
+		"rust_analyzer"
+	}, -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 	automatic_installation = false,
 	handlers = {
 		lsp_zero.default_setup,
@@ -149,9 +151,16 @@ require("mason-lspconfig").setup({
 					}
 				}
 			})
-		end
+		end,
+		rust_analyzer = lsp_zero.noop
 	}
 })
+
+vim.g.rustaceanvim = {
+	server = {
+		capabilities = lsp_zero.get_capabilities()
+	}
+}
 
 --[[
 -- Automatically set unusual filetypes
