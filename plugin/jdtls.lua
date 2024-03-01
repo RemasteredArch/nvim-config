@@ -10,6 +10,7 @@ local features = {
 }
 
 local root_files = {
+	"README.md",
 	".git",
 	".gitignore",
 	"mvnw",
@@ -103,6 +104,8 @@ local function jdtls_on_attach(client, buffnr)
 	end
 
 	-- https://github.com/mfussenegger/nvim-jdtls#usage
+
+	-- look into binding JdtCompile, JdtJshell, and maybe JdtJol
 
 	-- in normal mode, press alt+o[rganize] to organize imports
 	vim.keymap.set("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
