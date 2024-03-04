@@ -121,12 +121,20 @@ local function jdtls_on_attach(client, buffnr)
 	-- in visual mode, press c,r[efactor],m[ethod] to extract a method
 	vim.keymap.set("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 
-	-- in normal mode, press space,r[un] to run the code in the current buffer (or c[onfig]r[un] to run with input)
+	-- in normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
 	vim.keymap.set("n", "<leader>r", "<cmd>split | term java %<cr>")
 	vim.keymap.set("n", "<leader>cr", function()
 		local user_input = vim.fn.input("Args: ")
-		vim.api.nvim_command("split | term java % " .. user_input)
+		vim.api.nvim_command("split | term java % " .. user_input) -- why doesn't this need <cr>?
 	end)
+	-- same but space,f[ull],r[un] or space,f[ull],c[onfig],r[un] for multiple files
+	--[[vim.keymap.set("n", "<leader>fr", function()
+		vim.api.nvim_command("JdtCompile")
+		local bin_dir = require("jdtls").setup.find_root(root_files) .. "/bin"
+		print(bin_dir)
+		--vim.api.nvim_command("split | term java % <cr>")
+	end)]]
+	      --
 end
 
 local function jdtls_setup(event)
