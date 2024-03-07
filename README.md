@@ -2,6 +2,8 @@
 
 My personal Neovim config.
 
+This is posted here more for convenience than anything else. This config is *not* stable, is *not* guaranteed to function as expected (or at all), is *not* well made, and is probably *not* appropriate for your use case.
+
 ## Installation
 
 ### Requirements
