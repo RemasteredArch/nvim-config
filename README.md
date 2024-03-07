@@ -1,6 +1,6 @@
 # nvim-config
 
-My personal neovim config.
+My personal Neovim config.
 
 ## Installation
 
