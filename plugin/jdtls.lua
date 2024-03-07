@@ -128,13 +128,16 @@ local function jdtls_on_attach(client, buffnr)
 		vim.api.nvim_command("split | term java % " .. user_input) -- why doesn't this need <cr>?
 	end)
 	-- same but space,f[ull],r[un] or space,f[ull],c[onfig],r[un] for multiple files
+	-- see: https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html
+	-- see: https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e1f6e1b598b5d9cb5ef00b3783b7ee458a/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47
+	-- see: incremental builds https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2FIncrementalProjectBuilder.html&anchor=FULL_BUILD
 	--[[vim.keymap.set("n", "<leader>fr", function()
 		vim.api.nvim_command("JdtCompile")
 		local bin_dir = require("jdtls").setup.find_root(root_files) .. "/bin"
 		print(bin_dir)
 		--vim.api.nvim_command("split | term java % <cr>")
 	end)]]
-	      --
+	--
 end
 
 local function jdtls_setup(event)
