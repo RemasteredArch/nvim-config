@@ -91,6 +91,49 @@ require("lazy").setup({
 		priority = 1000
 	},
 
+	-- code screenshots
+	{
+		"michaelrommel/nvim-silicon",
+		lazy = true,
+		cmd = "Silicon",
+		config = function()
+			local output_path = vim.fn.stdpath("data") .. "/silicon"
+			if vim.fn.isdirectory(output_path) == 0 then
+				vim.fn.mkdir(output_path)
+			end
+
+			require("silicon").setup({
+				font = "CaskaydiaCove Nerd Font=34;Noto Color Emoji=34",
+				tab_width = 2,
+				theme = "OneHalfDark", -- silicon --list-themes
+				-- also nice: "Visual Studio Dark+"
+				line_offset = function(args)
+					return args.line1
+				end,
+				output = function()
+					return string.format("%s/silicon/%s.silicon.png", vim.fn.stdpath("data"), vim.fn.expand("%:t"))
+				end,
+				window_title = function()
+					return vim.fn.expand("%:t")
+				end
+			})
+		end
+	},
+	{
+		"ziontee113/icon-picker.nvim",
+		--lazy = true,
+		config = function()
+			require("icon-picker").setup({ disable_legacy_commands = true })
+		end
+	},
+
+	-- UI
+	{
+		"stevearc/dressing.nvim",
+		-- opts = {} -- e.g. insert_only = true by default
+	},
+
+
 	-- LSP/DAP
 	{ "williamboman/mason.nvim" },
 	{ "williamboman/mason-lspconfig.nvim" },
@@ -102,7 +145,7 @@ require("lazy").setup({
 	{ "L3MON4D3/LuaSnip" },
 	{ "mfussenegger/nvim-dap" },
 	{ "rcarriga/nvim-dap-ui" },
-	{ "mrcjkb/rustaceanvim" }
+	{ "mrcjkb/rustaceanvim" },
 
 })
 
@@ -152,7 +195,18 @@ require("mason-lspconfig").setup({
 				}
 			})
 		end,
-		rust_analyzer = lsp_zero.noop
+		rust_analyzer = lsp_zero.noop,
+		taplo = function()
+			local taplo_cmds = vim.api.nvim_create_augroup("taplo_cmds", { clear = true })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = taplo_cmds,
+				pattern = "*.toml",
+				desc = "Format on write",
+				callback = function()
+					vim.lsp.buf.format()
+				end
+			})
+		end
 	}
 })
 
@@ -173,4 +227,4 @@ vim.api.nvim_create_autocmd("BufEnter", {
 ]]
 --
 
--- spiders 🕷️ 🕸️
+-- spiders🕷️🕸️
