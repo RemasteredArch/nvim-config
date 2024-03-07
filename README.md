@@ -10,11 +10,10 @@ My personal Neovim config.
   * [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
 * Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 20.04 & 22.04)
 
-### Notes
-* Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise.
-* Assumes `~/.config/nvim` does not already exist. If it does, remove (preferably with a backup) this directory before installation.
-
 ### Steps
+* Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise.
+* Assumes `~/.config/nvim` does not already exist. If it does, remove it (preferably with a backup) before installation.
+
 ```
 mkdir ~/.config
 cd ~/.config
