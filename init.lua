@@ -172,6 +172,7 @@ local lsp_zero = require("lsp-zero")
 lsp_zero.on_attach(function(client, buffnr)
   -- :help lsp-zero-keybindings
   lsp_zero.default_keymaps({ buffer = buffnr })
+  lsp_zero.buffer_autoformat()
 end)
 
 -- for more on mason + lspzero:
