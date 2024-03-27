@@ -6,6 +6,7 @@ local root_files = {
   "gradlew",
   "pom.xml",
   "build.gradle",
+  "LICENSE",
   ".classpath" -- is this only ever in the project root?
 }
 
@@ -16,6 +17,8 @@ local features = {
 
 local function enable_codelens(buffnr)
   pcall(vim.lsp.codelens.refresh)
+
+  local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
 
   vim.api.nvim_create_autocmd("BufWritePost", {
     buffer = buffnr,
@@ -39,40 +42,35 @@ local function enable_format_on_write(buffnr)
 end
 
 local function set_keymap(buffnr)
-  --[[local function set_bind(...)
-    print("binds: " .. ...)
-    vim.api.nvim_buf_set_keymap(buffnr, ...)
-  end]]
-  --
-  local function set_bind(mode, lhs, rhs, opts)
+  local opts = {}
+
+  local function set_bind(mode, lhs, rhs)
     vim.api.nvim_buf_set_keymap(buffnr, mode, lhs, rhs, opts)
   end
-
-  local opts = {}
 
   -- look into binding JdtCompile, JdtJshell, and maybe JdtJol
   -- https://github.com/mfussenegger/nvim-jdtls#usage
 
   -- in normal mode, press alt+o[rganize] to organize imports
-  set_bind("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
+  set_bind("n", "<A-o>", "<cmd>lua require('jdtls').organize_imports()<cr>")
 
   -- in normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-  set_bind("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
-  set_bind("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+  set_bind("n", "crv", "<cmd>lua require('jdtls').extract_variable()<cr>")
+  set_bind("x", "crv", "<ec><cmd>lua require('jdtls').extract_variable(true)<cr>")
 
   -- in normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-  set_bind("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
-  set_bind("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+  set_bind("n", "crc", "<cmd>lua require('jdtls').extract_constant()<cr>")
+  set_bind("x", "crc", "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>")
 
   -- in visual mode, press c,r[efactor],m[ethod] to extract a method
-  set_bind("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+  set_bind("x", "crm", "<cmd>lua require('jdtls').extract_method(true)<cr>")
 
   -- in normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
   set_bind("n", "<leader>r", "<cmd>split | term java %<cr>")
-  set_bind("n", "<leader>cr", function()
-    local user_input = vim.fn.input("Args: ")
-    vim.api.nvim_command("split | term java % " .. user_input)
-  end)
+  set_bind("n", "<leader>cr", [[<cmd>lua function()
+    local user_input = vim.fn.input('Args: ')
+    vim.api.nvim_command('split | term java % ' .. user_input)
+  end<cr>]])
   -- same but space,f[ull],r[un] (or space,f[ull],c[onfig],r[un]) for multiple files
   -- see: https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html
   -- see: https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e1f6e1b598b5d9cb5ef00b3783b7ee458a/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47
@@ -83,7 +81,6 @@ local function set_keymap(buffnr)
 		print(bin_dir)
 		--vim.api.nvim_command("split | term java % <cr>")
 	end)]]
-  --
 end
 
 local function jdtls_on_attach(client, buffnr)
