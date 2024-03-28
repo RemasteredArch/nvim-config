@@ -1,10 +1,9 @@
 --[ OPTIONS ]--
 
 -- global options
-local g = vim.g     -- global vars and options
-g.mapleader = " "   -- sets starting key for custom keybinds
+vim.g.mapleader = " " -- sets starting key for custom keybinds
 
-local opt = vim.opt -- ?? how different from vim.g?
+local opt = vim.opt   -- ?? how different from vim.g?
 
 -- current line behavior
 opt.cursorline = true     -- highlights the current line
@@ -33,10 +32,11 @@ spaces()
 opt.linebreak = true
 
 -- colors
-opt.termguicolors = true             -- enables coloring
+opt.termguicolors = true                                      -- enables coloring
 opt.background = "dark"
-function SetColorscheme(colorscheme) -- allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
-  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
+function SetColorscheme(colorscheme)                          -- allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
+  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme) -- this will always return true, is there a better way to do this?
+
   if not ok then
     print("colorscheme " .. colorscheme .. " was not found!")
     return
@@ -110,6 +110,7 @@ require("lazy").setup({
     cmd = "Silicon",
     config = function()
       local output_path = vim.fn.stdpath("data") .. "/silicon"
+
       if vim.fn.isdirectory(output_path) == 0 then
         vim.fn.mkdir(output_path)
       end
@@ -117,13 +118,12 @@ require("lazy").setup({
       require("silicon").setup({
         font = "CaskaydiaCove Nerd Font=34;Noto Color Emoji=34",
         tab_width = 2,
-        theme = "OneHalfDark", -- silicon --list-themes
-        -- also nice: "Visual Studio Dark+"
+        theme = "OneHalfDark", -- `silicon --list-themes` (also nice: "Visual Studio Dark+")
         line_offset = function(args)
           return args.line1
         end,
         output = function()
-          return string.format("%s/silicon/%s.silicon.png", vim.fn.stdpath("data"), vim.fn.expand("%:t"))
+          return output_path .. "/" .. vim.fn.expand("%:t") .. ".silicon.png"
         end,
         window_title = function()
           return vim.fn.expand("%:t")
@@ -133,7 +133,7 @@ require("lazy").setup({
   },
   {
     "ziontee113/icon-picker.nvim",
-    --lazy = true,
+    lazy = true,
     config = function()
       require("icon-picker").setup({ disable_legacy_commands = true })
     end
@@ -196,8 +196,7 @@ lsp_zero.on_attach(function(client, buffnr)
 end)
 
 -- for more on mason + lspzero:
--- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
--- or https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
+-- https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
 require("mason").setup({})
 require("mason-lspconfig").setup({
   ensure_installed = {
@@ -210,7 +209,7 @@ require("mason-lspconfig").setup({
     "biome",    -- ts, js, jsx, json, jsonc, etc.
     "lemminx",  -- xml
     "rust_analyzer"
-  },            -- from: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+  },
   automatic_installation = false,
   handlers = {
     lsp_zero.default_setup,
@@ -222,6 +221,22 @@ require("mason-lspconfig").setup({
             diagnostics = {
               globals = {
                 "vim"
+              }
+            },
+            format = {
+              defaultConfig = { -- doesn't work. why?
+                -- used as prescribed by https://luals.github.io/wiki/settings/
+                -- options drawn from https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md
+                align_call_args = false,
+                align_function_params = false,
+                align_continuous_assign_statement = false,
+                align_continuous_rect_table_field = false,
+                align_if_branch = false,
+                align_array_table = false
+                -- additional options from https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
+                -- align_continuous_line_space = <num>
+                -- align_continuous_similar_call_args = false
+                -- align_continuous_inline_comment = false
               }
             }
           }
