@@ -144,6 +144,17 @@ require("lazy").setup({
     "stevearc/dressing.nvim",
     -- opts = {} -- e.g. insert_only = true by default
   },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
+  },
 
 
   -- LSP/DAP
@@ -163,6 +174,15 @@ require("lazy").setup({
 
 -- colorscheme
 SetColorscheme("catppuccin-mocha")
+
+-- UI
+require("noice").setup({
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    lsp_doc_border = true
+  }
+})
 
 --[ LSPs ]--
 local lsp_zero = require("lsp-zero")
