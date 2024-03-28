@@ -1,12 +1,14 @@
 local root_files = {
-  "README.md",
   ".git",
   ".gitignore",
+  "README.md",
+  "README.txt",
+  "LICENSE",
+  "LICENSE.txt",
   "mvnw",
   "gradlew",
   "pom.xml",
   "build.gradle",
-  "LICENSE",
   ".classpath" -- is this only ever in the project root?
 }
 
