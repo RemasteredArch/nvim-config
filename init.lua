@@ -228,18 +228,7 @@ require("mason-lspconfig").setup({
         }
       })
     end,
-    rust_analyzer = lsp_zero.noop,
-    taplo = function()
-      local taplo_cmds = vim.api.nvim_create_augroup("taplo_cmds", { clear = true })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = taplo_cmds,
-        pattern = "*.toml",
-        desc = "Format on write",
-        callback = function()
-          vim.lsp.buf.format()
-        end
-      })
-    end
+    rust_analyzer = lsp_zero.noop
   }
 })
 
