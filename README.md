@@ -2,7 +2,7 @@
 
 My personal Neovim config.
 
-This is posted here more for convenience than anything else. This config is *not* stable, is *not* guaranteed to function as expected (or at all), is *not* well made, and is probably *not* appropriate for your use case.
+This is posted here more for convenience than anything else. This config is *not* stable, is *not* guaranteed to function as expected (or at all), is *not* expertly made, and is probably *not* appropriate for your use case.
 
 ## Installation
 
@@ -28,8 +28,10 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
+* UI with [noice](https://github.com/folke/noice.nvim)
+  * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
 
-# License
+## License
 
 nvim-config is licensed under the GNU Affero General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU Affero General Public License along with nvim-config, found in [LICENSE](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.
 
