@@ -28,7 +28,7 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
-* UI with [noice](https://github.com/folke/noice.nvim)
+* UI with [noice.nvim](https://github.com/folke/noice.nvim)
   * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
 
 ## License
