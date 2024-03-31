@@ -33,10 +33,10 @@ local features = {
   debug = false    -- relies on nvim-dap, java-test, and java-debug-adapter
 }
 
+local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
+
 local function enable_codelens(buffnr)
   pcall(vim.lsp.codelens.refresh)
-
-  local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
 
   vim.api.nvim_create_autocmd("BufWritePost", {
     buffer = buffnr,
