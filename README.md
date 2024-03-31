@@ -35,4 +35,4 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 
 nvim-config is licensed under the GNU Affero General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU Affero General Public License along with nvim-config, found in [LICENSE](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.
 
-nvim-config contains code from other software. See [COPYING.md](./COPYING.md) for more details
+nvim-config contains code from other software. See [COPYING.md](./COPYING.md) for more details.
