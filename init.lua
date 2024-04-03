@@ -222,7 +222,8 @@ require("mason-lspconfig").setup({
     "taplo",    -- toml
     "biome",    -- ts, js, jsx, json, jsonc, etc.
     "lemminx",  -- xml
-    "rust_analyzer"
+    "rust_analyzer",
+    "clangd"
   },
   automatic_installation = false,
   handlers = {
