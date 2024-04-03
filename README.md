@@ -16,10 +16,11 @@ This is posted here more for convenience than anything else. This config is *not
 * Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise.
 * Assumes `~/.config/nvim` does not already exist. If it does, remove it (preferably with a backup) before installation.
 
-```
+```bash
 mkdir ~/.config
 cd ~/.config
 git clone https://github.com/RemasteredArch/nvim-config.git nvim/
+sudo apt install g++ # substitute your distro's equivalent here
 ```
 
 ## Notable plugins
@@ -30,6 +31,8 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 * Rust LSP with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
 * UI with [noice.nvim](https://github.com/folke/noice.nvim)
   * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
+* C++ LSP with [clangd](https://clangd.llvm.org/)
+  * Requires g++
 
 ## License
 
