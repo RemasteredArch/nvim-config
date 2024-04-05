@@ -21,7 +21,6 @@ This is posted here more for convenience than anything else. This config is *not
 mkdir ~/.config
 cd ~/.config
 git clone https://github.com/RemasteredArch/nvim-config.git nvim/
-sudo apt install g++ # substitute your distro's equivalent here
 ```
 
 ## Notable plugins
