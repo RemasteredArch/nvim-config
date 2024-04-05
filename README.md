@@ -10,6 +10,7 @@ This is posted here more for convenience than anything else. This config is *not
 * [Silicon](https://github.com/Aloxaf/silicon)
   * [Caskaydia Cove](https://github.com/eliheuer/caskaydia-cove)
   * [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
+* g++
 * Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 20.04 & 22.04)
 
 ### Steps
@@ -32,7 +33,6 @@ sudo apt install g++ # substitute your distro's equivalent here
 * UI with [noice.nvim](https://github.com/folke/noice.nvim)
   * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
 * C++ LSP with [clangd](https://clangd.llvm.org/)
-  * Requires g++
 
 ## License
 
