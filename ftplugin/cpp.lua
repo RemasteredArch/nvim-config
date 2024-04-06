@@ -13,14 +13,17 @@ You should have received a copy of the GNU Affero General Public License along w
 ]]
 
 -- cpp.lua: configuration for clangd
+-- requires g++ or clang++ (TODO: autodetect)
 
-vim.keymap.set("n", "<leader>r", "<cmd>split | term g++ %; ./a.out; rm a.out<cr>")
+local compiler = "g++"
+
+vim.keymap.set("n", "<leader>r", "<cmd>split | term " .. compiler .. " %; ./a.out; rm a.out<cr>")
 vim.keymap.set("n", "<leader>cr", function()
   local user_input = vim.fn.input("Args: ")
-  vim.api.nvim_command("split | term g++ %; ./a.out " .. user_input .. "; rm a.out")
+  vim.api.nvim_command("split | term " .. compiler .. " %; ./a.out " .. user_input .. "; rm a.out")
 end)
 vim.keymap.set("n", "<leader>crr", function()
   local gpp_input = vim.fn.input("G++ Args: ")
   local program_input = vim.fn.input("Program Args: ")
-  vim.api.nvim_command("split | term g++ % " .. gpp_input .. "; ./a.out " .. program_input .. "; rm a.out")
+  vim.api.nvim_command("split | term " .. compiler .. "% " .. gpp_input .. "; ./a.out " .. program_input .. "; rm a.out")
 end)
