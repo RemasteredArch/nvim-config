@@ -13,17 +13,49 @@ You should have received a copy of the GNU Affero General Public License along w
 ]]
 
 -- cpp.lua: configuration for clangd
--- requires g++ or clang++ (TODO: autodetect)
 
-local compiler = "g++"
+local function get_compiler()
+  -- set your compiler (as it would be entered into a shell prompt)
+  -- assumes that the compiler takes arguments like so: `<compiler> ExampleFile.cpp -o <output> <args>`
+  local compilers = {
+    preferred = "g++",
+    other = { "clang++" }
+  }
 
-vim.keymap.set("n", "<leader>r", "<cmd>split | term " .. compiler .. " %; ./a.out; rm a.out<cr>")
+  if vim.fn.executable(compilers.preferred) == 1 then
+    vim.notify("Using " .. compilers.preferred)
+    return compilers.preferred
+  end
+
+  for _, compiler in ipairs(compilers.other) do
+    if vim.fn.executable(compiler) == 1 then
+      vim.notify("Using " .. compiler)
+      return compiler
+    end
+  end
+
+  vim.notify("No suitable C++ compiler found!")
+end
+
+local compiler = get_compiler();
+local output = "./a.out"
+
+-- compile and run file
+vim.keymap.set("n", "<leader>r",
+  string.format("<cmd>split | term %s %% -o %s; %s; rm %s<cr>", compiler, output, output, output))
+
+-- compile and run file with args
 vim.keymap.set("n", "<leader>cr", function()
   local user_input = vim.fn.input("Args: ")
-  vim.api.nvim_command("split | term " .. compiler .. " %; ./a.out " .. user_input .. "; rm a.out")
+  vim.api.nvim_command(
+    string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, output, output, user_input, output))
 end)
+
+-- compile and run file with args and compiler args
 vim.keymap.set("n", "<leader>crr", function()
-  local gpp_input = vim.fn.input("G++ Args: ")
+  local compiler_input = vim.fn.input("Compiler Args: ")
   local program_input = vim.fn.input("Program Args: ")
-  vim.api.nvim_command("split | term " .. compiler .. "% " .. gpp_input .. "; ./a.out " .. program_input .. "; rm a.out")
+  vim.api.nvim_command(
+    string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, output, compiler_input, output, program_input,
+      output))
 end)

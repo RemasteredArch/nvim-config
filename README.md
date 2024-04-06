@@ -10,7 +10,7 @@ This is posted here more for convenience than anything else. This config is *not
 * [Silicon](https://github.com/Aloxaf/silicon)
   * [Caskaydia Cove](https://github.com/eliheuer/caskaydia-cove)
   * [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
-* g++
+* [`g++`](https://gcc.gnu.org/) or [`clang++`](https://clang.llvm.org/) (configurable, see [ftplugin/cpp.lua](./ftplugin/cpp.lua))
 * Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 20.04 & 22.04)
 
 ### Steps
