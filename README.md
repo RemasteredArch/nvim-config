@@ -24,6 +24,7 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 ```
 
 ## Notable plugins
+
 * Plugin installation with [lazy.nvim](https://github.com/folke/lazy.nvim)
 * LSP installation with [mason.nvim](https://github.com/williamboman/mason.nvim)
 * LSP configuration with [LSP Zero](https://github.com/VonHeikemen/lsp-zero.nvim)
