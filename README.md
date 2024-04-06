@@ -26,10 +26,11 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 ## Notable plugins
 * Plugin installation with [lazy.nvim](https://github.com/folke/lazy.nvim)
 * LSP installation with [mason.nvim](https://github.com/williamboman/mason.nvim)
+* LSP configuration with [LSP Zero](https://github.com/VonHeikemen/lsp-zero.nvim)
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
-* UI with [noice.nvim](https://github.com/folke/noice.nvim)
+* UI with [Noice](https://github.com/folke/noice.nvim)
   * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
 
 ## License
