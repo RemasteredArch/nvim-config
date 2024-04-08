@@ -14,6 +14,13 @@ You should have received a copy of the GNU Affero General Public License along w
 
 -- cpp.lua: configuration for clangd
 
+local function find_makefile()
+  local current_file = vim.fn.expand("%")
+  local files = { "make" }
+  local case = "home"
+  return require("project_root").find_project_root(current_file, files, case)
+end
+
 local function get_compiler()
   -- set your compiler (as it would be entered into a shell prompt)
   -- assumes that the compiler takes arguments like so: `<compiler> ExampleFile.cpp -o <output> <args>`
@@ -58,4 +65,14 @@ vim.keymap.set("n", "<leader>crr", function()
   vim.api.nvim_command(
     string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, output, compiler_input, output, program_input,
       output))
+end)
+
+vim.keymap.set("n", "<leader>fd", function()
+  local path = find_makefile()
+
+  if path == nil then
+    vim.notify("No makefile found!")
+  else
+    vim.notify("Makefile: " .. path)
+  end
 end)
