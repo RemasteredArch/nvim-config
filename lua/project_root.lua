@@ -55,11 +55,10 @@ function module.find_project_root(path, files, case)
         return result
       end
 
-
       current_dir = get_parent_directory(current_dir)
 
       if current_dir == "/" then
-        case = 0
+        break
       end
     end
   elseif case_type == "number" then -- check only case number of parent directories
