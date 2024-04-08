@@ -18,7 +18,7 @@ local module = {}
 
 -- e.g. path/to/file.ext -> path/to
 -- or path/to/dir -> path/to
-local function get_parent_directory(path)
+function module.get_parent_directory(path)
   local physical = vim.fn.fnamemodify(path, ":p")
   physical = physical:gsub("/$", "") -- strip leading "/"
 
@@ -27,11 +27,11 @@ end
 
 -- e.g. path/to/file.ext -> file.ext
 -- or path/to/dir -> dir
-local function get_file_or_dir_name(path)
+function module.get_file_or_dir_name(path)
   return vim.fn.fnamemodify(path, ":t")
 end
 
-local function directory_contains(directory, files)
+function module.directory_contains(directory, files)
   for _, file in ipairs(files) do
     local detect_file = vim.fn.glob(directory .. "/" .. file)
 
@@ -42,20 +42,20 @@ local function directory_contains(directory, files)
 end
 
 function module.find_project_root(path, files, case)
-  local directory = get_parent_directory(path)
+  local directory = module.get_parent_directory(path)
   local case_type = type(case)
 
   if case_type == "string" then -- search parent directories up to case (e.g. home)
     local current_dir = directory
 
-    while get_file_or_dir_name(current_dir) ~= case do
-      local result = directory_contains(current_dir, files)
+    while module.get_file_or_dir_name(current_dir) ~= case do
+      local result = module.directory_contains(current_dir, files)
 
       if result ~= nil then
         return result
       end
 
-      current_dir = get_parent_directory(current_dir)
+      current_dir = module.get_parent_directory(current_dir)
 
       if current_dir == "/" then
         break
@@ -65,14 +65,14 @@ function module.find_project_root(path, files, case)
     local current_dir = directory
 
     while case > 0 do
-      local result = directory_contains(current_dir, files)
+      local result = module.directory_contains(current_dir, files)
 
       if result ~= nil then
         return result
       end
 
 
-      current_dir = get_parent_directory(current_dir)
+      current_dir = module.get_parent_directory(current_dir)
       case = case - 1
 
       if current_dir == "/" then

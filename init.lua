@@ -85,9 +85,10 @@ require("lazy").setup({
 
       configs.setup({
         -- list of parsers to always have installed, the first 5 are required
+        -- List with :TSInstallInfo
         ensure_installed = {
           "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml",
-          "json", "jsonc", "xml", "cpp"
+          "json", "jsonc", "xml", "cpp", "cmake"
         },
 
         -- install the above ensured parsers synchronously
@@ -223,7 +224,8 @@ require("mason-lspconfig").setup({
     "biome",    -- ts, js, jsx, json, jsonc, etc.
     "lemminx",  -- xml
     "rust_analyzer",
-    "clangd"
+    "clangd",
+    "neocmake"
   },
   automatic_installation = false,
   handlers = {
