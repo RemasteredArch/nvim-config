@@ -14,19 +14,18 @@ You should have received a copy of the GNU Affero General Public License along w
 
 -- cpp.lua: configuration for clangd
 
+local paths = {}
+local generator = {}
+local project_root = require("project_root")
+
 local function find_cmake_file()
   local current_file = vim.fn.expand("%")
   local files = { "CMakeLists.txt" }
   local case = "home"
-  return require("project_root").find_project_root(current_file, files, case)
+  return project_root.find_project_root(current_file, files, case)
 end
 
-local paths = {}
-local generator = {}
-
 local function cmake_build()
-  local project_root = require("project_root")
-
   paths.cmake_file = find_cmake_file()
 
   if paths.cmake_file == nil then
@@ -38,15 +37,16 @@ local function cmake_build()
 
   paths.project_root = project_root.get_parent_directory(paths.cmake_file)
   paths.build_dir = paths.project_root .. "/build"
-  paths.output = paths.build_dir .. "/*.out"
+  paths.output_file_name = "*.out"
+  paths.output = paths.build_dir .. "/" .. paths.output_file_name
 
   if vim.fn.isdirectory(paths.build_dir) == 0 then
     vim.notify("No build directory found! Creating " .. paths.build_dir)
     vim.fn.mkdir(paths.build_dir)
   end
 
-  generator.name = "Ninja" -- as it appears in the generators section of `cmake --help`
-  generator.build_cmd = "ninja"
+  generator.name = "Ninja"      -- as it appears in the generators section of `cmake --help`
+  generator.build_cmd = "ninja" -- as would be entered into the shell
   generator.build_script = "build.ninja"
 
   if project_root.directory_contains(paths.build_dir, { generator.build_script }) == nil then
@@ -56,9 +56,16 @@ local function cmake_build()
     vim.notify(generator.name .. " build script found! Skipping CMake config build.")
   end
 
-  vim.api.nvim_command(string.format("!cd \"%s\"; %s", paths.build_dir, generator.cmd)) -- outputs to a message automatically
+  vim.api.nvim_command(string.format("!cd \"%s\"; %s", paths.build_dir, generator.build_cmd))
+end
 
-  vim.api.nvim_command(string.format("split | term \"%s\"", paths.output))
+local function cmake_run()
+  if paths.build_dir == nil or project_root.directory_contains(paths.build_dir, { paths.output }) == nil then
+    vim.notify("No build detecting! Building...")
+    cmake_build()
+  end
+
+  vim.api.nvim_command(string.format("split | term cd \"%s\"; ./%s", paths.build_dir, paths.output_file_name))
 end
 
 local function get_compiler()
@@ -118,7 +125,8 @@ end)
 vim.keymap.set("n", "<leader>ccfb", function()
 end)
 
+]]
 -- run compiled project (following <leader>cbb)
 vim.keymap.set("n", "<leader>ccr", function()
+  cmake_run()
 end)
-]]
