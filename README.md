@@ -4,29 +4,6 @@ My personal Neovim config.
 
 This is posted here more for convenience than anything else. This config is *not* stable, is *not* guaranteed to function as expected (or at all), is *not* expertly made, and is probably *not* appropriate for your use case.
 
-## Installation
-
-### Requirements
-* [Silicon](https://github.com/Aloxaf/silicon)
-  * [Caskaydia Cove](https://github.com/eliheuer/caskaydia-cove)
-  * [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
-* [`g++`](https://gcc.gnu.org/) or [`clang++`](https://clang.llvm.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
-* [CMake](https://cmake.org/)
-  * [Ninja](https://ninja-build.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
-* Bash
-  * This config makes pretty minimal use of shell commands. It's quite possible that it would work on other shells (including PowerShell), but this hasn't been tested.
-* Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 20.04 & 22.04)
-
-### Steps
-* Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise.
-* Assumes `~/.config/nvim` does not already exist. If it does, remove it (preferably with a backup) before installation.
-
-```bash
-mkdir ~/.config
-cd ~/.config
-git clone https://github.com/RemasteredArch/nvim-config.git nvim/
-```
-
 ## Notable plugins
 
 * Plugin installation with [lazy.nvim](https://github.com/folke/lazy.nvim)
@@ -37,6 +14,53 @@ git clone https://github.com/RemasteredArch/nvim-config.git nvim/
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
 * UI with [Noice](https://github.com/folke/noice.nvim)
   * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
+  * May cause the screen to flash rapidly, likely dependant on terminal emulator
+    * Occurs for me using Windows Terminal (this config is used through WSL)
+    * Seems to be related to the cursor being moved to draw the popups
+  * This is temporarily disabled due to [a crash](https://github.com/folke/noice.nvim/issues/784#issuecomment-2094655810)
+
+## Installation
+
+### Requirements
+* [Silicon](https://github.com/Aloxaf/silicon)
+  * [Caskaydia Cove](https://github.com/eliheuer/caskaydia-cove)
+  * [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
+* [CMake](https://cmake.org/)
+  * [`g++`](https://gcc.gnu.org/) or [`clang++`](https://clang.llvm.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
+  * [Ninja](https://ninja-build.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
+* [Node.js](https://nodejs.org/en)
+  * This config is built and used with node.js v20.12.2 (installed through [`nvm install --lts`](https://github.com/nvm-sh/nvm)), but older or newer versions would likely work fine
+* [Rust](https://www.rust-lang.org/) toolchain
+  * Cargo
+  * `rustc`
+  * [rust-analyzer](https://rust-analyzer.github.io/)
+    * Could also be downloaded with [mason.nvim](https://github.com/williamboman/mason.nvim), and there is a commented out line in [`init.lua`](./init.lua) to do so, but installing as a part of your toolchain (`rustup compent add rust-analyzer`) helps to [avoid version inconsistencies](https://github.com/mrcjkb/rustaceanvim/blob/master/doc/mason.txt)
+* A Java Development Kit
+  * This project is built and developed on [OpenJDK](https://openjdk.org/) 21, but older or newer versions would likely work fine
+  * Specifically, this project is built and developed on [`openjdk-21-jdk`](https://packages.ubuntu.com/noble/openjdk-21-jdk) from the Ubuntu 24.04 repositories
+  * This project is not tested on Windows, but [Eclipse Temurin](https://adoptium.net/) is my go-to OpenJDK distribution on Windows
+* A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
+* Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
+
+### Manual installation 
+* Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise
+* Assumes `~/.config/nvim` does not already exist. If it does, remove it (preferably with a backup) before installation
+* Assumes that you have installed the [requirements](#requirements)
+
+```bash
+mkdir ~/.config
+cd ~/.config
+git clone https://github.com/RemasteredArch/nvim-config.git nvim/
+```
+
+### Automatic installation
+* Designed for Ubuntu 24.04, but would probably work on other versions or other `apt`-based distributions
+* This is currently COMPLETELY UNTESTED! Feel free to use it as a reference, but it is currently only a part of this repository in order to facilitate development
+```bash
+# Again, this is COMPLETELY untested!
+curl https://raw.githubusercontent.com/RemasteredArch/nvim-config/main/setup.sh | bash
+# DO NOT RUN THIS if you are not certain that it is okay!
+```
 
 ## License
 
