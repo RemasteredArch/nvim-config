@@ -80,7 +80,7 @@ packages[silicon_build_dependencies]="
   expat             libexpat1-dev
   pkg-config        libxml2-dev
   libfreetype6-dev  libfontconfig1-dev
-  libharfbuzz-dev   libxcb-composite0-dev 
+  libharfbuzz-dev   libxcb-composite0-dev
   libssl-dev        libasound2-dev"
 
 # shellcheck disable=SC2086
