@@ -66,30 +66,114 @@ local packages = {
     "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml", "json",
     "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline"
   },
-  linter = {
-    text = { "vale" },
-    markdown = { "vale" }
-    -- json = { "jsonlint" }
+  mason = {
+    linter = {
+      text = { "vale" },
+      markdown = { "vale" }
+      -- json = { "jsonlint" }
+    },
+    lsp = {
+      "jdtls",    -- java, see also see ftplugin/java.lua
+      "bashls",   -- integrates with shellcheck
+      "lua_ls",
+      "marksman", -- markdown
+      "gradle_ls",
+      "taplo",    -- toml
+      "biome",    -- ts, js, jsx, json, jsonc, etc.
+      "lemminx",  -- xml
+      -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
+      "clangd",
+      "neocmake",
+      "vale_ls"
+    },
+    other = {
+      "shellcheck",
+      "shfmt"
+    },
   },
-  lsp = {
-    "jdtls",    -- java, see also see ftplugin/java.lua
-    "bashls",   -- integrates with shellcheck
-    "lua_ls",
-    "marksman", -- markdown
-    "gradle_ls",
-    "taplo",    -- toml
-    "biome",    -- ts, js, jsx, json, jsonc, etc.
-    "lemminx",  -- xml
-    -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
-    "clangd",
-    "neocmake",
-    "vale_ls"
-  },
-  other = {
-    "shellcheck",
-    "shfmt"
-  }
+  print_all = function(self)
+    local function print_table(tbl)
+      local str = "{ "
+
+      for k, v in pairs(tbl) do
+        if type(v) == "string" then
+          if type(k) == "number" then
+            str = ("%s%s, "):format(str, v)
+          else
+            str = ("%s%s: %s, "):format(str, k, v)
+          end
+        elseif type(v) == "table" then
+          str = ("%s%s: %s, "):format(str, k, print_table(v))
+        end
+      end
+
+      return str .. "}"
+    end
+
+    for k, v in pairs(self) do
+      if type(v) == "table" then
+        local str = print_table(v)
+        print(string.format("%s: %s\n\n", k, str))
+      end
+    end
+  end,
+  get_all = function(input_table)
+    local index = 1
+    local array = {}
+
+    local function recurse_table(table)
+      for _, v in pairs(table) do
+        if type(v) == "string" then
+          array[index] = v
+          index = index + 1
+        elseif type(v) == "table" then
+          recurse_table(v)
+        end
+      end
+    end
+
+    recurse_table(input_table)
+    return array
+  end
 }
+
+local function array_to_string(arr, column_count, column_width)
+  if type(column_width) == "nil" then
+    column_width = 0 -- string.format will allow overflow
+  end
+
+  local index = 1
+  local str = "{ "
+
+  local separator = ", "
+  if type(column_count) ~= "nil" then
+    separator = separator .. "  "
+  end
+
+  for _, v in ipairs(arr) do
+    if type(column_count) ~= "nil" and index % column_count == 1 then
+      str = str .. "\n  "
+    end
+
+    str = ("%s%-" .. column_width + separator:len() .. "s"):format(str, v .. separator)
+
+    index = index + 1
+  end
+
+  if type(column_count) ~= "nil" then
+    str = str .. "\n"
+  end
+
+  return str .. "}"
+end
+
+print('# "Pretty" printed:')
+packages:print_all()
+
+print("# Only Treesitter parsers:")
+print(array_to_string(packages.get_all(packages.treesitter), 3, 15))
+print("\n# Only mason.nvim packages:")
+print(array_to_string(packages.get_all(packages.mason), 3, 15))
 
 -- lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -248,11 +332,11 @@ SetColorscheme("catppuccin-mocha")
 require("mason").setup()
 
 --[ Linters ]--
-require("lint").linters_by_ft = packages.linter
+require("lint").linters_by_ft = packages.mason.linter
 
 -- Can install more than linters
 require("mason-nvim-lint").setup({
-  ensure_installed = packages.other
+  ensure_installed = packages.mason.other
 })
 
 local function install_all()
@@ -282,7 +366,7 @@ end)
 -- for more on mason + lspzero:
 -- https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
 require("mason-lspconfig").setup({
-  ensure_installed = packages.lsp,
+  ensure_installed = packages.mason.lsp,
   automatic_installation = false,
   handlers = {
     lsp_zero.default_setup,
@@ -336,6 +420,5 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	command = "set filetype=lang"
 }
 ]]
---
 
 -- spiders🕷️🕸️

@@ -95,7 +95,7 @@ wget "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaC
 unzip CascadiaCode.zip
 
 mkdir -p "${dirs[font_dir]}"
-mv ./*.tff "${dirs[font_dir]}"
+mv ./*.ttf "${dirs[font_dir]}"
 # if the font isn't recognized, it might be necessary to install fontconfig and run fc-cache
 
 
