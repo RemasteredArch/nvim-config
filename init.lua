@@ -61,6 +61,36 @@ SetColorscheme("slate") -- set colorscheme using a built-in as a fallback
 
 --[ PLUGINS ]--
 
+local packages = {
+  treesitter = {
+    "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml", "json",
+    "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline"
+  },
+  linter = {
+    text = { "vale" },
+    markdown = { "vale" }
+    -- json = { "jsonlint" }
+  },
+  lsp = {
+    "jdtls",    -- java, see also see ftplugin/java.lua
+    "bashls",   -- integrates with shellcheck
+    "lua_ls",
+    "marksman", -- markdown
+    "gradle_ls",
+    "taplo",    -- toml
+    "biome",    -- ts, js, jsx, json, jsonc, etc.
+    "lemminx",  -- xml
+    -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
+    "clangd",
+    "neocmake",
+    "vale_ls"
+  },
+  other = {
+    "shellcheck",
+    "shfmt"
+  }
+}
+
 -- lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -86,25 +116,20 @@ require("lazy").setup({
       configs.setup({
         -- list of parsers to always have installed, the first 5 are required
         -- List with :TSInstallInfo
-        ensure_installed = {
-          "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml",
-          "json", "jsonc", "xml", "cpp", "cmake"
-        },
-
+        ensure_installed = packages.treesitter,
         -- install the above ensured parsers synchronously
         sync_install = false,
 
         highlight = {
           enable = true,
-          --[[ -- disables syntax highlighting for overly large files
-					disable = function(lang, buf)
-						local maxFilesize = 100 * 1024 -- 100 KiB
-						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-						if ok and stats > maxFilesize then
-							return true
-						end
-					end,
-					]] --
+          --[[-- disables syntax highlighting for overly large files
+          disable = function(lang, buf)
+            local maxFilesize = 100 * 1024 -- 100 KiB
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+            if ok and stats > maxFilesize then
+              return true
+            end
+          end,]]
           additional_vim_regex_highlighting = false
         }
       })
@@ -159,8 +184,9 @@ require("lazy").setup({
     "stevearc/dressing.nvim",
     -- opts = {} -- e.g. insert_only = true by default
   },
-  {
-    "folke/noice.nvim",
+
+  --[[{
+    "folke/noice.nvim", -- temporarily disabled, causes a crash
     event = "VeryLazy",
     opts = {
       -- add any options here
@@ -169,18 +195,29 @@ require("lazy").setup({
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
     }
-  },
+  },]]
 
+  -- Package management
+  { "williamboman/mason.nvim" },
+  { "rshkarin/mason-nvim-lint" },
+  { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+
+  -- Linters
+  { "mfussenegger/nvim-lint" },
 
   -- LSP/DAP
-  { "williamboman/mason.nvim" },
   { "williamboman/mason-lspconfig.nvim" },
-  { "VonHeikemen/lsp-zero.nvim",        branch = "v3.x" },
+  { "VonHeikemen/lsp-zero.nvim",                branch = "v3.x" },
   { "mfussenegger/nvim-jdtls" },
   { "neovim/nvim-lspconfig" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/nvim-cmp" },
-  { "L3MON4D3/LuaSnip" },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "kmarius/jsregexp" -- does not get recognized?
+    }
+  },
   { "mfussenegger/nvim-dap" },
   { "rcarriga/nvim-dap-ui" },
   { "mrcjkb/rustaceanvim" },
@@ -191,13 +228,45 @@ require("lazy").setup({
 SetColorscheme("catppuccin-mocha")
 
 -- UI
-require("noice").setup({
+--[[require("noice").setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    }
+  },
   presets = {
     bottom_search = true,
     command_palette = true,
     lsp_doc_border = true
   }
+})]]
+
+--[ General package management ]--
+
+require("mason").setup()
+
+--[ Linters ]--
+require("lint").linters_by_ft = packages.linter
+
+-- Can install more than linters
+require("mason-nvim-lint").setup({
+  ensure_installed = packages.other
 })
+
+local function install_all()
+  require("mason-nvim-lint").auto_install()
+end
+
+vim.api.nvim_create_user_command(
+  "MasonInstallAll",
+  function()
+    require("mason-tool-installer").check_install(true, true)
+  end,
+  { force = true }
+)
+
 
 --[ LSPs ]--
 local lsp_zero = require("lsp-zero")
@@ -212,21 +281,8 @@ end)
 
 -- for more on mason + lspzero:
 -- https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
-require("mason").setup({})
 require("mason-lspconfig").setup({
-  ensure_installed = {
-    "jdtls", -- java, see also see mfussenegger/nvim-jdtls
-    "bashls",
-    "lua_ls",
-    "marksman", -- markdown
-    "gradle_ls",
-    "taplo",    -- toml
-    "biome",    -- ts, js, jsx, json, jsonc, etc.
-    "lemminx",  -- xml
-    "rust_analyzer",
-    "clangd",
-    "neocmake"
-  },
+  ensure_installed = packages.lsp,
   automatic_installation = false,
   handlers = {
     lsp_zero.default_setup,
@@ -271,6 +327,7 @@ vim.g.rustaceanvim = {
   }
   -- dap = {}
 }
+
 
 --[[
 -- Automatically set unusual filetypes
