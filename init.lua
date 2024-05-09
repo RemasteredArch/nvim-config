@@ -64,7 +64,7 @@ SetColorscheme("slate") -- set colorscheme using a built-in as a fallback
 local packages = {
   treesitter = {
     "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml", "json",
-    "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline"
+    "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux"
   },
   mason = {
     linter = {
@@ -117,8 +117,8 @@ local packages = {
       end
     end
   end,
-  get_all = function(input_table)
-    local index = 1
+  get_all = function(input_table) -- this might not be necessary, see :h Iter
+    local index = 1               -- might not be necessary, try table.insert(tbl, val)
     local array = {}
 
     local function recurse_table(table)
@@ -138,42 +138,35 @@ local packages = {
 }
 
 local function array_to_string(arr, column_count, column_width)
-  if type(column_width) == "nil" then
-    column_width = 0 -- string.format will allow overflow
-  end
+  column_count = column_count or 0
+  column_width = column_width or 0
 
   local index = 1
-  local str = "{ "
+  local as_string = "{ "
 
+  local indent = "  "
   local separator = ", "
-  if type(column_count) ~= "nil" then
+  if column_count ~= 0 then
     separator = separator .. "  "
   end
+  column_width = column_width + separator:len()
 
   for _, v in ipairs(arr) do
-    if type(column_count) ~= "nil" and index % column_count == 1 then
-      str = str .. "\n  "
+    if column_count ~= 0 and index % column_count == 1 then
+      as_string = as_string .. "\n" .. indent
     end
 
-    str = ("%s%-" .. column_width + separator:len() .. "s"):format(str, v .. separator)
+    as_string = ("%s%-" .. column_width .. "s"):format(as_string, v .. separator)
 
     index = index + 1
   end
 
-  if type(column_count) ~= "nil" then
-    str = str .. "\n"
+  if column_count ~= 0 then
+    as_string = as_string .. "\n"
   end
 
-  return str .. "}"
+  return as_string .. "}"
 end
-
-print('# "Pretty" printed:')
-packages:print_all()
-
-print("# Only Treesitter parsers:")
-print(array_to_string(packages.get_all(packages.treesitter), 3, 15))
-print("\n# Only mason.nvim packages:")
-print(array_to_string(packages.get_all(packages.mason), 3, 15))
 
 -- lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -215,7 +208,7 @@ require("lazy").setup({
             end
           end,]]
           additional_vim_regex_highlighting = false
-        }
+        },
       })
     end
   },
@@ -269,30 +262,20 @@ require("lazy").setup({
     -- opts = {} -- e.g. insert_only = true by default
   },
 
-  --[[{
-    "folke/noice.nvim", -- temporarily disabled, causes a crash
-    event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-    }
-  },]]
-
   -- Package management
   { "williamboman/mason.nvim" },
   { "rshkarin/mason-nvim-lint" },
-  { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    lazy = true
+  },
 
   -- Linters
   { "mfussenegger/nvim-lint" },
 
   -- LSP/DAP
   { "williamboman/mason-lspconfig.nvim" },
-  { "VonHeikemen/lsp-zero.nvim",                branch = "v3.x" },
-  { "mfussenegger/nvim-jdtls" },
+  { "VonHeikemen/lsp-zero.nvim",        branch = "v3.x" },
   { "neovim/nvim-lspconfig" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/nvim-cmp" },
@@ -302,30 +285,17 @@ require("lazy").setup({
       "kmarius/jsregexp" -- does not get recognized?
     }
   },
-  { "mfussenegger/nvim-dap" },
-  { "rcarriga/nvim-dap-ui" },
-  { "mrcjkb/rustaceanvim" },
+  { "mfussenegger/nvim-dap",   lazy = true },
+  { "rcarriga/nvim-dap-ui",    lazy = true }, -- not sure if this works lazy loaded
 
+  -- Language-specific
+  { "mrcjkb/rustaceanvim" },
+  { "mfussenegger/nvim-jdtls", lazy = true },
+  { "folke/neodev.nvim" }
 })
 
--- colorscheme
+--[ Colorscheme ]--
 SetColorscheme("catppuccin-mocha")
-
--- UI
---[[require("noice").setup({
-  lsp = {
-    override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-    }
-  },
-  presets = {
-    bottom_search = true,
-    command_palette = true,
-    lsp_doc_border = true
-  }
-})]]
 
 --[ General package management ]--
 
@@ -339,20 +309,33 @@ require("mason-nvim-lint").setup({
   ensure_installed = packages.mason.other
 })
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MasonToolsUpdateCompleted",
+  callback = function(event)
+    if #event.data == 0 then
+      print("Mason: no packages need to be installed.")
+    end
+  end
+})
+
 local function install_all()
-  require("mason-nvim-lint").auto_install()
+  require("mason-tool-installer").setup({
+    ensure_installed = packages.get_all(packages.mason),
+    run_on_start = false
+  })
+
+  vim.cmd.MasonToolsInstallSync() -- install all packages in a blocking manner
 end
 
 vim.api.nvim_create_user_command(
   "MasonInstallAll",
-  function()
-    require("mason-tool-installer").check_install(true, true)
-  end,
+  install_all,
   { force = true }
 )
 
 
 --[ LSPs ]--
+
 local lsp_zero = require("lsp-zero")
 
 -- lspzero https://lsp-zero.netlify.app/v3.x/getting-started.html
@@ -363,6 +346,9 @@ lsp_zero.on_attach(function(client, buffnr)
   lsp_zero.buffer_autoformat()
 end)
 
+-- Neovim-specific additions to lua_ls
+require("neodev").setup()
+
 -- for more on mason + lspzero:
 -- https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
 require("mason-lspconfig").setup({
@@ -371,35 +357,6 @@ require("mason-lspconfig").setup({
   handlers = {
     lsp_zero.default_setup,
     jdtls = lsp_zero.noop,
-    lua_ls = function()
-      require("lspconfig").lua_ls.setup({
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = {
-                "vim"
-              }
-            },
-            format = {
-              defaultConfig = { -- doesn't work. why?
-                -- used as prescribed by https://luals.github.io/wiki/settings/
-                -- options drawn from https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md
-                align_call_args = false,
-                align_function_params = false,
-                align_continuous_assign_statement = false,
-                align_continuous_rect_table_field = false,
-                align_if_branch = false,
-                align_array_table = false
-                -- additional options from https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
-                -- align_continuous_line_space = <num>
-                -- align_continuous_similar_call_args = false
-                -- align_continuous_inline_comment = false
-              }
-            }
-          }
-        }
-      })
-    end,
     rust_analyzer = lsp_zero.noop
   }
 })
@@ -416,9 +373,9 @@ vim.g.rustaceanvim = {
 --[[
 -- Automatically set unusual filetypes
 vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = {*.extension},
+	pattern = { "*.extension" },
 	command = "set filetype=lang"
-}
+})
 ]]
 
 -- spiders🕷️🕸️

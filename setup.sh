@@ -107,6 +107,7 @@ sudo add-apt-repository ppa:neovim-ppa/unstable \
 announce "Installing and updating Neovim"
 sudo apt install neovim
 nvim --headless "+Lazy! sync" +qa
+nvim --headless "+MasonInstallAll" +qa
 
 
 announce "Updating again"

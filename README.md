@@ -12,12 +12,6 @@ This is posted here more for convenience than anything else. This config is *not
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
-* UI with [Noice](https://github.com/folke/noice.nvim)
-  * I'm likely to majorly change or entirely remove this, as I am not happy with it yet
-  * May cause the screen to flash rapidly, likely dependant on terminal emulator
-    * Occurs for me using Windows Terminal (this config is used through WSL)
-    * Seems to be related to the cursor being moved to draw the popups
-  * This is temporarily disabled due to [a crash](https://github.com/folke/noice.nvim/issues/784#issuecomment-2094655810)
 
 ## Installation
 
