@@ -318,7 +318,7 @@ vim.api.nvim_create_autocmd("User", {
   end
 })
 
-local function install_all()
+local function install_all_mason()
   require("mason-tool-installer").setup({
     ensure_installed = packages.get_all(packages.mason),
     run_on_start = false
@@ -329,10 +329,30 @@ end
 
 vim.api.nvim_create_user_command(
   "MasonInstallAll",
-  install_all,
+  install_all_mason,
   { force = true }
 )
 
+local function install_all_treesitter()
+  local installed = false
+  for _, parser in ipairs(packages.treesitter) do
+    if not pcall(vim.treesitter.language.inspect, parser) then
+      vim.cmd("TSInstallSync! " .. parser)
+      installed = true
+      print("\n")
+    end
+  end
+
+  if not installed then
+    print("Treesitter: no parsers needed to be installed.")
+  end
+end
+
+vim.api.nvim_create_user_command(
+  "TSInstallAll",
+  install_all_treesitter,
+  { force = true }
+)
 
 --[ LSPs ]--
 

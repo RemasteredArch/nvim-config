@@ -108,6 +108,7 @@ announce "Installing and updating Neovim"
 sudo apt install neovim
 nvim --headless "+Lazy! sync" +qa
 nvim --headless "+MasonInstallAll" +qa
+nvim --headless "+TSInstallAll" +qa
 
 
 announce "Updating again"
