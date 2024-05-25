@@ -28,13 +28,13 @@ This is posted here more for convenience than anything else. This config is *not
   * Cargo
   * `rustc`
   * [rust-analyzer](https://rust-analyzer.github.io/)
-    * Could also be downloaded with [mason.nvim](https://github.com/williamboman/mason.nvim), and there is a commented out line in [`init.lua`](./init.lua) to do so, but installing as a part of your toolchain (`rustup compent add rust-analyzer`) helps to [avoid version inconsistencies](https://github.com/mrcjkb/rustaceanvim/blob/master/doc/mason.txt)
+    * Could also be installed with [mason.nvim](https://github.com/williamboman/mason.nvim), and there is a commented out line in [`init.lua`](./init.lua) to do so, but installing as a part of your toolchain (`rustup compent add rust-analyzer`) helps to [avoid version inconsistencies](https://github.com/mrcjkb/rustaceanvim/blob/master/doc/mason.txt)
 * A Java Development Kit
   * This project is built and developed on [OpenJDK](https://openjdk.org/) 21, but older or newer versions would likely work fine
   * Specifically, this project is built and developed on [`openjdk-21-jdk`](https://packages.ubuntu.com/noble/openjdk-21-jdk) from the Ubuntu 24.04 repositories
   * This project is not tested on Windows, but [Eclipse Temurin](https://adoptium.net/) is my go-to OpenJDK distribution on Windows
 * A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
-* Neovim 0.10.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
+* Neovim 0.11.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
 
 ### Manual installation 
 * Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise

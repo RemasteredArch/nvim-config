@@ -87,8 +87,7 @@ local packages = {
       "vale_ls"
     },
     other = {
-      "shellcheck",
-      "shfmt"
+      "shellcheck"
     },
   },
   print_all = function(self)
