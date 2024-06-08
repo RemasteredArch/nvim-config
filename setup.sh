@@ -27,9 +27,16 @@ announce() {
   echo -e "\n$text_reset$text_bold$*$text_reset"
 }
 
-# Detect if a program or alias exists
+# Detect if program(s) or alias(es) exists
 has() {
-  [ "$(type "$1" 2> /dev/null)" ]
+  [ "$(type "$@" 2> /dev/null)" ]
+}
+
+# Detect if font exists
+has_font() {
+  has "fc-list" || sudo apt install fontconfig
+
+  fc-list | grep --quiet "$@"
 }
 
 echo "This script is designed and tested exlcusively for and with Ubuntu 24.04 (though it will likely work on other versions and other apt-based distributions), but it is distributed WITHOUT ANY FORM OF WARRANTY or guarantee of functionality, regardless of distribution or version"
@@ -51,64 +58,78 @@ sudo apt update && sudo apt upgrade
 
 announce "Installing various packages"
 declare -A packages
-packages[required]="bash curl wget tar gzip git unzip openjdk-21-jdk g++ ninja-build cmake build-essentials" # it might start without some, but they are necessary for total use
+packages[required]="bash curl wget tar gzip git unzip openjdk-21-jdk g++ ninja-build cmake build-essential" # Neovim might start without some, but they are necessary for total use
 packages[optional]="ripgrep fswatch"
 packages[utils]="shellcheck" # though accessed and installed independently within nvim, shellcheck CLI provides more information
 # shellcheck disable=SC2086
 sudo apt install ${packages[required]} ${packages[optional]} ${packages[utils]}
 
 
-announce "Installing nvm"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
+has "node" || {
+  announce "Installing nvm"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+
+  announce "Installing node.js"
+  nvm install --lts
+}
 
 
-announce "Installing node.js"
-nvm install --lts
+has "cargo" || {
+  announce "Installing Rust"
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+}
+
+has "rust-analyzer" || {
+  announce "Installing rust-analyzer"
+  rustup component add rust-analyzer
+}
 
 
-announce "Installing rust"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+has "silicon" || {
+  announce "Installing Silicon"
+  packages[silicon_build_dependencies]="
+    cmake             g++
+    expat             libexpat1-dev
+    pkg-config        libxml2-dev
+    libfreetype6-dev  libfontconfig1-dev
+    libharfbuzz-dev   libxcb-composite0-dev
+    libssl-dev        libasound2-dev"
+
+  # shellcheck disable=SC2086
+  sudo apt install ${packages[silicon_build_dependencies]}
+  cargo install silicon
+}
+
+has_font "Noto Color Emoji" || sudo apt install fonts-noto-color-emoji
+
+has_font "CaskaydiaCove" || {
+  announce "Installing Caskaydia Cove Nerd Font"
+  cd "${dirs[temp_dir]}" || exit
+
+  wget "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaCode.zip"
+  unzip CascadiaCode.zip
+
+  mkdir -p "${dirs[font_dir]}"
+  mv ./*.ttf "${dirs[font_dir]}"
+  # if the font isn't recognized, it might be necessary to install fontconfig and run fc-cache
+}
 
 
-announce "Installing rust-analyzer"
-rustup component add rust-analyzer
+has "nvim" || {
+  announce "Adding the Neovim nightly PPA"
+  sudo add-apt-repository ppa:neovim-ppa/unstable \
+  && sudo apt update
 
 
-announce "Installing Silicon"
-packages[silicon_build_dependencies]="
-  cmake             g++
-  expat             libexpat1-dev
-  pkg-config        libxml2-dev
-  libfreetype6-dev  libfontconfig1-dev
-  libharfbuzz-dev   libxcb-composite0-dev
-  libssl-dev        libasound2-dev"
-
-# shellcheck disable=SC2086
-sudo apt install ${packages[silicon_build_dependencies]}
-cargo install silicon
-
-
-announce "Installing Caskaydia Cove Nerd Font"
-cd "${dirs[temp_dir]}" || exit
-
-wget "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaCode.zip"
-unzip CascadiaCode.zip
-
-mkdir -p "${dirs[font_dir]}"
-mv ./*.ttf "${dirs[font_dir]}"
-# if the font isn't recognized, it might be necessary to install fontconfig and run fc-cache
-
-
-announce "Adding the Neovim nightly PPA"
-sudo add-apt-repository ppa:neovim-ppa/unstable \
-&& sudo apt update
-
-
-announce "Installing and updating Neovim"
-sudo apt install neovim
-nvim --headless "+Lazy! sync" +qa
-nvim --headless "+MasonInstallAll" +qa
-nvim --headless "+TSInstallAll" +qa
+  announce "Installing and updating Neovim"
+  sudo apt install neovim
+  nvim --headless "+Lazy! sync" +qa
+  nvim --headless "+MasonInstallAll" +qa
+  nvim --headless "+TSInstallAll" +qa
+}
 
 
 announce "Updating again"
