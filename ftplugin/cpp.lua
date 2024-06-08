@@ -127,6 +127,7 @@ end)
 
 ]]
 -- run compiled project (following <leader>cbb)
+-- this doesn't actually need to be like this -- Ninja will detect no changes!
 vim.keymap.set("n", "<leader>ccr", function()
   cmake_run()
 end)
