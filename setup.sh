@@ -136,9 +136,11 @@ announce "Updating again"
 sudo apt update && sudo apt upgrade
 
 
-announce "Setting up configs"
-mkdir -p "${dirs[xdg_config]}"
-ln -s "${dirs[script_source]}" "${dirs[xdg_config]}/nvim"
+[ -d  "${dirs[xdg_config]}/nvim}" ] || {
+  announce "Setting up configs"
+  ln -s "${dirs[script_source]}" "${dirs[xdg_config]}/nvim"
+  mkdir -p "${dirs[xdg_config]}"
+}
 
 
 exit 0
