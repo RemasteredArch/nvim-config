@@ -79,7 +79,8 @@ local packages = {
       "marksman", -- markdown
       "gradle_ls",
       "taplo",    -- toml
-      "biome",    -- ts, js, jsx, json, jsonc, etc.
+      "biome",    -- js, ts, jsx, json, jsonc, etc.
+      "vtsls",    -- js, ts, jsx, react
       "lemminx",  -- xml
       -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
       "clangd",
@@ -362,7 +363,10 @@ local lsp_zero = require("lsp-zero")
 lsp_zero.on_attach(function(client, buffnr)
   -- :help lsp-zero-keybindings
   lsp_zero.default_keymaps({ buffer = buffnr })
-  lsp_zero.buffer_autoformat()
+
+  if client.name ~= "vtsls" then
+    lsp_zero.buffer_autoformat()
+  end
 end)
 
 -- Neovim-specific additions to lua_ls
@@ -377,7 +381,6 @@ require("mason-lspconfig").setup({
     lsp_zero.default_setup,
     jdtls = lsp_zero.noop,
     rust_analyzer = lsp_zero.noop,
-    biome = lsp_zero.noop
   }
 })
 require("lspconfig").biome.setup({})
