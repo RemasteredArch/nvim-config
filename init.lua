@@ -63,8 +63,8 @@ SetColorscheme("slate") -- set colorscheme using a built-in as a fallback
 
 local packages = {
   treesitter = {
-    "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "rust", "java", "bash", "markdown", "toml", "json",
-    "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux"
+    "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "html", "css", "rust", "java", "bash", "markdown",
+    "toml", "json", "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux"
   },
   mason = {
     linter = {
@@ -376,9 +376,12 @@ require("mason-lspconfig").setup({
   handlers = {
     lsp_zero.default_setup,
     jdtls = lsp_zero.noop,
-    rust_analyzer = lsp_zero.noop
+    rust_analyzer = lsp_zero.noop,
+    biome = lsp_zero.noop
   }
 })
+require("lspconfig").biome.setup({})
+-- root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "tsconfig.json", "package.json")
 
 vim.g.rustaceanvim = {
   -- tools = {}, -- plugins
