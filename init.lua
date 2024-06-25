@@ -87,9 +87,12 @@ local packages = {
       "neocmake",
       "vale_ls"
     },
+    dap = {
+      "codelldb"
+    },
     other = {
       "shellcheck"
-    },
+    }
   },
   print_all = function(self)
     local function print_table(tbl)
@@ -285,13 +288,20 @@ require("lazy").setup({
       "kmarius/jsregexp" -- does not get recognized?
     }
   },
-  { "mfussenegger/nvim-dap",   lazy = true },
-  { "rcarriga/nvim-dap-ui",    lazy = true }, -- not sure if this works lazy loaded
+
+  { -- not sure if this works lazy loaded
+    "rcarriga/nvim-dap-ui",
+    lazy = true,
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio"
+    }
+  },
 
   -- Language-specific
   { "mrcjkb/rustaceanvim" },
   { "mfussenegger/nvim-jdtls", lazy = true },
-  { "folke/neodev.nvim" }
+  { "folke/neodev.nvim" } -- EOL, see https://github.com/folke/lazydev.nvim
 })
 
 --[ Colorscheme ]--
@@ -394,6 +404,30 @@ vim.g.rustaceanvim = {
   -- dap = {}
 }
 
+--[ DAP ]--
+local dap = require("dap")
+
+-- C, C++, and Rust
+dap.adapters.codelldb = {
+  type = "server",
+  port = "${port}",
+  executable = {
+    command = "codelldb",
+    args = { "--port", "${port}" }
+  }
+}
+
+dap.configurations.cpp = {
+  {
+    name = "Launch",
+    type = "codelldb",
+    request = "launch",
+    program = "${workspaceFolder}/build/*.out", -- This is fragile!
+    cwd = "${workspaceFolder}"
+  }
+}
+
+dap.configurations.c = dap.configurations.cpp
 
 --[[
 -- Automatically set unusual filetypes
