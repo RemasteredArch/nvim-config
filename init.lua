@@ -240,9 +240,7 @@ packages.lazy = {
   { "hrsh7th/nvim-cmp" },
   {
     "L3MON4D3/LuaSnip",
-    dependencies = {
-      "kmarius/jsregexp" -- does not get recognized?
-    }
+    build = "make install_jsregexp"
   },
 
   { -- not sure if this works lazy loaded
