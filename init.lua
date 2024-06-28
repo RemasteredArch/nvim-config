@@ -14,17 +14,17 @@ You should have received a copy of the GNU Affero General Public License along w
 
 --[ OPTIONS ]--
 
--- global options
+-- Global options
 vim.g.mapleader = " " -- sets starting key for custom keybinds
 
 local opt = vim.opt   -- ?? how different from vim.g?
 
--- current line behavior
+-- Current line behavior
 opt.cursorline = true     -- highlights the current line
 opt.number = true         -- sets line numbers
 opt.relativenumber = true -- sets line numbering as relative to current line
 
--- spaces instead of tabs
+-- Spaces instead of tabs
 local function spaces()
   opt.tabstop = 8 -- number of spaces that tab chars render as
   opt.softtabstop = 0
@@ -32,9 +32,9 @@ local function spaces()
   opt.shiftwidth = 2
 end
 
--- tabs instead of spaces
+-- Tabs instead of spaces
 local function tabs()
-  opt.tabstop = 2 -- number of spaces that tab chars render as
+  opt.tabstop = 2 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = false
   opt.shiftwidth = 2
@@ -42,14 +42,14 @@ end
 
 spaces()
 
--- wrap lines on whitespace, etc instead of at the last character that fits
+-- Wrap lines on whitespace, etc instead of at the last character that fits
 opt.linebreak = true
 
--- colors
-opt.termguicolors = true                                      -- enables coloring
+-- Colors
+opt.termguicolors = true                                      -- Enables coloring
 opt.background = "dark"
-function SetColorscheme(colorscheme)                          -- allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
-  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme) -- this will always return true, is there a better way to do this?
+function SetColorscheme(colorscheme)                          -- Allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
+  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme) -- This will always return true, is there a better way to do this?
 
   if not ok then
     print("colorscheme " .. colorscheme .. " was not found!")
@@ -57,15 +57,16 @@ function SetColorscheme(colorscheme)                          -- allows setting 
   end
 end
 
-SetColorscheme("slate") -- set colorscheme using a built-in as a fallback
+SetColorscheme("slate") -- Set colorscheme using a built-in as a fallback
 
 --[ PLUGINS ]--
 
 local packages = {
   treesitter = {
     "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "html", "css", "rust", "java", "bash", "markdown",
-    "toml", "json", "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux"
+    "toml", "json", "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux", "python"
   },
+  lazy = {}, -- Defined below
   mason = {
     linter = {
       text = { "vale" },
@@ -140,53 +141,8 @@ local packages = {
   end
 }
 
-local function array_to_string(arr, column_count, column_width)
-  column_count = column_count or 0
-  column_width = column_width or 0
-
-  local index = 1
-  local as_string = "{ "
-
-  local indent = "  "
-  local separator = ", "
-  if column_count ~= 0 then
-    separator = separator .. "  "
-  end
-  column_width = column_width + separator:len()
-
-  for _, v in ipairs(arr) do
-    if column_count ~= 0 and index % column_count == 1 then
-      as_string = as_string .. "\n" .. indent
-    end
-
-    as_string = ("%s%-" .. column_width .. "s"):format(as_string, v .. separator)
-
-    index = index + 1
-  end
-
-  if column_count ~= 0 then
-    as_string = as_string .. "\n"
-  end
-
-  return as_string .. "}"
-end
-
--- lazy
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-  -- treesitter
+packages.lazy = {
+  -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -216,14 +172,14 @@ require("lazy").setup({
     end
   },
 
-  -- color scheme
+  -- Color scheme
   {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000
   },
 
-  -- code screenshots
+  -- Code screenshots
   {
     "michaelrommel/nvim-silicon",
     lazy = true,
@@ -302,6 +258,59 @@ require("lazy").setup({
   { "mrcjkb/rustaceanvim" },
   { "mfussenegger/nvim-jdtls", lazy = true },
   { "folke/neodev.nvim" } -- EOL, see https://github.com/folke/lazydev.nvim
+}
+
+
+local function array_to_string(arr, column_count, column_width)
+  column_count = column_count or 0
+  column_width = column_width or 0
+
+  local index = 1
+  local as_string = "{ "
+
+  local indent = "  "
+  local separator = ", "
+  if column_count ~= 0 then
+    separator = separator .. "  "
+  end
+  column_width = column_width + separator:len()
+
+  for _, v in ipairs(arr) do
+    if column_count ~= 0 and index % column_count == 1 then
+      as_string = as_string .. "\n" .. indent
+    end
+
+    as_string = ("%s%-" .. column_width .. "s"):format(as_string, v .. separator)
+
+    index = index + 1
+  end
+
+  if column_count ~= 0 then
+    as_string = as_string .. "\n"
+  end
+
+  return as_string .. "}"
+end
+
+-- Lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  rocks = { -- Disable luarocks
+    enabled = false
+  },
+  spec = packages.lazy
 })
 
 --[ Colorscheme ]--
@@ -334,7 +343,7 @@ local function install_all_mason()
     run_on_start = false
   })
 
-  vim.cmd.MasonToolsInstallSync() -- install all packages in a blocking manner
+  vim.cmd.MasonToolsInstallSync() -- Install all packages in a blocking manner
 end
 
 vim.api.nvim_create_user_command(
