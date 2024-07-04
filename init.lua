@@ -149,6 +149,7 @@ packages.lazy = {
     config = function()
       local configs = require("nvim-treesitter.configs")
 
+      ---@diagnostic disable-next-line:missing-fields
       configs.setup({
         -- list of parsers to always have installed, the first 5 are required
         -- List with :TSInstallInfo
@@ -213,6 +214,37 @@ packages.lazy = {
     config = function()
       require("icon-picker").setup({ disable_legacy_commands = true })
     end
+  },
+
+  -- Searching
+  {
+    "chrisgrieser/nvim-rip-substitute",
+    cmd = "RipSubstitute",
+    keys = {
+      {
+        "<leader>rs",
+        function()
+          require("rip-substitute").sub()
+        end,
+        mode = { "n", "x" },
+        desc = " substitute with ripgrep"
+      }
+    },
+    config = function()
+      require("rip-substitute").setup({
+        popupWin = {
+          title = " substitute with ripgrep",
+        },
+        prefill = {
+          normal = false,
+          visual = false
+        },
+        regexOptions = {
+          autoBraceSimpleCaptureGroups = true -- $1 -> ${1} because $1a != ${1}a (breaks named capture groups)
+        }
+      })
+    end
+    -- https://docs.rs/regex/1.10.5/regex/#syntax
   },
 
   -- UI
