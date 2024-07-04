@@ -244,7 +244,7 @@ packages.lazy = {
         }
       })
     end
-    -- https://docs.rs/regex/1.10.5/regex/#syntax
+    -- Regex reference: https://docs.rs/regex/1.10.5/regex/#syntax
   },
 
   -- UI
