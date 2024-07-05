@@ -252,6 +252,20 @@ packages.lazy = {
     "stevearc/dressing.nvim",
     -- opts = {} -- e.g. insert_only = true by default
   },
+  { -- startup
+    "goolord/alpha-nvim",
+    dependencies = {
+      {
+        "nvim-tree/nvim-web-devicons",
+        config = function()
+          require("nvim-web-devicons").setup()
+        end
+      }
+    },
+    config = function()
+      require("alpha_config")
+    end,
+  },
 
   -- Package management
   { "williamboman/mason.nvim" },
