@@ -263,7 +263,7 @@ packages.lazy = {
       }
     },
     config = function()
-      require("alpha_config")
+      require("config.alpha_config")
     end,
   },
 
