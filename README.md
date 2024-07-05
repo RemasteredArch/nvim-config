@@ -13,6 +13,7 @@ This is posted here more for convenience than anything else. This config is *not
 * Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
 * Startup screen with [alpha](https://github.com/goolord/alpha-nvim)
+  * Has four possible header artworks, see [`lua/config/alpha.lua`](./lua/config/alpha.lua) for more details
 
 ![Startup](./media/Startup.png)
 
