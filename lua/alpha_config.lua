@@ -39,7 +39,7 @@ local fonts = {
     "██    ██    ████    ▄▄▄██▄▄▄  ██ ██ ██     ██",
     "▀▀    ▀▀     ▀▀     ▀▀▀▀▀▀▀▀  ▀▀ ▀▀ ▀▀     ▀▀"
   },
-  girly = {
+  girly = { -- Modified from the mono9 font output
     "    ▄▄▄▄ ",
     "▀  ▀   ▀█",
     "     ▄▄▄▀",
