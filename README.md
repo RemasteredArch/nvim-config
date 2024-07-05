@@ -12,6 +12,9 @@ This is posted here more for convenience than anything else. This config is *not
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
+* Startup screen with [alpha](https://github.com/goolord/alpha-nvim)
+
+![Startup](./media/Startup.png)
 
 ## Installation
 
