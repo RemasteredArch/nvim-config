@@ -65,4 +65,6 @@ dashboard.section.footer.val = {
   os.date(" %A, %Y-%m-%d   %I:%M %p")
 }
 
+vim.api.nvim_buf_set_name(0, "<3") -- Set current buffer's name (default: [Scratch])
+
 require("alpha").setup(dashboard.config)
