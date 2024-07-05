@@ -56,8 +56,9 @@ end
 dashboard.section.header.val = fonts[font_keys[math.random(#font_keys)]]
 
 dashboard.section.buttons.val = {
-  dashboard.button("e", "  > New file", ":enew <BAR> startinsert <CR>"),
-  dashboard.button("q", "󰈆  > Quit Neovim", ":qa<CR>")
+  dashboard.button("i", "  > New file", ":enew <BAR> startinsert <CR>"),
+  dashboard.button("e", "  > Open Netrw", ":Explore <CR>"),
+  dashboard.button("q", "󰈆  > Quit Neovim", ":qa <CR>")
 }
 
 dashboard.section.footer.val = {
