@@ -51,4 +51,7 @@ packages.setup()
 --[ LSPs ]--
 require("config.lsp").setup(packages)
 
+--[ DAP ]--
+require("config.dap").setup()
+
 -- spiders🕷️🕸️

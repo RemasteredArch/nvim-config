@@ -16,24 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 
 local dap = require("dap")
 
--- C, C++, and Rust
-dap.adapters.codelldb = {
-  type = "server",
-  port = "${port}",
-  executable = {
-    command = "codelldb",
-    args = { "--port", "${port}" }
-  }
-}
+local module = {}
 
-dap.configurations.cpp = {
-  {
-    name = "Launch",
-    type = "codelldb",
-    request = "launch",
-    program = "${workspaceFolder}/build/*.out", -- This is fragile!
-    cwd = "${workspaceFolder}"
+function module.setup()
+  -- C, C++, and Rust
+  dap.adapters.codelldb = {
+    type = "server",
+    port = "${port}",
+    executable = {
+      command = "codelldb",
+      args = { "--port", "${port}" }
+    }
   }
-}
 
-dap.configurations.c = dap.configurations.cpp
+  dap.configurations.cpp = {
+    {
+      name = "Launch",
+      type = "codelldb",
+      request = "launch",
+      program = "${workspaceFolder}/build/*.out", -- This is fragile!
+      cwd = "${workspaceFolder}"
+    }
+  }
+
+  dap.configurations.c = dap.configurations.cpp
+end
+
+return module
