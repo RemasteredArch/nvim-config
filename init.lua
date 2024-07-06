@@ -15,18 +15,21 @@ You should have received a copy of the GNU Affero General Public License along w
 --[ OPTIONS ]--
 
 -- Global options
-vim.g.mapleader = " " -- sets starting key for custom keybinds
+vim.g.mapleader = " " -- Sets starting key for custom keybinds
 
 local opt = vim.opt   -- ?? how different from vim.g?
 
 -- Current line behavior
-opt.cursorline = true     -- highlights the current line
-opt.number = true         -- sets line numbers
-opt.relativenumber = true -- sets line numbering as relative to current line
+opt.cursorline = true     -- Highlights the current line
+opt.number = true         -- Sets line numbers
+opt.relativenumber = true -- Sets line numbering as relative to current line
+
+-- Wrap lines on whitespace, etc. instead of at the last character that fits
+opt.linebreak = true
 
 -- Spaces instead of tabs
 local function spaces()
-  opt.tabstop = 8 -- number of spaces that tab chars render as
+  opt.tabstop = 8 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = true
   opt.shiftwidth = 2
@@ -41,9 +44,6 @@ local function tabs()
 end
 
 spaces()
-
--- Wrap lines on whitespace, etc instead of at the last character that fits
-opt.linebreak = true
 
 
 --[ PLUGINS ]--
