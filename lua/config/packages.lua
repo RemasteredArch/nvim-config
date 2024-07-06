@@ -70,4 +70,28 @@ module.install.treesitter = function()
   end
 end
 
+function module.setup()
+  require("mason").setup()
+
+  --[ Linters ]--
+  require("lint").linters_by_ft = module.list.mason.linter
+
+  -- Can install more than linters
+  require("mason-nvim-lint").setup({
+    ensure_installed = module.list.mason.other
+  })
+
+  vim.api.nvim_create_user_command(
+    "MasonInstallAll",
+    module.install.mason,
+    { force = true }
+  )
+
+  vim.api.nvim_create_user_command(
+    "TSInstallAll",
+    module.install.treesitter,
+    { force = true }
+  )
+end
+
 return module
