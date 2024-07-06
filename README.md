@@ -2,7 +2,7 @@
 
 My personal Neovim config.
 
-This is posted here more for convenience than anything else. This config is *not* stable, is *not* guaranteed to function as expected (or at all), is *not* expertly made, and is probably *not* appropriate for your use case.
+This config is built from scratch for the sake of education and control; and comes with no guarantees of functionality or stability. If you do not know exactly why you like this config, you are probably better off with an alternative. Notably, [LazyVim](https://github.com/LazyVim/LazyVim) for a ready-made setup or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-your-own config.
 
 ## Notable plugins
 
