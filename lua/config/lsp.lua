@@ -12,6 +12,8 @@ nvim-config is distributed in the hope that it will be useful, but WITHOUT ANY W
 You should have received a copy of the GNU Affero General Public License along with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+-- lsp.lua: LSP (language server protocol) implementation configuration
+
 local module = {}
 
 function module.setup(packages)

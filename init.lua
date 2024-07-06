@@ -12,6 +12,8 @@ nvim-config is distributed in the hope that it will be useful, but WITHOUT ANY W
 You should have received a copy of the GNU Affero General Public License along with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+-- init.lua: initialization file for Neovim, exists primarily to pull from other config files, under lua/config/*.lua
+
 --[ OPTIONS ]--
 require("config.options").setup()
 
