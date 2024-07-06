@@ -13,7 +13,6 @@ You should have received a copy of the GNU Affero General Public License along w
 ]]
 
 --[ OPTIONS ]--
-
 require("config.options").setup()
 
 --[ PLUGINS ]--
@@ -48,43 +47,6 @@ require("config.colorscheme").setup()
 packages.setup()
 
 --[ LSPs ]--
-
-local lsp_zero = require("lsp-zero")
-
--- lspzero https://lsp-zero.netlify.app/v3.x/getting-started.html
-
-lsp_zero.on_attach(function(client, buffnr)
-  -- :help lsp-zero-keybindings
-  lsp_zero.default_keymaps({ buffer = buffnr })
-
-  if client.name ~= "vtsls" then
-    lsp_zero.buffer_autoformat()
-  end
-end)
-
--- Neovim-specific additions to lua_ls
-require("neodev").setup()
-
--- for more on mason + lspzero:
--- https://lsp-zero.netlify.app/v3.x/guide/integrate-with-mason-nvim.html
-require("mason-lspconfig").setup({
-  ensure_installed = packages.list.mason.lsp,
-  automatic_installation = false,
-  handlers = {
-    lsp_zero.default_setup,
-    jdtls = lsp_zero.noop,
-    rust_analyzer = lsp_zero.noop,
-  }
-})
-require("lspconfig").biome.setup({})
--- root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "tsconfig.json", "package.json")
-
-vim.g.rustaceanvim = {
-  -- tools = {}, -- plugins
-  server = { -- lsp
-    capabilities = lsp_zero.get_capabilities()
-  }
-  -- dap = {}
-}
+require("config.lsp").setup(packages)
 
 -- spiders🕷️🕸️
