@@ -90,33 +90,8 @@ list.lazy = {
   },
 
   -- Code screenshots
-  {
-    "michaelrommel/nvim-silicon",
-    lazy = true,
-    cmd = "Silicon",
-    config = function()
-      local output_path = vim.fn.stdpath("data") .. "/silicon"
+  require("config.silicon"),
 
-      if vim.fn.isdirectory(output_path) == 0 then
-        vim.fn.mkdir(output_path)
-      end
-
-      require("silicon").setup({
-        font = "CaskaydiaCove Nerd Font=34;Noto Color Emoji=34",
-        tab_width = 2,
-        theme = "OneHalfDark", -- `silicon --list-themes` (also nice: "Visual Studio Dark+")
-        line_offset = function(args)
-          return args.line1
-        end,
-        output = function()
-          return output_path .. "/" .. vim.fn.expand("%:t") .. ".silicon.png"
-        end,
-        window_title = function()
-          return vim.fn.expand("%:t")
-        end
-      })
-    end
-  },
   {
     "ziontee113/icon-picker.nvim",
     lazy = true,
