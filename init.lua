@@ -45,53 +45,6 @@ spaces()
 -- Wrap lines on whitespace, etc instead of at the last character that fits
 opt.linebreak = true
 
--- Colors
-opt.termguicolors = true                                      -- Enables coloring
-opt.background = "dark"
-function SetColorscheme(colorscheme)                          -- Allows setting colorscheme to fail loudly... vim.cmd.colorscheme = "whatever" will fail silently
-  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme) -- This will always return true, is there a better way to do this?
-
-  if not ok then
-    print("colorscheme " .. colorscheme .. " was not found!")
-    return
-  end
-end
-
-SetColorscheme("slate") -- Set colorscheme using a built-in as a fallback
-
---[ UTIL ]--
-
-local function array_to_string(arr, column_count, column_width)
-  column_count = column_count or 0
-  column_width = column_width or 0
-
-  local index = 1
-  local as_string = "{ "
-
-  local indent = "  "
-  local separator = ", "
-  if column_count ~= 0 then
-    separator = separator .. "  "
-  end
-  column_width = column_width + separator:len()
-
-  for _, v in ipairs(arr) do
-    if column_count ~= 0 and index % column_count == 1 then
-      as_string = as_string .. "\n" .. indent
-    end
-
-    as_string = ("%s%-" .. column_width .. "s"):format(as_string, v .. separator)
-
-    index = index + 1
-  end
-
-  if column_count ~= 0 then
-    as_string = as_string .. "\n"
-  end
-
-  return as_string .. "}"
-end
-
 
 --[ PLUGINS ]--
 
@@ -119,7 +72,7 @@ require("lazy").setup({
 })
 
 --[ Colorscheme ]--
-SetColorscheme("catppuccin-mocha")
+require("config.colorscheme").setup()
 
 --[ General package management ]--
 
