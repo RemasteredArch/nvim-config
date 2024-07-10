@@ -23,7 +23,8 @@ local list = {
   mason = {
     linter = {
       text = { "vale" },
-      markdown = { "vale" }
+      markdown = { "vale" },
+      help = { "vale" }
       -- json = { "jsonlint" }
     },
     lsp = {
@@ -39,7 +40,6 @@ local list = {
       -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
       "clangd",
       "neocmake",
-      "vale_ls"
     },
     dap = {
       "codelldb"

@@ -74,7 +74,7 @@ function module.setup()
   require("mason").setup()
 
   --[ Linters ]--
-  require("lint").linters_by_ft = module.list.mason.linter
+  require("config.lint").setup(module.list.mason.linter)
 
   -- Can install more than linters
   require("mason-nvim-lint").setup({

@@ -39,6 +39,7 @@ This config is built from scratch for the sake of education and control; and com
   * This project is not tested on Windows, but [Eclipse Temurin](https://adoptium.net/) is my go-to OpenJDK distribution on Windows
 * A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
 * Neovim 0.11.0 (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
+* A valid [Vale](https://vale.sh/) configuration (Vale does not need to be installed, however)
 
 ### Manual installation 
 * Assumes `$XDG_CONFIG_HOME` == `~/.config`. Adjust accordingly if this is otherwise
