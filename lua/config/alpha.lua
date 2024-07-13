@@ -59,7 +59,7 @@ dashboard.section.buttons.val = {
   dashboard.button("i", "  > New file", ":enew <BAR> startinsert <CR>"),
   dashboard.button("e", "  > Open Netrw", ":Explore <CR>"),
   dashboard.button("l", "󰒲  > Open Lazy", ":Lazy <CR>"),
-  dashboard.button("m", "󰣪  > Open Mason", ":Mason <CR>"),
+  dashboard.button("m", "  > Open Mason", ":Mason <CR>"),
   dashboard.button("q", "󰈆  > Quit Neovim", ":qa <CR>")
 }
 
