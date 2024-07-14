@@ -50,6 +50,7 @@ packages.setup()
 
 --[ LSPs ]--
 require("config.lsp").setup(packages)
+require("config.cmp").setup()
 
 --[ DAP ]--
 require("config.dap").setup()
