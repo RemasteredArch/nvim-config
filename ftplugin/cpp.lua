@@ -116,9 +116,7 @@ end)
 
 
 -- build cmake config (only if necessary) and compile project
-vim.keymap.set("n", "<leader>ccb", function()
-  cmake_build()
-end)
+vim.keymap.set("n", "<leader>ccb", cmake_build)
 
 --[[
 -- build cmake config (even if it exists)
@@ -128,6 +126,4 @@ end)
 ]]
 -- run compiled project (following <leader>cbb)
 -- this doesn't actually need to be like this -- Ninja will detect no changes!
-vim.keymap.set("n", "<leader>ccr", function()
-  cmake_run()
-end)
+vim.keymap.set("n", "<leader>ccr", cmake_run)
