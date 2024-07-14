@@ -29,9 +29,9 @@ function module.cmp()
   -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
   local cmp = require("cmp")
 
-  return {
+  return cmp.mapping.preset.insert({
     ["<Tab>"] = cmp.mapping.confirm({ select = true })
-  }
+  })
 end
 
 return module
