@@ -14,10 +14,4 @@ You should have received a copy of the GNU Affero General Public License along w
 
 -- rust.lua: configuration for rust-analyzer & rustacean
 
-vim.keymap.set("n", "<leader>gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
-
-vim.keymap.set("n", "<leader>r", "<cmd>split | term cargo run<cr>")
-vim.keymap.set("n", "<leader>cr", function()
-  local user_input = vim.fn.input("Args: ")
-  vim.api.nvim_command("split | term cargo run -- " .. user_input)
-end)
+require("config.keymap").rust().setup()

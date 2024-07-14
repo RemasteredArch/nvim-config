@@ -95,4 +95,19 @@ function module.java(buffnr, root_files)
   return { mapping = mappings, setup = setup }
 end
 
+function module.rust()
+  local mappings = {
+    { "n", "<leader>gl", "<cmd>lua vim.diagnostic.open_float()<cr>" },
+
+    { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" },
+    { "n", "<leader>cr", function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end },
+  }
+
+  local function setup()
+    module.set_all(mappings)
+  end
+
+  return { mapping = mappings, setup = setup }
+end
+
 return module
