@@ -97,9 +97,11 @@ end
 
 function module.rust()
   local mappings = {
-    { "n", "<leader>gl", "<cmd>lua vim.diagnostic.open_float()<cr>" },
+    -- Expand diagnostics
+    { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
 
-    { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" },
+    -- Run project
+    { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
     { "n", "<leader>cr", function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end },
   }
 
