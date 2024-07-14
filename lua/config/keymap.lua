@@ -29,7 +29,10 @@ function module.cmp()
   -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
   local cmp = require("cmp")
 
+  -- Adds keybinds onto the existing preset
   return cmp.mapping.preset.insert({
+    -- Selects and confirms the current item
+    -- Use select = false to require manual selection
     ["<Tab>"] = cmp.mapping.confirm({ select = true })
   })
 end
