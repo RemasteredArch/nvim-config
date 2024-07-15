@@ -40,6 +40,7 @@ local list = {
       -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
       "clangd",
       "neocmake",
+      "markdown_oxide"
     },
     dap = {
       "codelldb"
