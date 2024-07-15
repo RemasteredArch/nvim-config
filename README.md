@@ -12,6 +12,7 @@ This config is built from scratch for the sake of education and control; and com
 * Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 * Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 * Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
+* Markdown spellcheck with [Vale](https://vale.sh/) and preview with [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
 * Startup screen with [alpha](https://github.com/goolord/alpha-nvim)
   * Has four possible header artworks, see [`lua/config/alpha.lua`](./lua/config/alpha.lua) for more details
 
@@ -27,6 +28,7 @@ This config is built from scratch for the sake of education and control; and com
   * [`g++`](https://gcc.gnu.org/) or [`clang++`](https://clang.llvm.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
   * [Ninja](https://ninja-build.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
 * [Node.js](https://nodejs.org/en)
+  * [npm](https://www.npmjs.com/)
   * This config is built and used with node.js v20.12.2 (installed through [`nvm install --lts`](https://github.com/nvm-sh/nvm)), but older or newer versions would likely work fine
 * [Rust](https://www.rust-lang.org/) toolchain
   * Cargo
