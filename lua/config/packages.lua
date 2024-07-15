@@ -81,6 +81,8 @@ function module.setup()
     ensure_installed = module.list.mason.other
   })
 
+  require("config.format").setup(module.list.mason.formatter)
+
   vim.api.nvim_create_user_command(
     "MasonInstallAll",
     module.install.mason,

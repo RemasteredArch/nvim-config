@@ -27,6 +27,9 @@ local list = {
       help = { "vale" }
       -- json = { "jsonlint" }
     },
+    formatter = {
+      markdown = { "mdformat" }
+    },
     lsp = {
       "jdtls",    -- java, see also see ftplugin/java.lua
       "bashls",   -- integrates with shellcheck
@@ -46,7 +49,8 @@ local list = {
       "codelldb"
     },
     other = {
-      "shellcheck"
+      "shellcheck",
+      "mdformat"
     }
   },
 }
@@ -162,6 +166,12 @@ list.lazy = {
 
   -- Linters
   { "mfussenegger/nvim-lint" },
+
+  -- Formatters
+  {
+    "stevearc/conform.nvim"
+    -- maybe call config.format here instead of config.packages for lazy loading?
+  },
 
   -- LSP/DAP
   { "williamboman/mason-lspconfig.nvim" },
