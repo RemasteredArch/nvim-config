@@ -16,6 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 
 local module = {}
 
+--- Sets a given colorscheme.
+---
+--- A `vim.cmd.colorscheme(colorscheme)` wrapper with better errors.
+---
+--- @param colorscheme string
 function module.set(colorscheme)
   if not pcall(vim.cmd.colorscheme, colorscheme) then
     vim.api.nvim_err_writeln("Colorscheme '" .. colorscheme .. "' was not found!")

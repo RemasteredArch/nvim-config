@@ -18,6 +18,12 @@ local module = {}
 
 module.list = require("config.package_list")
 
+--- Return all string values of a table, regardless of nesting.
+---
+--- Intended to retrieve all packages from `package_list.lua`, or any subtable of it.
+---
+--- @param package_table table
+--- @return string[]
 module.get_all_packages = function(package_table) -- this might not be necessary, see :h Iter
   local array = {}
 
@@ -46,6 +52,7 @@ vim.api.nvim_create_autocmd("User", {
   end
 })
 
+--- Installs all Mason packages.
 module.install.mason = function()
   require("mason-tool-installer").setup({
     ensure_installed = module.get_all_packages(module.list.mason),
@@ -55,6 +62,7 @@ module.install.mason = function()
   vim.cmd.MasonToolsInstallSync() -- Install all packages in a blocking manner
 end
 
+--- Installs all Treesitter packages.
 module.install.treesitter = function()
   local installed = false
   for _, parser in ipairs(module.list.treesitter) do

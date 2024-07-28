@@ -18,7 +18,9 @@ local module = {}
 
 local opt = vim.opt -- ?? how different from vim.g?
 
--- Spaces instead of tabs
+--- Sets Neovim to use spaces instead of tabs.
+---
+--- @param number_of_spaces integer
 function module.spaces(number_of_spaces)
   opt.tabstop = 8 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
@@ -26,7 +28,7 @@ function module.spaces(number_of_spaces)
   opt.shiftwidth = number_of_spaces or 2
 end
 
--- Tabs instead of spaces
+--- Sets Neovim to use tabs instead of spaces.
 function module.tabs()
   opt.tabstop = 2 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
