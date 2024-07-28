@@ -17,11 +17,8 @@ You should have received a copy of the GNU Affero General Public License along w
 local module = {}
 
 function module.set(colorscheme)
-  local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme) -- This will always return true, is there a better way to do this?
-
-  if not ok then
-    print("colorscheme " .. colorscheme .. " was not found!")
-    return
+  if not pcall(vim.cmd.colorscheme, colorscheme) then
+    vim.api.nvim_err_writeln("Colorscheme '" .. colorscheme .. "' was not found!")
   end
 end
 
