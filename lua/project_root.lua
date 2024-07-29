@@ -54,7 +54,7 @@ end
 ---
 --- @param directory path
 --- @param files path[]
---- @return path | nil
+--- @return path?
 function module.directory_contains(directory, files)
   for _, file in ipairs(files) do
     local detect_file = vim.fn.glob(directory .. "/" .. file)
