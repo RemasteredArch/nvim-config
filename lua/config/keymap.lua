@@ -14,23 +14,56 @@ You should have received a copy of the GNU Affero General Public License along w
 
 -- keymap.lua: various key mappings
 
---- @alias command string A Neovim Ex command
+--- @alias VimModeShort # See |modes()|
+--- | "n" Normal
+--- | "no" Operator-pending
+--- | "nov" Operator-pending (forced charwise |o_v|)
+--- | "noV" Operator-pending (forced linewise |o_V|)
+--- | "noCTRL-V" Operator-pending (forced blockwise |o_CTRL-V|) CTRL-V is one character
+--- | "niI" Normal using |i_CTRL-O| in |Insert-mode|
+--- | "niR" Normal using |i_CTRL-O| in |Replace-mode|
+--- | "niV" Normal using |i_CTRL-O| in |Virtual-Replace-mode|
+--- | "nt" Normal in |terminal-emulator| (insert goes to Terminal mode)
+--- | "ntT" Normal using |t_CTRL-\_CTRL-O| in |Terminal-mode|
+--- | "x" Visual
+--- | "v" Visual by character
+--- | "vs" Visual by character using |v_CTRL-O| in Select mode
+--- | "V" Visual by line
+--- | "Vs" Visual by line using |v_CTRL-O| in Select mode
+--- | "CTRL-V" Visual blockwise
+--- | "CTRL-Vs" Visual blockwise using |v_CTRL-O| in Select mode
+--- | "s" Select by character
+--- | "S" Select by line
+--- | "CTRL-S" Select blockwise
+--- | "i" Insert
+--- | "ic" Insert mode completion |compl-generic|
+--- | "ix" Insert mode |i_CTRL-X| completion
+--- | "R" Replace |R|
+--- | "Rc" Replace mode completion |compl-generic|
+--- | "Rx" Replace mode |i_CTRL-X| completion
+--- | "Rv" Virtual Replace |gR|
+--- | "Rvc" Virtual Replace mode completion |compl-generic|
+--- | "Rvx" Virtual Replace mode |i_CTRL-X| completion
+--- | "c" Command-line editing
+--- | "cr" Command-line editing overstrike mode |c_<Insert>|
+--- | "cv" Vim Ex mode |gQ|
+--- | "cvr" Vim Ex mode while in overstrike mode |c_<Insert>|
+--- | "r" Hit-enter prompt
+--- | "rm" The -- more -- prompt
+--- | "r?" A |:confirm| query of some sort
+--- | "!" Shell or external command is executing
+--- | "t" Terminal mode: keys go to the job
 ---
---- @alias mode string | string[] Vim mode(s) the keybind should be active in
---- @alias key string The actual keybind
---- @alias effect command | function The effect of the keybind
---- @alias opts vim.keymap.set.Opts
+--- @class (exact) Keymap A Neovim keymap, similar to the parameters of `vim.keymap.set()`
+--- @field mode VimModeShort | VimModeShort[] Vim mode(s) the keybind should be active in
+--- @field key string The actual keybind
+--- @field effect string | function The effect of the keymap, either a Neovim Ex command or a function
+--- @field opts vim.keymap.set.Opts? The options of the keymap
 ---
---- @class (exact) keymap A Neovim keymap, similar to the parameters of `vim.keymap.set()`
---- @field mode mode
---- @field key key
---- @field effect effect
---- @field opts opts?
+--- @alias KeymapTuple [VimModeShort | VimModeShort[], string , string | function, vim.keymap.set.Opts?] A Neovim keymap represented as a tuple
 ---
---- @alias keymap_tuple [mode, key, effect, opts?] A Neovim keymap represented as a tuple
----
---- @class mappings_and_setup
---- @field mappings keymap_tuple[]
+--- @class KeyMappingsAndSetup
+--- @field mappings KeymapTuple[]
 --- @field setup fun()
 
 local module = {}
@@ -39,14 +72,14 @@ local module = {}
 ---
 --- Just a wrapper around `vim.keymap.set()`.
 ---
---- @param keymap keymap
+--- @param keymap Keymap
 function module.set(keymap)
   vim.keymap.set(keymap.mode, keymap.key, keymap.effect, keymap.opts)
 end
 
 --- Set a list of keymaps in a given buffer.
 ---
---- @param binds keymap_tuple[]
+--- @param binds KeymapTuple[]
 --- @param buffnr integer?
 function module.set_all(binds, buffnr)
   local function expand_keymap(keymap)
@@ -86,7 +119,7 @@ end
 ---
 --- @param buffnr integer
 --- @param root_files path[]
---- @return mappings_and_setup
+--- @return KeyMappingsAndSetup
 function module.java(buffnr, root_files)
   local mappings = {
     -- In normal mode, press alt+o[rganize] to organize imports
@@ -133,7 +166,7 @@ end
 
 --- Key mappings for Rust.
 ---
---- @return mappings_and_setup
+--- @return KeyMappingsAndSetup
 function module.rust()
   local mappings = {
     -- Expand diagnostics
