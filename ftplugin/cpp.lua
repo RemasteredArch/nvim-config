@@ -18,6 +18,9 @@ local paths = {}
 local generator = {}
 local project_root = require("project_root")
 
+--- Find the project's CMake build file.
+---
+--- @return path
 local function find_cmake_file()
   local current_file = vim.fn.expand("%")
   local files = { "CMakeLists.txt" }
@@ -25,11 +28,14 @@ local function find_cmake_file()
   return project_root.find_project_root(current_file, files, case)
 end
 
+--- Builds the project.
+---
+--- If necessary, generates the build script using CMake.
 local function cmake_build()
   paths.cmake_file = find_cmake_file()
 
   if paths.cmake_file == nil then
-    vim.notify("No CMake build file found!")
+    vim.api.nvim_err_writeln("No CMake build file found!")
     return
   end
 
@@ -45,13 +51,13 @@ local function cmake_build()
     vim.fn.mkdir(paths.build_dir)
   end
 
-  generator.name = "Ninja"      -- as it appears in the generators section of `cmake --help`
-  generator.build_cmd = "ninja" -- as would be entered into the shell
+  generator.name = "Ninja"      -- As it appears in the generators section of `cmake --help`
+  generator.build_cmd = "ninja" -- As would be entered into the shell
   generator.build_script = "build.ninja"
 
   if project_root.directory_contains(paths.build_dir, { generator.build_script }) == nil then
     vim.notify(generator.name .. " build script not found! Building CMake config now")
-    vim.api.nvim_command(string.format("!cd \"%s\"; cmake .. -G %s", paths.build_dir, generator.name)) -- outputs to a message automatically
+    vim.api.nvim_command(string.format("!cd \"%s\"; cmake .. -G %s", paths.build_dir, generator.name)) -- Outputs to a message automatically
   else
     vim.notify(generator.name .. " build script found! Skipping CMake config build.")
   end
@@ -59,6 +65,9 @@ local function cmake_build()
   vim.api.nvim_command(string.format("!cd \"%s\"; %s", paths.build_dir, generator.build_cmd))
 end
 
+--- Runs the output of `cmake_build()`.
+---
+--- If there is no output, it will trigger `cmake_build()`.
 local function cmake_run()
   if paths.build_dir == nil or project_root.directory_contains(paths.build_dir, { paths.output }) == nil then
     vim.notify("No build detecting! Building...")
@@ -68,9 +77,14 @@ local function cmake_run()
   vim.api.nvim_command(string.format("split | term cd \"%s\"; ./%s", paths.build_dir, paths.output_file_name))
 end
 
+--- Get the first listed and available compiler.
+---
+--- Compilers are listed internally (in `compilers`) as they would be entered into a shell prompt.
+--- Assumes that the compiler takes arguments like so: `<compiler> ExampleFile.cpp -o <output> <args>`.
+---
+--- @return string
 local function get_compiler()
-  -- set your compiler (as it would be entered into a shell prompt)
-  -- assumes that the compiler takes arguments like so: `<compiler> ExampleFile.cpp -o <output> <args>`
+  --- @type { preferred: string, other: string[] }
   local compilers = {
     preferred = "g++",
     other = { "clang++" }
@@ -88,24 +102,24 @@ local function get_compiler()
     end
   end
 
-  vim.notify("No suitable C++ compiler found!")
+  vim.api.nvim_err_writeln("No suitable C++ compiler found!")
 end
 
 local compiler = get_compiler();
 local output = "./a.out"
 
--- compile and run file
+-- Compile and run file
 vim.keymap.set("n", "<leader>r",
   string.format("<cmd>split | term %s %% -o %s; %s; rm %s<cr>", compiler, output, output, output))
 
--- compile and run file with args
+-- Compile and run file with args
 vim.keymap.set("n", "<leader>cr", function()
   local user_input = vim.fn.input("Args: ")
   vim.api.nvim_command(
     string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, output, output, user_input, output))
 end)
 
--- compile and run file with args and compiler args
+-- Compile and run file with args and compiler args
 vim.keymap.set("n", "<leader>crr", function()
   local compiler_input = vim.fn.input("Compiler Args: ")
   local program_input = vim.fn.input("Program Args: ")
@@ -115,15 +129,15 @@ vim.keymap.set("n", "<leader>crr", function()
 end)
 
 
--- build cmake config (only if necessary) and compile project
+-- Build cmake config (only if necessary) and compile project
 vim.keymap.set("n", "<leader>ccb", cmake_build)
 
 --[[
--- build cmake config (even if it exists)
+-- Build cmake config (even if it exists)
 vim.keymap.set("n", "<leader>ccfb", function()
 end)
 
 ]]
--- run compiled project (following <leader>cbb)
--- this doesn't actually need to be like this -- Ninja will detect no changes!
+-- Run compiled project (following <leader>cbb)
+-- This doesn't actually need to be like this -- Ninja will detect no changes!
 vim.keymap.set("n", "<leader>ccr", cmake_run)
