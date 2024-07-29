@@ -62,7 +62,7 @@ You should have received a copy of the GNU Affero General Public License along w
 ---
 --- @alias KeymapTuple [VimModeShort | VimModeShort[], string , string | function, vim.keymap.set.Opts?] A Neovim keymap represented as a tuple
 ---
---- @class KeyMappingsAndSetup
+--- @class (exact) KeyMappingsAndSetup
 --- @field mappings KeymapTuple[]
 --- @field setup fun()
 

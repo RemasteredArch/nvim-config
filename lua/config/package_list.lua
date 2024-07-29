@@ -14,19 +14,19 @@ You should have received a copy of the GNU Affero General Public License along w
 
 -- package_list.lua: lists of all Treesitter, Mason, and Lazy packages, intended only for use in packages.lua
 
---- @class (exact) mason
+--- @class (exact) PackageListMason
 --- @field linter table<string, string[]>
 --- @field formatter table<string, string[]>
 --- @field lsp string[]
 --- @field dap string[]
 --- @field other string[]
 ---
---- @class (exact) package_list
+--- @class (exact) PackageList
 --- @field treesitter string[]
 --- @field lazy LazySpec
---- @field mason mason
+--- @field mason PackageListMason
 
---- @type package_list
+--- @type PackageList
 local list = {
   treesitter = {
     "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "html", "css", "rust", "java", "bash", "markdown",
