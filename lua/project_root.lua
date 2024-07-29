@@ -16,10 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 
 local module = {}
 
---- @alias path string A unix-style file or directory path.
+--- @alias path string A Unix-style file or directory path
 
----
---- Get the parent directory of a given path
+--- Get the parent directory of a given path.
 ---
 --- Examples:
 ---
