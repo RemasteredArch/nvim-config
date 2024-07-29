@@ -102,7 +102,7 @@ end
 
 --- Key mappings for nvim-cmp.
 ---
---- @return table<key, cmp.Mapping>
+--- @return table<string, cmp.Mapping>
 function module.cmp()
   -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
   local cmp = require("cmp")
@@ -121,6 +121,7 @@ end
 --- @param root_files path[]
 --- @return KeyMappingsAndSetup
 function module.java(buffnr, root_files)
+  --- @type KeymapTuple[]
   local mappings = {
     -- In normal mode, press alt+o[rganize] to organize imports
     { "n", "<A-o>",      function() require("jdtls").organize_imports() end },
@@ -168,6 +169,7 @@ end
 ---
 --- @return KeyMappingsAndSetup
 function module.rust()
+  --- @type KeymapTuple[]
   local mappings = {
     -- Expand diagnostics
     { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
