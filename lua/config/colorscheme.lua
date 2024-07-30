@@ -20,11 +20,19 @@ local module = {}
 ---
 --- A `vim.cmd.colorscheme(colorscheme)` wrapper with better errors.
 ---
---- @param colorscheme string
-function module.set(colorscheme)
+--- @param colorscheme string The colorscheme to set
+--- @param silent boolean? Whether or not to throw an error
+--- @return boolean # Exit code
+function module.set(colorscheme, silent)
   if not pcall(vim.cmd.colorscheme, colorscheme) then
-    vim.api.nvim_err_writeln("Colorscheme '" .. colorscheme .. "' was not found!")
+    if not silent then
+      vim.api.nvim_err_writeln("Colorscheme '" .. colorscheme .. "' was not found!")
+    end
+
+    return false
   end
+
+  return true
 end
 
 --- Setup colorschemes.
