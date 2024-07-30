@@ -17,6 +17,11 @@ You should have received a copy of the GNU Affero General Public License along w
 --[ OPTIONS ]--
 require("config.options").setup()
 
+--[ Colorscheme ]--
+-- Inital setup before package installation
+-- Might miss Catppuccin so it is retried later if it fails
+local colorscheme_success = require("config.colorscheme").setup({ silent = true })
+
 --[ PLUGINS ]--
 
 local packages = require("config.packages")
@@ -43,7 +48,9 @@ require("lazy").setup({
 })
 
 --[ Colorscheme ]--
-require("config.colorscheme").setup()
+if not colorscheme_success then
+  require("config.colorscheme").setup()
+end
 
 --[ General package management ]--
 packages.setup()

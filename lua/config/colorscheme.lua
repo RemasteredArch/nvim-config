@@ -22,7 +22,7 @@ local module = {}
 ---
 --- @param colorscheme string The colorscheme to set
 --- @param silent boolean? Whether or not to throw an error
---- @return boolean # Exit code
+--- @return boolean # Exit code, true = sucess
 function module.set(colorscheme, silent)
   if not pcall(vim.cmd.colorscheme, colorscheme) then
     if not silent then
@@ -37,8 +37,13 @@ end
 
 --- Setup colorschemes.
 ---
---- @param use_light_mode boolean?
-function module.setup(use_light_mode)
+--- @param opts { use_light_mode: boolean?, silent: boolean? }?
+--- @return boolean # Exit code, true = sucess
+function module.setup(opts)
+  local opts = opts or {}
+  local use_light_mode = opts.use_light_mode
+  local silent = opts.silent
+
   --- @type "dark" | "light"
   local background = "dark"
   local colorscheme = "catppuccin-mocha"
@@ -50,8 +55,9 @@ function module.setup(use_light_mode)
 
   vim.opt.termguicolors = true -- True color
   vim.opt.background = background
-  module.set("slate")          -- Fallback default value
-  module.set(colorscheme)      -- Desired value
+
+  return module.set("slate", silent)      -- Fallback default value
+      and module.set(colorscheme, silent) -- Preferred value
 end
 
 return module
