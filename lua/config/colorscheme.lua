@@ -16,6 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 
 local module = {}
 
+module.scheme = {
+  light = "catppuccin-latte",
+  dark = "catppuccin-mocha",
+  fallback = "slate"
+}
+
 --- Sets a given colorscheme.
 ---
 --- A `vim.cmd.colorscheme(colorscheme)` wrapper with better errors.
@@ -40,24 +46,47 @@ end
 --- @param opts { use_light_mode: boolean?, silent: boolean? }?
 --- @return boolean # Exit code, true = sucess
 function module.setup(opts)
+  vim.api.nvim_create_user_command(
+    "ColorschemeToggle",
+    module.toggle_light_dark,
+    { force = true }
+  )
+
+
   local opts = opts or {}
   local use_light_mode = opts.use_light_mode
   local silent = opts.silent
 
   --- @type "dark" | "light"
   local background = "dark"
-  local colorscheme = "catppuccin-mocha"
+  local colorscheme = module.scheme.dark
 
   if use_light_mode then
     background = "light"
-    colorscheme = "catppuccin-latte"
+    colorscheme = module.scheme.light
   end
 
   vim.opt.termguicolors = true -- True color
   vim.opt.background = background
 
-  return module.set("slate", silent)      -- Fallback default value
-      and module.set(colorscheme, silent) -- Preferred value
+  return module.set(module.scheme.fallback, silent) -- Fallback default value
+      and module.set(colorscheme, silent)           -- Preferred value
+end
+
+--- Toggle between light and dark for the background and colorscheme.
+function module.toggle_light_dark()
+  --- @type "dark" | "light"
+  local background = "dark"
+  local colorscheme = module.scheme.dark
+
+  --- @diagnostic disable-next-line This is actually defined, see |vim.opt:get()|
+  if vim.opt.background:get() == "dark" then
+    background = "light"
+    colorscheme = module.scheme.light
+  end
+
+  vim.opt.background = background
+  require("config.colorscheme").set(colorscheme)
 end
 
 return module
