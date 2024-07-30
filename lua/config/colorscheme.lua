@@ -27,11 +27,22 @@ function module.set(colorscheme)
   end
 end
 
-function module.setup()
-  vim.opt.termguicolors = true   -- True color
-  vim.opt.background = "dark"
-  module.set("slate")            -- Fallback default value
-  module.set("catppuccin-mocha") -- Desired value
+--- Setup colorschemes.
+---
+--- @param use_light_mode boolean?
+function module.setup(use_light_mode)
+  --- @type "dark" | "light"
+  local background = "dark"
+  local colorscheme = "catppuccin-mocha"
+
+  if use_light_mode then
+    background = "light"
+    colorscheme = "catppuccin-latte"
+  end
+
+  vim.opt.termguicolors = true -- True color
+  vim.opt.background = background
+  module.set(colorscheme)      -- Desired value
 end
 
 return module
