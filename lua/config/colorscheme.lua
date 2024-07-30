@@ -42,6 +42,7 @@ function module.setup(use_light_mode)
 
   vim.opt.termguicolors = true -- True color
   vim.opt.background = background
+  module.set("slate")          -- Fallback default value
   module.set(colorscheme)      -- Desired value
 end
 
