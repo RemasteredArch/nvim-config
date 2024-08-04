@@ -29,8 +29,10 @@ function module.spaces(number_of_spaces)
 end
 
 --- Sets Neovim to use tabs instead of spaces.
-function module.tabs()
-  opt.tabstop = 2 -- Number of spaces that tab chars render as
+---
+--- @param tab_render_length integer?
+function module.tabs(tab_render_length)
+  opt.tabstop = tab_render_length or 2 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = false
   opt.shiftwidth = 2
