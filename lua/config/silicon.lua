@@ -43,7 +43,10 @@ return {
       end,
       window_title = function()
         return vim.fn.expand("%:t")
-      end
+      end,
+      to_clipboard = true,
+      wslclipboard = "auto",
+      wslclipboardcopy = "keep",
     })
   end
 }
