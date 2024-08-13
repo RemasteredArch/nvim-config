@@ -50,7 +50,20 @@ function module.setup(packages)
       rust_analyzer = lsp_zero.noop,
     }
   })
-  require("lspconfig").biome.setup({})
+  require("lspconfig").html.setup({
+    settings = {
+      -- For all options see:
+      -- https://code.visualstudio.com/docs/getstarted/settings
+      -- With explanations:
+      -- https://code.visualstudio.com/Docs/languages/html
+      html = {
+        format = {
+          maxPreserveNewLines = "1", -- Don't allow multiple successive line breaks
+          wrapLineLength = "100"
+        }
+      }
+    },
+  })
   -- root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "tsconfig.json", "package.json")
 
   vim.g.rustaceanvim = {

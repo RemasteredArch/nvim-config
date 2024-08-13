@@ -58,6 +58,7 @@ local list = {
       "taplo",    -- toml
       "biome",    -- js, ts, jsx, json, jsonc, etc.
       "vtsls",    -- js, ts, jsx, react
+      "html",
       "lemminx",  -- xml
       -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
       "clangd",
