@@ -41,7 +41,7 @@ function module.tabs(tab_render_length)
   opt.tabstop = tab_render_length or 2 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = false
-  opt.shiftwidth = 2
+  opt.shiftwidth = 0 -- Uses `tabstop` when 0
 end
 
 function module.setup()
