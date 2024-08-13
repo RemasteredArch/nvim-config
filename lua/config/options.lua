@@ -22,7 +22,13 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
-local opt = vim.opt -- ?? how different from vim.g?
+local opt = vim.opt
+
+--- The default number of spaces.
+---
+--- Used either for indentation width (when using tabs) or indent rendering width (when using tabs)
+--- @type integer
+local default_spaces = 4
 
 --- Sets Neovim to use spaces instead of tabs.
 ---
@@ -31,14 +37,14 @@ function module.spaces(number_of_spaces)
   opt.tabstop = 8 -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = true
-  opt.shiftwidth = number_of_spaces or 2
+  opt.shiftwidth = number_of_spaces or default_spaces
 end
 
 --- Sets Neovim to use tabs instead of spaces.
 ---
 --- @param tab_render_length integer?
 function module.tabs(tab_render_length)
-  opt.tabstop = tab_render_length or 2 -- Number of spaces that tab chars render as
+  opt.tabstop = tab_render_length or default_spaces -- Number of spaces that tab chars render as
   opt.softtabstop = 0
   opt.expandtab = false
   opt.shiftwidth = 0 -- Uses `tabstop` when 0
