@@ -50,6 +50,7 @@ function module.setup(packages)
       rust_analyzer = lsp_zero.noop,
     }
   })
+  require("lspconfig").biome.setup({})
   require("lspconfig").html.setup({
     settings = {
       -- For all options see:
