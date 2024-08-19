@@ -25,27 +25,27 @@ local dap = require("dap")
 local module = {}
 
 function module.setup()
-  -- C, C++, and Rust
-  dap.adapters.codelldb = {
-    type = "server",
-    port = "${port}",
-    executable = {
-      command = "codelldb",
-      args = { "--port", "${port}" }
+    -- C, C++, and Rust
+    dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+            command = "codelldb",
+            args = { "--port", "${port}" }
+        }
     }
-  }
 
-  dap.configurations.cpp = {
-    {
-      name = "Launch",
-      type = "codelldb",
-      request = "launch",
-      program = "${workspaceFolder}/build/*.out", -- This is fragile!
-      cwd = "${workspaceFolder}"
+    dap.configurations.cpp = {
+        {
+            name = "Launch",
+            type = "codelldb",
+            request = "launch",
+            program = "${workspaceFolder}/build/*.out", -- This is fragile!
+            cwd = "${workspaceFolder}"
+        }
     }
-  }
 
-  dap.configurations.c = dap.configurations.cpp
+    dap.configurations.c = dap.configurations.cpp
 end
 
 return module

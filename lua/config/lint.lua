@@ -23,13 +23,13 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 local module = {}
 
 function module.setup(linters_by_ft)
-  require("lint").linters_by_ft = linters_by_ft
+    require("lint").linters_by_ft = linters_by_ft
 
-  vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    callback = function()
-      require("lint").try_lint() -- Runs based on linters_by_ft
-    end,
-  })
+    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+            require("lint").try_lint() -- Runs based on linters_by_ft
+        end,
+    })
 end
 
 return module

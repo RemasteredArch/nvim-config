@@ -24,6 +24,6 @@ local current_file = vim.fn.expand("%")
 
 vim.keymap.set("n", "<leader>r", "<cmd>split | term ./" .. current_file .. "<cr>")
 vim.keymap.set("n", "<leader>cr", function()
-  local user_input = vim.fn.input("Args: ")
-  vim.api.nvim_command("split | term ./" .. current_file .. " " .. user_input)
+    local user_input = vim.fn.input("Args: ")
+    vim.api.nvim_command("split | term ./" .. current_file .. " " .. user_input)
 end)

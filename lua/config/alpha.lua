@@ -23,58 +23,58 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 local dashboard = require("alpha.themes.dashboard")
 
 local fonts = {
-  -- toilet --font <font name> nvim.
-  future = {
-    "┏┓╻╻ ╻╻┏┳┓ ",
-    "┃┗┫┃┏┛┃┃┃┃ ",
-    "╹ ╹┗┛ ╹╹ ╹╹"
-  },
-  mono9 = {
-    "                ▀              ",
-    "▄ ▄▄   ▄   ▄  ▄▄▄    ▄▄▄▄▄     ",
-    "█▀  █  ▀▄ ▄▀    █    █ █ █     ",
-    "█   █   █▄█     █    █ █ █     ",
-    "█   █    █    ▄▄█▄▄  █ █ █    █"
-  },
-  mono12 = {
-    "                       ██                    ",
-    "                       ▀▀                    ",
-    "██▄████▄  ██▄  ▄██   ████     ████▄██▄       ",
-    "██▀   ██   ██  ██      ██     ██ ██ ██       ",
-    "██    ██   ▀█▄▄█▀      ██     ██ ██ ██       ",
-    "██    ██    ████    ▄▄▄██▄▄▄  ██ ██ ██     ██",
-    "▀▀    ▀▀     ▀▀     ▀▀▀▀▀▀▀▀  ▀▀ ▀▀ ▀▀     ▀▀"
-  },
-  girly = { -- Modified from the mono9 font output
-    "    ▄▄▄▄ ",
-    "▀  ▀   ▀█",
-    "     ▄▄▄▀",
-    "▄      ▀█",
-    "   ▀▄▄▄█▀"
-  }
+    -- toilet --font <font name> nvim.
+    future = {
+        "┏┓╻╻ ╻╻┏┳┓ ",
+        "┃┗┫┃┏┛┃┃┃┃ ",
+        "╹ ╹┗┛ ╹╹ ╹╹"
+    },
+    mono9 = {
+        "                ▀              ",
+        "▄ ▄▄   ▄   ▄  ▄▄▄    ▄▄▄▄▄     ",
+        "█▀  █  ▀▄ ▄▀    █    █ █ █     ",
+        "█   █   █▄█     █    █ █ █     ",
+        "█   █    █    ▄▄█▄▄  █ █ █    █"
+    },
+    mono12 = {
+        "                       ██                    ",
+        "                       ▀▀                    ",
+        "██▄████▄  ██▄  ▄██   ████     ████▄██▄       ",
+        "██▀   ██   ██  ██      ██     ██ ██ ██       ",
+        "██    ██   ▀█▄▄█▀      ██     ██ ██ ██       ",
+        "██    ██    ████    ▄▄▄██▄▄▄  ██ ██ ██     ██",
+        "▀▀    ▀▀     ▀▀     ▀▀▀▀▀▀▀▀  ▀▀ ▀▀ ▀▀     ▀▀"
+    },
+    girly = { -- Modified from the mono9 font output
+        "    ▄▄▄▄ ",
+        "▀  ▀   ▀█",
+        "     ▄▄▄▀",
+        "▄      ▀█",
+        "   ▀▄▄▄█▀"
+    }
 }
 
 local font_keys = {}
 for font_name in pairs(fonts) do
-  table.insert(font_keys, font_name)
+    table.insert(font_keys, font_name)
 end
 
 dashboard.section.header.val = fonts[font_keys[math.random(#font_keys)]]
 
 dashboard.section.buttons.val = {
-  dashboard.button("i", "  > New file", ":enew <BAR> startinsert <CR>"),
-  dashboard.button("e", "  > Open Netrw", ":Explore <CR>"),
-  dashboard.button("l", "󰒲  > Open Lazy", ":Lazy <CR>"),
-  dashboard.button("m", "  > Open Mason", ":Mason <CR>"),
-  dashboard.button("q", "󰈆  > Quit Neovim", ":qa <CR>")
+    dashboard.button("i", "  > New file", ":enew <BAR> startinsert <CR>"),
+    dashboard.button("e", "  > Open Netrw", ":Explore <CR>"),
+    dashboard.button("l", "󰒲  > Open Lazy", ":Lazy <CR>"),
+    dashboard.button("m", "  > Open Mason", ":Mason <CR>"),
+    dashboard.button("q", "󰈆  > Quit Neovim", ":qa <CR>")
 }
 
 dashboard.section.footer.val = {
-  os.date(" %A, %Y-%m-%d   %I:%M %p")
+    os.date(" %A, %Y-%m-%d   %I:%M %p")
 }
 
 dashboard.config.opts.setup = function()
-  vim.api.nvim_buf_set_name(0, "<3") -- Set current buffer's name (default: [Scratch])
+    vim.api.nvim_buf_set_name(0, "<3") -- Set current buffer's name (default: [Scratch])
 end
 
 require("alpha").setup(dashboard.config)

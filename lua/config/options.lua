@@ -34,35 +34,35 @@ local default_spaces = 4
 ---
 --- @param number_of_spaces integer?
 function module.spaces(number_of_spaces)
-  opt.tabstop = 8 -- Number of spaces that tab chars render as
-  opt.softtabstop = 0
-  opt.expandtab = true
-  opt.shiftwidth = number_of_spaces or default_spaces
+    opt.tabstop = 8 -- Number of spaces that tab chars render as
+    opt.softtabstop = 0
+    opt.expandtab = true
+    opt.shiftwidth = number_of_spaces or default_spaces
 end
 
 --- Sets Neovim to use tabs instead of spaces.
 ---
 --- @param tab_render_length integer?
 function module.tabs(tab_render_length)
-  opt.tabstop = tab_render_length or default_spaces -- Number of spaces that tab chars render as
-  opt.softtabstop = 0
-  opt.expandtab = false
-  opt.shiftwidth = 0 -- Uses `tabstop` when 0
+    opt.tabstop = tab_render_length or default_spaces -- Number of spaces that tab chars render as
+    opt.softtabstop = 0
+    opt.expandtab = false
+    opt.shiftwidth = 0 -- Uses `tabstop` when 0
 end
 
 function module.setup()
-  -- Global options
-  vim.g.mapleader = " " -- Sets starting key for custom keybinds
+    -- Global options
+    vim.g.mapleader = " " -- Sets starting key for custom keybinds
 
-  -- Current line behavior
-  opt.cursorline = true     -- Highlights the current line
-  opt.number = true         -- Sets line numbers
-  opt.relativenumber = true -- Sets line numbering as relative to current line
+    -- Current line behavior
+    opt.cursorline = true     -- Highlights the current line
+    opt.number = true         -- Sets line numbers
+    opt.relativenumber = true -- Sets line numbering as relative to current line
 
-  -- Wrap lines on whitespace, etc. instead of at the last character that fits
-  opt.linebreak = true
+    -- Wrap lines on whitespace, etc. instead of at the last character that fits
+    opt.linebreak = true
 
-  module.spaces()
+    module.spaces()
 end
 
 return module

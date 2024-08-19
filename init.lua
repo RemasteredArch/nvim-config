@@ -35,27 +35,27 @@ local packages = require("config.packages")
 -- Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- Latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- Latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  rocks = { -- Disable luarocks
-    enabled = false
-  },
-  spec = packages.list.lazy
+    rocks = { -- Disable luarocks
+        enabled = false
+    },
+    spec = packages.list.lazy
 })
 
 --[ Colorscheme ]--
 if not colorscheme_success then
-  require("config.colorscheme").setup()
+    require("config.colorscheme").setup()
 end
 
 --[ General package management ]--

@@ -31,83 +31,83 @@ module.list = require("config.package_list")
 --- @param package_table table
 --- @return string[]
 module.get_all_packages = function(package_table) -- this might not be necessary, see :h Iter
-  local array = {}
+    local array = {}
 
-  local function recurse_table(input_table)
-    for _, v in pairs(input_table) do
-      if type(v) == "string" then
-        table.insert(array, v)
-      elseif type(v) == "table" then
-        recurse_table(v)
-      end
+    local function recurse_table(input_table)
+        for _, v in pairs(input_table) do
+            if type(v) == "string" then
+                table.insert(array, v)
+            elseif type(v) == "table" then
+                recurse_table(v)
+            end
+        end
     end
-  end
 
-  recurse_table(package_table)
-  return array
+    recurse_table(package_table)
+    return array
 end
 
 module.install = {}
 
 vim.api.nvim_create_autocmd("User", {
-  pattern = "MasonToolsUpdateCompleted",
-  callback = function(event)
-    if #event.data == 0 then
-      print("Mason: no packages need to be installed.")
+    pattern = "MasonToolsUpdateCompleted",
+    callback = function(event)
+        if #event.data == 0 then
+            print("Mason: no packages need to be installed.")
+        end
     end
-  end
 })
 
 --- Installs all Mason packages.
 module.install.mason = function()
-  require("mason-tool-installer").setup({
-    ensure_installed = module.get_all_packages(module.list.mason),
-    run_on_start = false
-  })
+    require("mason-tool-installer").setup({
+        ensure_installed = module.get_all_packages(module.list.mason),
+        run_on_start = false
+    })
 
-  vim.cmd.MasonToolsInstallSync() -- Install all packages in a blocking manner
+    vim.cmd.MasonToolsInstallSync() -- Install all packages in a blocking manner
 end
 
 --- Installs all Treesitter packages.
 module.install.treesitter = function()
-  local installed = false
-  for _, parser in ipairs(module.list.treesitter) do
-    if not pcall(vim.treesitter.language.inspect, parser) then
-      vim.cmd("TSInstallSync! " .. parser)
-      installed = true
-      print("\n")
+    local installed = false
+    for _, parser in ipairs(module.list.treesitter) do
+        if not pcall(vim.treesitter.language.inspect, parser) then
+            vim.cmd("TSInstallSync! " .. parser)
+            installed = true
+            print("\n")
+        end
     end
-  end
 
-  if not installed then
-    print("Treesitter: no parsers needed to be installed.")
-  end
+    if not installed then
+        print("Treesitter: no parsers needed to be installed.")
+    end
 end
 
 function module.setup()
-  require("mason").setup()
+    require("mason").setup()
 
-  --[ Linters ]--
-  require("config.lint").setup(module.list.mason.linter)
+    --[ Linters ]--
+    require("config.lint").setup(module.list.mason.linter)
 
-  -- Can install more than linters
-  require("mason-nvim-lint").setup({
-    ensure_installed = module.list.mason.other
-  })
+    -- Can install more than linters
+    require("mason-nvim-lint").setup({
+        ensure_installed = module.list.mason.other
+    })
 
-  require("config.format").setup(module.list.mason.formatter)
+    require("config.format").setup(module.list.mason.formatter)
 
-  vim.api.nvim_create_user_command(
-    "MasonInstallAll",
-    module.install.mason,
-    { force = true }
-  )
+    vim.api.nvim_create_user_command(
+        "MasonInstallAll",
+        module.install.mason,
+        { force = true }
+    )
 
-  vim.api.nvim_create_user_command(
-    "TSInstallAll",
-    module.install.treesitter,
-    { force = true }
-  )
+    vim.api.nvim_create_user_command(
+        "TSInstallAll",
+        module.install.treesitter,
+        { force = true }
+    )
 end
 
 return module

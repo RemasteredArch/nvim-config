@@ -23,10 +23,10 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 local module = {}
 
 function module.setup(formatters_by_ft)
-  require("conform").setup({
-    formatters_by_ft = formatters_by_ft,
-    format_on_save = {} -- Enables formatting on save with default options
-  })
+    require("conform").setup({
+        formatters_by_ft = formatters_by_ft,
+        format_on_save = {} -- Enables formatting on save with default options
+    })
 end
 
 return module

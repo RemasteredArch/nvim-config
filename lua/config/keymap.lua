@@ -80,7 +80,7 @@ local module = {}
 ---
 --- @param keymap Keymap
 function module.set(keymap)
-  vim.keymap.set(keymap.mode, keymap.key, keymap.effect, keymap.opts)
+    vim.keymap.set(keymap.mode, keymap.key, keymap.effect, keymap.opts)
 end
 
 --- Set a list of keymaps in a given buffer.
@@ -88,37 +88,37 @@ end
 --- @param binds KeymapTuple[]
 --- @param buffnr integer?
 function module.set_all(binds, buffnr)
-  local function expand_keymap(keymap)
-    local map = {
-      mode = keymap[1],
-      key = keymap[2],
-      effect = keymap[3],
-      opts = keymap[4] or {}
-    }
+    local function expand_keymap(keymap)
+        local map = {
+            mode = keymap[1],
+            key = keymap[2],
+            effect = keymap[3],
+            opts = keymap[4] or {}
+        }
 
-    if buffnr then
-      map.opts.buffer = buffnr
+        if buffnr then
+            map.opts.buffer = buffnr
+        end
+
+        module.set(map)
     end
 
-    module.set(map)
-  end
-
-  vim.tbl_map(expand_keymap, binds)
+    vim.tbl_map(expand_keymap, binds)
 end
 
 --- Key mappings for nvim-cmp.
 ---
 --- @return table<string, cmp.Mapping>
 function module.cmp()
-  -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
-  local cmp = require("cmp")
+    -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
+    local cmp = require("cmp")
 
-  -- Adds keybinds onto the existing preset
-  return cmp.mapping.preset.insert({
-    -- Selects and confirms the current item
-    -- Use select = false to require manual selection
-    ["<Tab>"] = cmp.mapping.confirm({ select = true })
-  })
+    -- Adds keybinds onto the existing preset
+    return cmp.mapping.preset.insert({
+        -- Selects and confirms the current item
+        -- Use select = false to require manual selection
+        ["<Tab>"] = cmp.mapping.confirm({ select = true })
+    })
 end
 
 --- Key mappings for Java.
@@ -127,30 +127,30 @@ end
 --- @param root_files path[]
 --- @return KeyMappingsAndSetup
 function module.java(buffnr, root_files)
-  --- @type KeymapTuple[]
-  local mappings = {
-    -- In normal mode, press alt+o[rganize] to organize imports
-    { "n", "<A-o>",      function() require("jdtls").organize_imports() end },
+    --- @type KeymapTuple[]
+    local mappings = {
+        -- In normal mode, press alt+o[rganize] to organize imports
+        { "n", "<A-o>",      function() require("jdtls").organize_imports() end },
 
-    -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-    { "n", "crv",        function() require("jdtls").extract_variable() end },
-    { "x", "crv",        function() require("jdtls").extract_variable({ visual = true }) end },
+        -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
+        { "n", "crv",        function() require("jdtls").extract_variable() end },
+        { "x", "crv",        function() require("jdtls").extract_variable({ visual = true }) end },
 
-    -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-    { "n", "crc",        function() require("jdtls").extract_constant() end },
-    { "x", "crc",        function() require("jdtls").extract_constant({ visual = true }) end },
+        -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
+        { "n", "crc",        function() require("jdtls").extract_constant() end },
+        { "x", "crc",        function() require("jdtls").extract_constant({ visual = true }) end },
 
-    -- In visual mode, press c,r[efactor],m[ethod] to extract a method
-    { "x", "crm",        function() require("jdtls").extract_method({ visual = true }) end },
+        -- In visual mode, press c,r[efactor],m[ethod] to extract a method
+        { "x", "crm",        function() require("jdtls").extract_method({ visual = true }) end },
 
-    -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
-    { "n", "<leader>r",  "<cmd>split | term java %<cr>" },
-    { "n", "<leader>cr", function() vim.api.nvim_command("split | term java % " .. vim.fn.input("Args: ")) end },
+        -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
+        { "n", "<leader>r",  "<cmd>split | term java %<cr>" },
+        { "n", "<leader>cr", function() vim.api.nvim_command("split | term java % " .. vim.fn.input("Args: ")) end },
 
-    -- Look into binding JdtCompile, JdtJshell, and maybe JdtJol
-    -- https://github.com/mfussenegger/nvim-jdtls#usage
+        -- Look into binding JdtCompile, JdtJshell, and maybe JdtJol
+        -- https://github.com/mfussenegger/nvim-jdtls#usage
 
-    --[[
+        --[[
       -- same but space,f[ull],r[un] (or space,f[ull],c[onfig],r[un]) for multiple files
       -- see: https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html
       -- see: https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e1f6e1b598b5d9cb5ef00b3783b7ee458a/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47
@@ -162,34 +162,34 @@ function module.java(buffnr, root_files)
         --vim.api.nvim_command("split | term java % <cr>")
       end }
     ]]
-  }
+    }
 
-  local function setup()
-    module.set_all(mappings, buffnr)
-  end
+    local function setup()
+        module.set_all(mappings, buffnr)
+    end
 
-  return { mapping = mappings, setup = setup }
+    return { mapping = mappings, setup = setup }
 end
 
 --- Key mappings for Rust.
 ---
 --- @return KeyMappingsAndSetup
 function module.rust()
-  --- @type KeymapTuple[]
-  local mappings = {
-    -- Expand diagnostics
-    { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
+    --- @type KeymapTuple[]
+    local mappings = {
+        -- Expand diagnostics
+        { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
 
-    -- Run project
-    { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
-    { "n", "<leader>cr", function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end },
-  }
+        -- Run project
+        { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
+        { "n", "<leader>cr", function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end },
+    }
 
-  local function setup()
-    module.set_all(mappings)
-  end
+    local function setup()
+        module.set_all(mappings)
+    end
 
-  return { mapping = mappings, setup = setup }
+    return { mapping = mappings, setup = setup }
 end
 
 return module

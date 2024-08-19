@@ -23,11 +23,11 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 local module = {}
 
 function module.setup()
-  local mapping = require("config.keymap").cmp()
+    local mapping = require("config.keymap").cmp()
 
-  require("cmp").setup({
-    mapping = mapping
-  })
+    require("cmp").setup({
+        mapping = mapping
+    })
 end
 
 return module
