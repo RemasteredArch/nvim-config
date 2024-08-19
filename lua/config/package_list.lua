@@ -83,7 +83,7 @@ list.lazy = {
     config = function()
       local configs = require("nvim-treesitter.configs")
 
-      ---@diagnostic disable-next-line:missing-fields
+      --- @diagnostic disable-next-line:missing-fields
       configs.setup({
         -- list of parsers to always have installed, the first 5 are required
         -- List with :TSInstallInfo
