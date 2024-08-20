@@ -65,7 +65,21 @@ function module.setup(packages)
             }
         },
     })
-    -- root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "tsconfig.json", "package.json")
+    require("lspconfig").lua_ls.setup({
+        Lua = {
+            format = {
+                defaultConfig = {
+                    max_line_length = "20", -- Test if this configuration is working at all
+                    -- Always remove the last separator in a table
+                    trailing_table_separator = "never",
+                    -- Align the parameters when function definitions wrap
+                    -- align_function_params = false, -- Default true
+                    -- Align the parameters when function calls wrap
+                    -- align_call_args = false -- Default false
+                }
+            }
+        }
+    })
 
     vim.g.rustaceanvim = {
         -- tools = {}, -- plugins
