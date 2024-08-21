@@ -50,6 +50,25 @@ function module.setup(packages)
             rust_analyzer = lsp_zero.noop
         }
     })
+
+    --- Setup a list of LSPs using nvim-lspconfig.
+    ---
+    --- @param lsp_list string[] A list of LSP server names.
+    local function setup_lsps(lsp_list)
+        --- Setup an LSP using nvim-lspconfig.
+        ---
+        --- @param lsp string An LSP server's name.
+        local function setup_lsp(lsp)
+            local config = require("config.lsp_configurations." .. lsp)
+
+            require("lspconfig")[lsp].setup(config)
+        end
+
+        vim.tbl_map(setup_lsp, lsp_list)
+    end
+
+    setup_lsps({ "lua_ls" })
+
     require("lspconfig").biome.setup({})
     require("lspconfig").html.setup({
         settings = {
