@@ -108,7 +108,7 @@ local function get_compiler()
         end
     end
 
-    vim.api.nvim_err_writeln("No suitable C++ compiler found!")
+    error("No suitable C++ compiler found!", 1)
 end
 
 local compiler = get_compiler();
