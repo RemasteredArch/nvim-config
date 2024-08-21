@@ -35,8 +35,29 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 --- @type PackageList
 local list = {
     treesitter = {
-        "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "html", "css", "rust", "java", "bash",
-        "markdown", "toml", "json", "jsonc", "xml", "cpp", "cmake", "regex", "markdown_inline", "tmux", "python"
+        "bash",
+        "c",
+        "cmake",
+        "cpp",
+        "css",
+        "html",
+        "java",
+        "javascript",
+        "json",
+        "jsonc",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "query",
+        "regex",
+        "rust",
+        "tmux",
+        "toml",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "xml"
     },
     lazy = {}, -- Defined below
     mason = {
@@ -50,29 +71,29 @@ local list = {
             markdown = { "mdformat" }
         },
         lsp = {
-            "jdtls",    -- java, see also see ftplugin/java.lua
-            "bashls",   -- integrates with shellcheck
-            "lua_ls",
-            "marksman", -- markdown
-            "gradle_ls",
-            "taplo",    -- toml
-            "biome",    -- js, ts, jsx, json, jsonc, etc.
-            "vtsls",    -- js, ts, jsx, react
-            "html",
-            "lemminx",  -- xml
-            -- "rust_analyzer", -- install with `rustup compent add rust-analyzer` instead where possible
-            "clangd",
-            "neocmake",
-            "markdown_oxide"
+            "bashls",         -- Integrates with shellcheck
+            "biome",          -- JS, TS, JSX, TSX, JSON, and JSONC
+            "clangd",         -- C and C++
+            "gradle_ls",      -- Gradle build scripts
+            "html",           -- HTML
+            "jdtls",          -- Java, see also see ftplugin/java.lua
+            "lemminx",        -- XML
+            "lua_ls",         -- Lua, also configured by Neodev for Neovim configuration files
+            "markdown_oxide", -- Markdown
+            "marksman",       -- Markdown
+            "neocmake",       -- CMake build scripts
+            -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
+            "taplo",          -- toml
+            "vtsls"           -- JS and TS
         },
         dap = {
-            "codelldb"
+            "codelldb" -- LLVM languages (C, C++, Rust, etc.)
         },
         other = {
-            "shellcheck",
-            "mdformat"
+            "shellcheck", -- Bash and SH linter
+            "mdformat"    -- Markdown formatter
         }
-    },
+    }
 }
 
 list.lazy = {
@@ -94,7 +115,7 @@ list.lazy = {
                 highlight = {
                     enable = true,
                     additional_vim_regex_highlighting = false
-                },
+                }
             })
         end
     },
@@ -134,7 +155,7 @@ list.lazy = {
         config = function()
             require("rip-substitute").setup({
                 popupWin = {
-                    title = " substitute with ripgrep",
+                    title = " substitute with ripgrep"
                 },
                 prefill = {
                     normal = false,
@@ -150,7 +171,7 @@ list.lazy = {
 
     -- UI
     {
-        "stevearc/dressing.nvim",
+        "stevearc/dressing.nvim"
         -- opts = {} -- e.g. insert_only = true by default
     },
     { -- startup
@@ -165,7 +186,7 @@ list.lazy = {
         },
         config = function()
             require("config.alpha")
-        end,
+        end
     },
 
     -- Package management
@@ -187,7 +208,7 @@ list.lazy = {
 
     -- LSP/DAP
     { "williamboman/mason-lspconfig.nvim" },
-    { "VonHeikemen/lsp-zero.nvim",        branch = "v3.x" },
+    { "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
@@ -219,8 +240,8 @@ list.lazy = {
         config = function()
             vim.keymap.set("n", "<leader>p", "<cmd>MarkdownPreviewToggle<cr>")
         end,
-        ft = { "markdown" },
-    },
+        ft = { "markdown" }
+    }
 
 }
 

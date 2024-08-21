@@ -130,22 +130,26 @@ function module.java(buffnr, root_files)
     --- @type KeymapTuple[]
     local mappings = {
         -- In normal mode, press alt+o[rganize] to organize imports
-        { "n", "<A-o>",      function() require("jdtls").organize_imports() end },
+        { "n", "<A-o>", function() require("jdtls").organize_imports() end },
 
         -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-        { "n", "crv",        function() require("jdtls").extract_variable() end },
-        { "x", "crv",        function() require("jdtls").extract_variable({ visual = true }) end },
+        { "n", "crv", function() require("jdtls").extract_variable() end },
+        { "x", "crv", function() require("jdtls").extract_variable({ visual = true }) end },
 
         -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-        { "n", "crc",        function() require("jdtls").extract_constant() end },
-        { "x", "crc",        function() require("jdtls").extract_constant({ visual = true }) end },
+        { "n", "crc", function() require("jdtls").extract_constant() end },
+        { "x", "crc", function() require("jdtls").extract_constant({ visual = true }) end },
 
         -- In visual mode, press c,r[efactor],m[ethod] to extract a method
-        { "x", "crm",        function() require("jdtls").extract_method({ visual = true }) end },
+        { "x", "crm", function() require("jdtls").extract_method({ visual = true }) end },
 
         -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
-        { "n", "<leader>r",  "<cmd>split | term java %<cr>" },
-        { "n", "<leader>cr", function() vim.api.nvim_command("split | term java % " .. vim.fn.input("Args: ")) end },
+        { "n", "<leader>r", "<cmd>split | term java %<cr>" },
+        {
+            "n",
+            "<leader>cr",
+            function() vim.api.nvim_command("split | term java % " .. vim.fn.input("Args: ")) end
+        }
 
         -- Look into binding JdtCompile, JdtJshell, and maybe JdtJol
         -- https://github.com/mfussenegger/nvim-jdtls#usage
@@ -181,8 +185,12 @@ function module.rust()
         { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
 
         -- Run project
-        { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
-        { "n", "<leader>cr", function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end },
+        { "n", "<leader>r", "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
+        {
+            "n",
+            "<leader>cr",
+            function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end
+        }
     }
 
     local function setup()

@@ -63,7 +63,8 @@ local function cmake_build()
 
     if project_root.directory_contains(paths.build_dir, { generator.build_script }) == nil then
         vim.notify(generator.name .. " build script not found! Building CMake config now")
-        vim.api.nvim_command(string.format("!cd \"%s\"; cmake .. -G %s", paths.build_dir, generator.name)) -- Outputs to a message automatically
+        vim.api.nvim_command(string.format("!cd \"%s\"; cmake .. -G %s", paths.build_dir,
+            generator.name)) -- Outputs to a message automatically
     else
         vim.notify(generator.name .. " build script found! Skipping CMake config build.")
     end
@@ -80,7 +81,8 @@ local function cmake_run()
         cmake_build()
     end
 
-    vim.api.nvim_command(string.format("split | term cd \"%s\"; ./%s", paths.build_dir, paths.output_file_name))
+    vim.api.nvim_command(string.format("split | term cd \"%s\"; ./%s", paths.build_dir,
+        paths.output_file_name))
 end
 
 --- Get the first listed and available compiler.
@@ -122,7 +124,8 @@ vim.keymap.set("n", "<leader>r",
 vim.keymap.set("n", "<leader>cr", function()
     local user_input = vim.fn.input("Args: ")
     vim.api.nvim_command(
-        string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, output, output, user_input, output))
+        string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, output, output, user_input,
+            output))
 end)
 
 -- Compile and run file with args and compiler args
@@ -130,7 +133,8 @@ vim.keymap.set("n", "<leader>crr", function()
     local compiler_input = vim.fn.input("Compiler Args: ")
     local program_input = vim.fn.input("Program Args: ")
     vim.api.nvim_command(
-        string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, output, compiler_input, output,
+        string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, output, compiler_input,
+            output,
             program_input,
             output))
 end)

@@ -168,15 +168,25 @@ local function jdtls_setup(event)
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
         "-Dlog.protocol=true",
         "-Dlog.level=ALL",
+
         "-Xmx1g",
+
         "--add-modules=ALL-SYSTEM",
-        "--add-opens", "java.base/java.util=ALL-UNNAMED",
-        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
 
-        "-jar", paths.launcher_jar,
-        "-configuration", paths.platform_config,
+        "--add-opens",
+        "java.base/java.util=ALL-UNNAMED",
 
-        "-data", current_data_dir
+        "--add-opens",
+        "java.base/java.lang=ALL-UNNAMED",
+
+        "-jar",
+        paths.launcher_jar,
+
+        "-configuration",
+        paths.platform_config,
+
+        "-data",
+        current_data_dir
     }
 
     local lsp_settings = {
@@ -218,7 +228,7 @@ local function jdtls_setup(event)
         sources = { -- what does this mean/do?
             starThreshold = 9999,
             staticStarThreshold = 9999
-        },
+        }
     }
 
     jdtls.start_or_attach({

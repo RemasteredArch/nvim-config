@@ -46,7 +46,7 @@ return {
             end,
             to_clipboard = true,
             wslclipboard = "auto",
-            wslclipboardcopy = "keep",
+            wslclipboardcopy = "keep"
         })
     end
 }

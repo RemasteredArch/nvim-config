@@ -27,8 +27,8 @@ function module.setup(linters_by_ft)
 
     vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         callback = function()
-            require("lint").try_lint() -- Runs based on linters_by_ft
-        end,
+            require("lint").try_lint() -- Runs based on `linters_by_ft`
+        end
     })
 end
 
