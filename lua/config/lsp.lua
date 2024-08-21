@@ -86,6 +86,8 @@ function module.setup(packages)
                     defaultConfig = {
                         --- Max columns in a line.
                         ---
+                        --- @type string Must be a non-negative integer value in a string.
+                        ---
                         --- Default: `"120"`
                         max_line_length = "100",
 
