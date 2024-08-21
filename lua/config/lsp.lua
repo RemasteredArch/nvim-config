@@ -51,24 +51,18 @@ function module.setup(packages)
         }
     })
 
-    --- Setup a list of LSPs using nvim-lspconfig.
+    --- Setup an LSP using nvim-lspconfig.
     ---
-    --- @param lsp_list string[] A list of LSP server names.
-    local function setup_lsps(lsp_list)
-        --- Setup an LSP using nvim-lspconfig.
-        ---
-        --- @param lsp string An LSP server's name.
-        local function setup_lsp(lsp)
-            local success, config = pcall(require, "config.lsp_configurations." .. lsp)
-            if not success then config = {} end -- Default to empty table
+    --- @param lsp string An LSP server's name.
+    local function setup_lsp(lsp)
+        local success, config = pcall(require, "config.lsp_configurations." .. lsp)
+        if not success then config = {} end -- Default to empty table
 
-            require("lspconfig")[lsp].setup(config)
-        end
-
-        vim.tbl_map(setup_lsp, lsp_list)
+        require("lspconfig")[lsp].setup(config)
     end
 
-    setup_lsps({ "lua_ls", "html", "biome" })
+    vim.tbl_map(setup_lsp, { "lua_ls", "html", "biome" })
+
 
     vim.g.rustaceanvim = {
         -- tools = {}, -- plugins
