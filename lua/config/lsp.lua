@@ -59,7 +59,8 @@ function module.setup(packages)
         ---
         --- @param lsp string An LSP server's name.
         local function setup_lsp(lsp)
-            local config = require("config.lsp_configurations." .. lsp)
+            local success, config = pcall(require, "config.lsp_configurations." .. lsp)
+            if not success then config = {} end -- Default to empty table
 
             require("lspconfig")[lsp].setup(config)
         end
@@ -67,9 +68,7 @@ function module.setup(packages)
         vim.tbl_map(setup_lsp, lsp_list)
     end
 
-    setup_lsps({ "lua_ls", "html" })
-
-    require("lspconfig").biome.setup({})
+    setup_lsps({ "lua_ls", "html", "biome" })
 
     vim.g.rustaceanvim = {
         -- tools = {}, -- plugins
