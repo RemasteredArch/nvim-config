@@ -47,7 +47,7 @@ function module.setup(packages)
         handlers = {
             lsp_zero.default_setup,
             jdtls = lsp_zero.noop,
-            rust_analyzer = lsp_zero.noop,
+            rust_analyzer = lsp_zero.noop
         }
     })
     require("lspconfig").biome.setup({})
@@ -63,19 +63,82 @@ function module.setup(packages)
                     wrapLineLength = "100"
                 }
             }
-        },
+        }
     })
+
     require("lspconfig").lua_ls.setup({
-        Lua = {
-            format = {
-                defaultConfig = {
-                    max_line_length = "20", -- Test if this configuration is working at all
-                    -- Always remove the last separator in a table
-                    trailing_table_separator = "never",
-                    -- Align the parameters when function definitions wrap
-                    -- align_function_params = false, -- Default true
-                    -- Align the parameters when function calls wrap
-                    -- align_call_args = false -- Default false
+        settings = {
+            --- Configurations for Lua Language Server
+            ---
+            --- [Docs](https://luals.github.io/wiki/settings/)
+            ---
+            --- @type table<string, table>
+            Lua = {
+                --- Formatter settings.
+                format = {
+                    --- Default configurations for EmmyLuaCodeStyle.
+                    ---
+                    --- Will be overridden by a `.luarc.json`.
+                    ---
+                    --- @type table<string, string | boolean>
+                    ---
+                    --- [Docs](https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md)
+                    defaultConfig = {
+                        --- Max columns in a line.
+                        ---
+                        --- Default: `"120"`
+                        max_line_length = "100",
+
+                        --- How to handle the last separator in a table.
+                        ---
+                        --- @type
+                        --- | "keep" Keep existing formatting
+                        --- | "never" Always remove
+                        --- | "always" Always add
+                        --- | "smart" Add if multiline, remove if singleline
+                        ---
+                        --- Default: `"keep"`
+                        trailing_table_separator = "never",
+
+                        --- Indent parameters to align when function definitions wrap.
+                        ---
+                        --- Default: `true`
+                        align_function_params = false,
+
+                        --- Indent parameters to align when function calls wrap.
+                        ---
+                        --- Default: `false`
+                        align_call_args = false,
+
+                        --- When assigning to values over multiple lines (ignoring comments),
+                        --- indent the `=` to align the values.
+                        ---
+                        --- Default: `true`
+                        align_continuous_assign_statement = false,
+
+                        --- When assigning keys with values in tables, indent the `=` to align the
+                        --- values.
+                        ---
+                        --- Default: `true`
+                        align_continuous_rect_table_field = false,
+
+                        --- Align the branches of `if` statements. Includes branches starting with
+                        --- `or` and `and`.
+                        ---
+                        --- Default: `true`
+                        align_if_branch = false,
+
+                        --- Align items in arrays.
+                        ---
+                        --- Default: `true`
+                        align_array_table = false,
+
+                        --- When an array table is long enough to wrap, give each entry its own
+                        --- line.
+                        ---
+                        --- Default: `false`
+                        break_all_list_when_line_exceed = true
+                    }
                 }
             }
         }
