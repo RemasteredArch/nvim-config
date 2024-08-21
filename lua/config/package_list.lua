@@ -87,7 +87,7 @@ local list = {
             "vtsls"           -- JS and TS
         },
         dap = {
-            "codelldb" -- LLVM languages (C, C++, Rust, etc.)
+            "codelldb" -- C++ and Rust are first-class, but also supports C, Swift, Zig, Ada, etc.
         },
         other = {
             "shellcheck", -- Bash and SH linter
