@@ -18,6 +18,8 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+--- @alias BoolStr "true" | "false" A boolean, represented as a string.
+
 return {
     settings = {
         --- Configurations for Lua Language Server
@@ -25,6 +27,8 @@ return {
         --- [Docs](https://luals.github.io/wiki/settings/)
         ---
         --- @type table<string, table>
+        ---
+        --- Default: `{}`
         Lua = {
             --- Formatter settings.
             format = {
@@ -32,7 +36,7 @@ return {
                 ---
                 --- Will be overridden by a `.luarc.json`.
                 ---
-                --- @type table<string, string | boolean>
+                --- @type table<string, string>
                 ---
                 --- [Docs](https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md)
                 defaultConfig = {
@@ -42,6 +46,16 @@ return {
                     ---
                     --- Default: `"120"`
                     max_line_length = "100",
+
+                    --- Quotation mark character for string literals.
+                    ---
+                    --- @type
+                    --- | "double" Use double quotes: `"`
+                    --- | "single" Use single quotes: `'`
+                    --- | "none" Keep existing styling
+                    ---
+                    --- Default: `"none"`
+                    quote_style = "double",
 
                     --- How to handle the last separator in a table.
                     ---
@@ -56,42 +70,56 @@ return {
 
                     --- Indent parameters to align when function definitions wrap.
                     ---
-                    --- Default: `true`
-                    align_function_params = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"true"`
+                    align_function_params = "false",
 
                     --- Indent parameters to align when function calls wrap.
                     ---
-                    --- Default: `false`
-                    align_call_args = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"false"`
+                    align_call_args = "false",
 
                     --- When assigning to values over multiple lines (ignoring comments),
                     --- indent the `=` to align the values.
                     ---
-                    --- Default: `true`
-                    align_continuous_assign_statement = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"true"`
+                    align_continuous_assign_statement = "false",
 
                     --- When assigning keys with values in tables, indent the `=` to align the
                     --- values.
                     ---
-                    --- Default: `true`
-                    align_continuous_rect_table_field = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"true"`
+                    align_continuous_rect_table_field = "false",
 
                     --- Align the branches of `if` statements. Includes branches starting with
                     --- `or` and `and`.
                     ---
-                    --- Default: `true`
-                    align_if_branch = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"true"`
+                    align_if_branch = "false",
 
                     --- Align items in arrays.
                     ---
-                    --- Default: `true`
-                    align_array_table = false,
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"true"`
+                    align_array_table = "false",
 
                     --- When an array table is long enough to wrap, give each entry its own
                     --- line.
                     ---
-                    --- Default: `false`
-                    break_all_list_when_line_exceed = true
+                    --- @type BoolStr
+                    ---
+                    --- Default: `"false"`
+                    break_all_list_when_line_exceed = "true"
                 }
             }
         }
