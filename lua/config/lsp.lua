@@ -53,7 +53,7 @@ function module.setup(packages)
 
     --- Setup an LSP using nvim-lspconfig.
     ---
-    --- @param lsp string An LSP server's name.
+    --- @param lsp string An LSP server's name
     local function setup_lsp(lsp)
         local success, config = pcall(require, "config.lsp_configurations." .. lsp)
         if not success then config = {} end -- Default to empty table
