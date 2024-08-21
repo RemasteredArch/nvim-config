@@ -67,24 +67,9 @@ function module.setup(packages)
         vim.tbl_map(setup_lsp, lsp_list)
     end
 
-    setup_lsps({ "lua_ls" })
+    setup_lsps({ "lua_ls", "html" })
 
     require("lspconfig").biome.setup({})
-    require("lspconfig").html.setup({
-        settings = {
-            -- For all options see:
-            -- https://code.visualstudio.com/docs/getstarted/settings
-            -- With explanations:
-            -- https://code.visualstudio.com/Docs/languages/html
-            html = {
-                format = {
-                    maxPreserveNewLines = "1", -- Don't allow multiple successive line breaks
-                    wrapLineLength = "100"
-                }
-            }
-        }
-    })
-
 
     vim.g.rustaceanvim = {
         -- tools = {}, -- plugins
