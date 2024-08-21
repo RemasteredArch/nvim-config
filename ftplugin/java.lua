@@ -21,26 +21,31 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 -- java.lua: sets up JDTLS
 
 local root_files = {
+    ".classpath", -- Is this only ever in the project root?
     ".git",
     ".gitignore",
-    "README.md",
-    "README.txt",
     "LICENSE",
     "LICENSE.txt",
-    "mvnw",
-    "gradlew",
-    "pom.xml",
+    "README.md",
+    "README.txt",
     "build.gradle",
-    ".classpath" -- is this only ever in the project root?
+    "gradlew",
+    "mvnw",
+    "pom.xml"
 }
 
 local features = {
-    codelens = true, -- finds references to methods throughout a project
-    debug = false    -- relies on nvim-dap, java-test, and java-debug-adapter
+    codelens = true, -- Finds references to symbols throughout a project
+    debug = false    -- Relies on nvim-dap, java-test, and java-debug-adapter
 }
 
 local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
 
+--- Enable codelens to search throughout the project for references to symbols.
+---
+--- Manually triggers a refresh once, then sets up a refresh after every write.
+---
+--- @param buffnr integer The buffer ID to register the autocmd in
 local function enable_codelens(buffnr)
     pcall(vim.lsp.codelens.refresh)
 
@@ -54,6 +59,9 @@ local function enable_codelens(buffnr)
     })
 end
 
+--- Registers an autocmd to format before writing to file.
+---
+--- @param buffnr integer The buffer ID to register the autocmd in
 local function enable_format_on_write(buffnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
         buffer = buffnr,
@@ -65,6 +73,14 @@ local function enable_format_on_write(buffnr)
     })
 end
 
+--- Setup the given buffer for Java.
+---
+--- - Enables codelens (if `features.codelens` is true)
+--- - Registers keymaps
+--- - Enables autoformatting
+---
+--- @param client vim.lsp.Client The LSP client being attached
+--- @param buffnr integer The buffer ID to setup
 local function jdtls_on_attach(client, buffnr)
     if features.codelens then
         enable_codelens(buffnr)
@@ -77,38 +93,53 @@ end
 
 local cache_vars = {}
 
-local function generate_codestyle_path(codestyle)
-    return vim.fn.stdpath("config") .. "/codestyles/java/" .. codestyle .. ".xml"
-end
-
+--- Attempt to find a codestyle associated with the current project or fallback to a default style.
+---
+--- For example, if given `path/to/Astral`, it will search for `CONFIG/codestyle/java/Astral.xml`.
+---
+--- Defaults to `CONFIG/codestyle/java/eclipse-java-google-style.xml`.
+---
+--- @param project_root path? A path to the root directory of the current project
+--- @return path
 local function get_codestyle_path(project_root)
-    project_root = vim.fs.basename(project_root)
-    local codestyle_path
-    if not project_root == nil then -- in case jdtls can't detect a root folder
-        codestyle_path = generate_codestyle_path(project_root)
+    --- Search for a codestyle in `CONFIG/codestyles/java/CODESTYLE.xml`.
+    ---
+    --- @param codestyle string The file name (without `.xml`) of the codestyle to search for
+    --- @return path codestyle_path A possible path to a codestyle definition
+    local function generate_codestyle_path(codestyle)
+        return vim.fn.stdpath("config") .. "/codestyles/java/" .. codestyle .. ".xml"
     end
 
+    project_root = vim.fs.basename(project_root)
+
+    local codestyle_path = generate_codestyle_path(project_root or "")
+
     if vim.fn.filereadable(codestyle_path) == 1 then
-        local ok_project_settings = pcall(require, "codestyles/java/" .. project_root) -- project specific nvim settings, located in <config>/lua/codestyles/java/
-        if ok_project_settings then
+        -- Project specific nvim settings, located in `CONFIG/lua/codestyles/java/PROJECT_ROOT.lua`
+        if pcall(require, "codestyles/java/" .. project_root) then
             vim.notify("Using codestyle '" .. project_root .. "' and settings from project.")
         else
             vim.notify("Using codestyle '" .. project_root .. "'.")
         end
-    else -- revert to default codestyle
-        local codestyle = "eclipse-java-google-style"
-        codestyle_path = generate_codestyle_path(codestyle)
+    else -- Revert to default codestyle
+        local default_codestyle = "eclipse-java-google-style"
+        codestyle_path = generate_codestyle_path(default_codestyle)
+
         if vim.fn.filereadable(codestyle_path) == 1 then
-            vim.notify("Using codestyle '" .. codestyle .. "'.")
+            vim.notify("Using codestyle '" .. default_codestyle .. "'.")
         else
-            vim.notify("Could not find codestyle '" .. codestyle .. "' or '" .. project_root .. "'!")
-            -- maybe automatically download from https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml
+            error(string.format("Could not find codestyle '%s' or '%s'!", default_codestyle,
+                project_root), 1)
         end
     end
 
     return codestyle_path
 end
 
+
+--- Get various paths related to JDTLS.
+---
+--- @return { base_data_dir: path, java_agent: path, launcher_jar: path, platform_config: path, runtimes: path?, bundles: path? }
 local function get_paths()
     if cache_vars.paths then
         vim.notify("cache_vars existed")
@@ -133,20 +164,22 @@ local function get_paths()
         paths.platform_config = jdtls_install .. "/config_mac"
     end
 
-    -- paths.runtiles = ... -- if you're using multiple java runtimes
+    -- paths.runtimes = ... -- If you're using multiple java runtimes
     -- paths.bundles = ... -- DAP and other JDTLS plugins
-
     cache_vars.paths = paths
 
     return paths
 end
 
-local function jdtls_setup(event)
+--- The main JTDLS setup.
+local function jdtls_setup()
     local jdtls = require("jdtls")
 
     local paths = get_paths()
+
     local current_data_dir = paths.base_data_dir ..
-        vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") -- gets parent directory (e.g. path/to/file.extension returns "to")
+        vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") -- Gets parent directory (e.g. path/to/file.extension returns "to")
+
     local root_path = jdtls.setup.find_root(root_files)
 
     if cache_vars.capabilities == nil then
@@ -160,8 +193,9 @@ local function jdtls_setup(event)
         )
     end
 
-    local cmd = { -- command to start the language server
-        "java",   -- execution path for the JRE
+    --- The command to start the language server.
+    local cmd = {
+        "java", -- Execution path for the JRE
 
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
@@ -206,7 +240,8 @@ local function jdtls_setup(event)
         referencesCodeLens = {
             enabled = true
         },
-        inlayHints = { -- adds hints into code, e.g. names for method inputs
+        --- Adds hints into code, e.g. names for method inputs
+        inlayHints = {
             parameterNames = {
                 enabled = "all"
             }
@@ -217,21 +252,23 @@ local function jdtls_setup(event)
                 profile = get_codestyle_path(root_path)
             }
         },
-        signatureHelp = { -- seems to provide the info for popups with method info when using it
+        signatureHelp = { -- Seems to provide the info for popups with method info when using it
             enabled = true
         },
-        -- completion = { favoriteStaticMembers = {} } -- always provide autocomplete with methods, etc. from specified packages, even if not imported
+        -- -- Always provide autocomplete with methods, etc. from specified packages, even if not imported
+        -- completion = { favoriteStaticMembers = {} }
         contentProvider = {
-            preferred = "fernflower" -- usually a third party decomplier ID
+            preferred = "fernflower" -- Usually a third party decomplier ID
         },
         extendedClientCapabilities = jdtls.extendedClientCapabilities,
-        sources = { -- what does this mean/do?
+        sources = { -- What does this mean/do?
             starThreshold = 9999,
             staticStarThreshold = 9999
         }
     }
 
-    jdtls.start_or_attach({
+    --- @type vim.lsp.ClientConfig
+    local config = {
         cmd = cmd,
         settings = lsp_settings,
         on_attach = jdtls_on_attach,
@@ -243,7 +280,9 @@ local function jdtls_setup(event)
         init_options = {
             bundles = paths.bundles
         }
-    })
+    }
+
+    jdtls.start_or_attach(config)
 end
 
 jdtls_setup()
