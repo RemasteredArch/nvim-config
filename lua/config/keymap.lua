@@ -190,6 +190,18 @@ function module.rust()
             "n",
             "<leader>cr",
             function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end
+        },
+        -- Expand macros in a split
+        {
+            "n", "<F3>", "<cmd>RustLsp expandMacro<cr>"
+        },
+        -- Open error information from the Rust error codes index in a pop-up
+        {
+            "n", "<leader>e", "<cmd>RustLsp explainError<cr>"
+        },
+        -- Render diagnostics as they come from Cargo
+        {
+            "n", "<leader>d", "<cmd>RustLsp renderDiagnostic<cr>"
         }
     }
 
