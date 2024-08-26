@@ -196,6 +196,14 @@ list.lazy = {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         lazy = true
     },
+    -- Lockfile for Mason
+    -- Creates `:MasonLock` and `:MasonLockRestore`, autoupdates on updates/installs with `:Mason`
+    {
+        "zapling/mason-lock.nvim",
+        init = function()
+            require("mason-lock").setup()
+        end
+    },
 
     -- Linters
     { "mfussenegger/nvim-lint" },
