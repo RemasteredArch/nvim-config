@@ -16,8 +16,8 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 - Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 - Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 - Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)
-- Markdown spellcheck with [Vale](https://vale.sh/)
-  and preview with [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
+- Spelling and grammar checking with [Harper](https://writewithharper.com/)
+- Live markdown preview rendering with [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
 - Startup screen with [alpha](https://github.com/goolord/alpha-nvim)
   - Has four possible header artworks,
     see [`lua/config/alpha.lua`](./lua/config/alpha.lua) for more details
@@ -54,8 +54,6 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 - A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
 - Neovim 0.11.0
   (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
-- A valid [Vale](https://vale.sh/) configuration
-  (Vale does not need to be installed, however)
 
 ### Manual installation
 

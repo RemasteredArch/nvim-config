@@ -125,8 +125,6 @@ has_font "CaskaydiaCove" || {
     # if the font isn't recognized, it might be necessary to install fontconfig and run fc-cache
 }
 
-# todo: setup up Vale config
-
 
 has "nvim" || {
     announce "Adding the Neovim nightly PPA"

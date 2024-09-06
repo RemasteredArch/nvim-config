@@ -15,6 +15,5 @@
   "neocmakelsp": "0.8.2",
   "shellcheck": "v0.10.0",
   "taplo": "0.9.3",
-  "vale": "v3.7.1",
   "vtsls": "0.2.5"
 }

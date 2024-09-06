@@ -61,12 +61,7 @@ local list = {
     },
     lazy = {}, -- Defined below
     mason = {
-        linter = {
-            text = { "vale" },
-            markdown = { "vale" },
-            help = { "vale" }
-            -- json = { "jsonlint" }
-        },
+        linter = {},
         formatter = {
             markdown = { "mdformat" }
         },
@@ -76,7 +71,7 @@ local list = {
             "clangd",         -- C and C++
             "gradle_ls",      -- Gradle build scripts
             "html",           -- HTML
-            "harper_ls",      -- Natural language (similar to Vale)
+            "harper_ls",      -- Spelling and grammar checking
             "jdtls",          -- Java, see also see ftplugin/java.lua
             "lemminx",        -- XML
             "lua_ls",         -- Lua, also configured by Neodev for Neovim configuration files
