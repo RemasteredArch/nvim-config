@@ -26,7 +26,7 @@ return {
         -- https://code.visualstudio.com/Docs/languages/html
         html = {
             format = {
-                maxPreserveNewLines = "1",     -- Don't allow multiple successive line breaks
+                maxPreserveNewLines = "1", -- Don't allow multiple successive line breaks
                 wrapLineLength = "100"
             }
         }

@@ -23,7 +23,7 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 local dashboard = require("alpha.themes.dashboard")
 
 local fonts = {
-    -- toilet --font <font name> nvim.
+    -- `toilet --font <font name> nvim.`
     future = {
         "┏┓╻╻ ╻╻┏┳┓ ",
         "┃┗┫┃┏┛┃┃┃┃ ",
@@ -74,7 +74,7 @@ dashboard.section.footer.val = {
 }
 
 dashboard.config.opts.setup = function()
-    vim.api.nvim_buf_set_name(0, "<3") -- Set current buffer's name (default: [Scratch])
+    vim.api.nvim_buf_set_name(0, "<3") -- Set current buffer's name (default: `[Scratch]`)
 end
 
 require("alpha").setup(dashboard.config)
