@@ -84,7 +84,7 @@ local list = {
             "marksman",       -- Markdown
             "neocmake",       -- CMake build scripts
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
-            "taplo",          -- toml
+            "taplo",          -- TOML
             "vtsls"           -- JS and TS
         },
         dap = {
@@ -98,7 +98,7 @@ local list = {
 }
 
 list.lazy = {
-    -- Treesitter
+    -- Tree-sitter
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
@@ -107,10 +107,10 @@ list.lazy = {
 
             --- @diagnostic disable-next-line:missing-fields
             configs.setup({
-                -- list of parsers to always have installed, the first 5 are required
+                -- List of parsers to always have installed, the first 5 are required
                 -- List with :TSInstallInfo
                 ensure_installed = list.treesitter,
-                -- install the above ensured parsers synchronously
+                -- Install the above ensured parsers synchronously
                 sync_install = false,
 
                 highlight = {

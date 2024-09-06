@@ -18,13 +18,13 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- init.lua: initialization file for Neovim, exists primarily to pull from other config files, under lua/config/*.lua
+-- `init.lua`: initialization file for Neovim, exists primarily to pull from other config files, under `lua/config/*.lua`
 
 --[ OPTIONS ]--
 require("config.options").setup()
 
 --[ Colorscheme ]--
--- Inital setup before package installation
+-- Initial setup before package installation
 -- Might miss Catppuccin so it is retried later if it fails
 local colorscheme_success = require("config.colorscheme").setup({ silent = true })
 
