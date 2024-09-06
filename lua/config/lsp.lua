@@ -61,7 +61,7 @@ function module.setup(packages)
         require("lspconfig")[lsp].setup(config)
     end
 
-    vim.tbl_map(setup_lsp, { "lua_ls", "html", "biome" })
+    vim.tbl_map(setup_lsp, { "lua_ls", "html", "biome", "harper_ls" })
 
 
     vim.g.rustaceanvim = {
