@@ -57,7 +57,8 @@ local list = {
         "typescript",
         "vim",
         "vimdoc",
-        "xml"
+        "xml",
+        "yaml"
     },
     lazy = {}, -- Defined below
     mason = {
