@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- dap.lua: configurations for DAP (debug adapter protocol)
+-- `dap.lua`: configurations for DAP (debug adapter protocol)
 
 local dap = require("dap")
 

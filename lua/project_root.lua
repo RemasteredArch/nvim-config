@@ -35,7 +35,7 @@ local module = {}
 --- @return path
 function module.get_parent_directory(path)
     local physical = vim.fn.fnamemodify(path, ":p")
-    physical = physical:gsub("/$", "") -- strip leading "/"
+    physical = physical:gsub("/$", "") -- Strip leading "/"
 
     return vim.fn.fnamemodify(physical, ":h")
 end
