@@ -193,7 +193,6 @@ list.lazy = {
 
     -- Package management
     { "williamboman/mason.nvim" },
-    { "rshkarin/mason-nvim-lint" },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         lazy = true

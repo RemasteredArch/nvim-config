@@ -49,20 +49,21 @@ end
 
 module.install = {}
 
-vim.api.nvim_create_autocmd("User", {
-    pattern = "MasonToolsUpdateCompleted",
-    callback = function(event)
-        if #event.data == 0 then
-            print("Mason: no packages need to be installed.")
-        end
-    end
-})
-
 --- Installs all Mason packages.
 module.install.mason = function()
     require("mason-tool-installer").setup({
         ensure_installed = module.get_all_packages(module.list.mason),
         run_on_start = false
+    })
+
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MasonToolsUpdateCompleted",
+        callback = function(event)
+            if #event.data == 0 then
+                print("Mason: no packages need to be installed.")
+            end
+        end,
+        once = true
     })
 
     vim.cmd.MasonToolsInstallSync() -- Install all packages in a blocking manner
@@ -87,15 +88,14 @@ end
 function module.setup()
     require("mason").setup()
 
-    --[ Linters ]--
     require("config.lint").setup(module.list.mason.linter)
 
-    -- Can install more than linters
-    require("mason-nvim-lint").setup({
-        ensure_installed = module.list.mason.other
-    })
-
     require("config.format").setup(module.list.mason.formatter)
+
+    require("mason-tool-installer").setup({
+        ensure_installed = module.get_all_packages(module.list.mason),
+        run_on_start = true
+    })
 
     vim.api.nvim_create_user_command(
         "MasonInstallAll",
