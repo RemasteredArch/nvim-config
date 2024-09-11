@@ -81,7 +81,8 @@ local list = {
             "neocmake",       -- CMake build scripts
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
             "taplo",          -- TOML
-            "vtsls"           -- JS and TS
+            "vtsls",          -- JS and TS
+            "yamlls"
         },
         dap = {
             "codelldb" -- C++ and Rust are first-class, but also supports C, Swift, Zig, Ada, etc.
