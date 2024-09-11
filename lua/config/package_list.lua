@@ -62,7 +62,11 @@ local list = {
     },
     lazy = {}, -- Defined below
     mason = {
-        linter = {},
+        linter = {
+            yaml = {
+                "actionlint" -- GitHub Actions workflow files
+            }
+        },
         formatter = {
             markdown = { "mdformat" }
         },
