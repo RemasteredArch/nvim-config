@@ -68,7 +68,8 @@ local list = {
             }
         },
         formatter = {
-            markdown = { "mdformat" }
+            markdown = { "mdformat" },
+            yaml = { "yamlfmt" }
         },
         lsp = {
             "bashls",         -- Integrates with shellcheck

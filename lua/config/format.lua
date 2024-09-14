@@ -24,6 +24,15 @@ local module = {}
 
 function module.setup(formatters_by_ft)
     require("conform").setup({
+        formatters = {
+            yamlfmt = {
+                --- https://github.com/google/yamlfmt/blob/main/docs/config-file.md#basic-formatter
+                prepend_args = {
+                    "-formatter",
+                    "indent=4,line_ending=lf,retain_line_breaks_single=true"
+                }
+            }
+        },
         formatters_by_ft = formatters_by_ft,
         format_on_save = {} -- Enables formatting on save with default options
     })
