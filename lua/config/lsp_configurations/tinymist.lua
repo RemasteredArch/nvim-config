@@ -22,7 +22,16 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 return {
     single_file_support = true,
-    root_dir = function()
-        return vim.fn.getcwd()
-    end
+    root_dir = function(file)
+        return require("lspconfig").util.root_pattern("typst.toml", ".git")(file)
+            or vim.fn.getcwd()
+    end,
+    settings = {
+        --- Enables a built-in formatter.
+        ---
+        --- Default `"disable"`.
+        ---
+        --- @type "typstyle" | "typstfmt" | "disable"
+        formatterMode = "typstyle"
+    }
 }
