@@ -253,8 +253,20 @@ list.lazy = {
             vim.keymap.set("n", "<leader>p", "<cmd>MarkdownPreviewToggle<cr>")
         end,
         ft = { "markdown" }
+    },
+    {
+        "chomosuke/typst-preview.nvim",
+        ft = "typst",
+        version = "0.3.*",
+        opts = {
+            dependencies_bin = {
+                ["typst-preview"] = "tinymist"
+            }
+        },
+        build = function()
+            require "typst-preview".update()
+        end
     }
-
 }
 
 return list
