@@ -257,7 +257,6 @@ list.lazy = {
     {
         "chomosuke/typst-preview.nvim",
         ft = "typst",
-        version = "0.3.*",
         opts = {
             dependencies_bin = {
                 ["typst-preview"] = "tinymist"
