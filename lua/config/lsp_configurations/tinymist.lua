@@ -33,5 +33,29 @@ return {
         ---
         --- @type "typstyle" | "typstfmt" | "disable"
         formatterMode = "typstyle"
+    },
+    commands = {
+        TypstPinMain = {
+            function()
+                vim.lsp.buf.execute_command({
+                    command = "tinymist.pinMain",
+                    arguments = {
+                        vim.api.nvim_buf_get_name(0) -- Current buffer's full file name.
+                    }
+                })
+            end,
+            description = "Mark a file as the main file in a multi-file Typst project"
+        },
+        TypstUnpinMain = {
+            function()
+                vim.lsp.buf.execute_command({
+                    command = "tinymist.pinMain",
+                    -- Setting to `nil` is supposed to remove the pin, but it seems to just trigger
+                    -- an error instead.
+                    arguments = { nil }
+                })
+            end,
+            description = "Stop marking a file as the main file in a multi-file Typst project"
+        }
     }
 }
