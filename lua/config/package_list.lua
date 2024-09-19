@@ -55,6 +55,7 @@ local list = {
         "tmux",
         "toml",
         "typescript",
+        "typst",
         "vim",
         "vimdoc",
         "xml",
