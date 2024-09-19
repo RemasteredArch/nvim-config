@@ -87,6 +87,7 @@ local list = {
             "neocmake",       -- CMake build scripts
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
             "taplo",          -- TOML
+            "tinymist",       -- Typst
             "vtsls",          -- JS and TS
             "yamlls"
         },
