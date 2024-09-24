@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- options.lua: general options
+-- `options.lua`: general options
 
 local module = {}
 
@@ -26,7 +26,8 @@ local opt = vim.opt
 
 --- The default number of spaces.
 ---
---- Used either for indentation width (when using tabs) or indent rendering width (when using tabs)
+--- Used either for indentation width (when using tabs) or indent rendering width (when using
+--- tabs).
 --- @type integer
 local default_spaces = 4
 
