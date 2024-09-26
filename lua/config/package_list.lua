@@ -263,7 +263,7 @@ list.lazy = {
             }
         },
         build = function()
-            require "typst-preview".update()
+            require("typst-preview").update()
         end
     }
 }
