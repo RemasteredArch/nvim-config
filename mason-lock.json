@@ -1,8 +1,8 @@
 {
   "actionlint": "v1.7.3",
   "bash-language-server": "5.4.2",
-  "biome": "1.9.2",
-  "clangd": "18.1.3",
+  "biome": "1.9.3",
+  "clangd": "19.1.0",
   "codelldb": "v1.10.0",
   "gradle-language-server": "3.12.7",
   "harper-ls": "v0.11.0",
