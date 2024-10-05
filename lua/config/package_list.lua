@@ -45,6 +45,7 @@ local list = {
         "javascript",
         "json",
         "jsonc",
+        "kotlin",
         "lua",
         "markdown",
         "markdown_inline",
