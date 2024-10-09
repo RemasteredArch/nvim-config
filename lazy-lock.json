@@ -23,8 +23,8 @@
   "nvim-nio": { "branch": "master", "commit": "a428f309119086dc78dd4b19306d2d67be884eee" },
   "nvim-rip-substitute": { "branch": "main", "commit": "144154d012b8352827363cdb58b1bb57a9a60294" },
   "nvim-silicon": { "branch": "main", "commit": "9fe6001dc8cad4d9c53bcfc8649e3dc76ffa169c" },
-  "nvim-treesitter": { "branch": "master", "commit": "45e0d66246f31306d890b91301993fa1623e79f1" },
+  "nvim-treesitter": { "branch": "master", "commit": "86c10df7ef77daf45a0e4a918934bb59083db1e1" },
   "nvim-web-devicons": { "branch": "master", "commit": "56f17def81478e406e3a8ec4aa727558e79786f3" },
-  "rustaceanvim": { "branch": "master", "commit": "df23ea04d01bb5a812a6507b3714f542f6297bfa" },
+  "rustaceanvim": { "branch": "master", "commit": "d1f56672638508a7bc971cde31a29df4018579a9" },
   "typst-preview.nvim": { "branch": "master", "commit": "0354cc1a7a5174a2e69cdc21c4db9a3ee18bb20a" }
 }
