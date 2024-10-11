@@ -258,11 +258,6 @@ list.lazy = {
     {
         "chomosuke/typst-preview.nvim",
         ft = "typst",
-        opts = {
-            dependencies_bin = {
-                ["typst-preview"] = "tinymist"
-            }
-        },
         build = function()
             require("typst-preview").update()
         end
