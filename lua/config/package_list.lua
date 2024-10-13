@@ -79,6 +79,7 @@ local list = {
             "clangd",         -- C and C++
             "gradle_ls",      -- Gradle build scripts
             "html",           -- HTML
+            "cssls",          -- CSS
             "harper_ls",      -- Spelling and grammar checking
             "jdtls",          -- Java, see also see ftplugin/java.lua
             "lemminx",        -- XML
@@ -90,7 +91,7 @@ local list = {
             "taplo",          -- TOML
             "tinymist",       -- Typst
             "vtsls",          -- JS and TS
-            "yamlls"
+            "yamlls"          -- YAML
         },
         dap = {
             "codelldb" -- C++ and Rust are first-class, but also supports C, Swift, Zig, Ada, etc.

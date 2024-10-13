@@ -4,6 +4,7 @@
   "biome": "1.9.3",
   "clangd": "19.1.0",
   "codelldb": "v1.10.0",
+  "css-lsp": "4.10.0",
   "gradle-language-server": "3.12.7",
   "harper-ls": "v0.11.0",
   "html-lsp": "4.10.0",
