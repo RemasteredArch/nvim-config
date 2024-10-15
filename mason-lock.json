@@ -1,5 +1,6 @@
 {
   "actionlint": "v1.7.3",
+  "astro-language-server": "2.15.0",
   "bash-language-server": "5.4.2",
   "biome": "1.9.3",
   "clangd": "19.1.0",

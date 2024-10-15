@@ -35,6 +35,7 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 --- @type PackageList
 local list = {
     treesitter = {
+        "astro",
         "bash",
         "c",
         "cmake",
@@ -74,6 +75,7 @@ local list = {
             yaml = { "yamlfmt" }
         },
         lsp = {
+            "astro",          -- Astro web framework
             "bashls",         -- Integrates with shellcheck
             "biome",          -- JS, TS, JSX, TSX, JSON, and JSONC
             "clangd",         -- C and C++
