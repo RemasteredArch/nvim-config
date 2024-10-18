@@ -1,8 +1,8 @@
 {
   "actionlint": "v1.7.3",
-  "astro-language-server": "2.15.0",
+  "astro-language-server": "2.15.3",
   "bash-language-server": "5.4.2",
-  "biome": "1.9.3",
+  "biome": "1.9.4",
   "clangd": "19.1.0",
   "codelldb": "v1.10.0",
   "css-lsp": "4.10.0",
