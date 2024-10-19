@@ -22,7 +22,60 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
+--- Appends the contents of each list onto the first.
+---
+--- Can handle `nil` values.
+---
+--- @param lists any[][]
+--- @return any[]
+local function merge_lists(lists)
+    local first_list
+    while first_list == nil and #lists ~= 0 do
+        first_list = table.remove(lists, 1)
+    end
+
+    for _, list in ipairs(lists) do
+        for _, v in ipairs(list) do
+            table.insert(first_list, v)
+        end
+    end
+
+    return first_list
+end
+
+--- Use `merge_lists` to merge the keys of a list of tables.
+---
+--- Can handle `nil` values.
+---
+--- @param tables table<any, any[]>[]
+local function merge_lists_tbl(tables)
+    local first_table
+    while first_table == nil and #tables ~= 0 do
+        first_table = table.remove(tables, 1)
+    end
+
+    for _, tbl in ipairs(tables) do
+        for k, v in pairs(tbl) do
+            first_table[k] = merge_lists({ first_table[k], v })
+        end
+    end
+
+    return first_table
+end
+
 function module.setup(formatters_by_ft)
+    local prettier_overrides = {
+        markdown = { "prettier" },
+        yaml = { "prettier" },
+        javascript = { "prettier" },
+        typescript = { "prettier" }
+    }
+
+    local formatters_by_ft = merge_lists_tbl({ prettier_overrides, formatters_by_ft })
+    for _, list in pairs(formatters_by_ft) do
+        list.stop_after_first = true
+    end
+
     require("conform").setup({
         formatters = {
             yamlfmt = {
