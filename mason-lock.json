@@ -18,7 +18,7 @@
   "neocmakelsp": "0.8.11",
   "shellcheck": "v0.10.0",
   "taplo": "0.9.3",
-  "tinymist": "v0.11.32",
+  "tinymist": "v0.12.0",
   "vtsls": "0.2.6",
   "yaml-language-server": "1.15.0",
   "yamlfmt": "v0.13.0"
