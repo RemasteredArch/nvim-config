@@ -1,5 +1,5 @@
 {
-  "actionlint": "v1.7.3",
+  "actionlint": "v1.7.4",
   "astro-language-server": "2.15.4",
   "bash-language-server": "5.4.2",
   "biome": "1.9.4",
@@ -9,10 +9,10 @@
   "gradle-language-server": "3.12.7",
   "harper-ls": "v0.11.0",
   "html-lsp": "4.10.0",
-  "jdtls": "v1.40.0",
+  "jdtls": "v1.41.0",
   "lemminx": "0.27.1",
-  "lua-language-server": "3.11.1",
-  "markdown-oxide": "v0.24.2",
+  "lua-language-server": "3.12.0",
+  "markdown-oxide": "v0.24.3",
   "marksman": "2024-10-07",
   "mdformat": "0.7.18",
   "neocmakelsp": "0.8.12",
@@ -21,5 +21,5 @@
   "tinymist": "v0.12.0",
   "vtsls": "0.2.6",
   "yaml-language-server": "1.15.0",
-  "yamlfmt": "v0.13.0"
+  "yamlfmt": "v0.14.0"
 }
