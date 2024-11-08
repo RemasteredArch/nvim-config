@@ -183,6 +183,19 @@ list.lazy = {
         "stevearc/dressing.nvim"
         -- opts = {} -- e.g. insert_only = true by default
     },
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("telescope").setup({})
+
+            require("config.keymap").set({
+                mode = "n",
+                key = "ff",
+                effect = require("telescope.builtin").find_files
+            })
+        end
+    },
     { -- startup
         "goolord/alpha-nvim",
         dependencies = {

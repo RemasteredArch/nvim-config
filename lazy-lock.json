@@ -25,6 +25,8 @@
   "nvim-silicon": { "branch": "main", "commit": "9fe6001dc8cad4d9c53bcfc8649e3dc76ffa169c" },
   "nvim-treesitter": { "branch": "master", "commit": "7dc8aabe86db8c2f23520e8334f7584f83e84342" },
   "nvim-web-devicons": { "branch": "master", "commit": "19d257cf889f79f4022163c3fbb5e08639077bd8" },
+  "plenary.nvim": { "branch": "master", "commit": "2d9b06177a975543726ce5c73fca176cedbffe9d" },
   "rustaceanvim": { "branch": "master", "commit": "7b794c1875de6184662348380c3b62fc38b207ee" },
+  "telescope.nvim": { "branch": "master", "commit": "85922dde3767e01d42a08e750a773effbffaea3e" },
   "typst-preview.nvim": { "branch": "master", "commit": "06778d1b3d4d29c34f1faf80947b586f403689ba" }
 }
