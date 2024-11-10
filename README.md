@@ -37,23 +37,31 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
   - [Ninja](https://ninja-build.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
 - [Node.js](https://nodejs.org/en)
   - [npm](https://www.npmjs.com/)
-  - This config is built and used with node.js v20.12.2 (installed through [`nvm install --lts`](https://github.com/nvm-sh/nvm)),
+  - This config is built and used with node.js v20.12.2
+    (installed through [`nvm install --lts`](https://github.com/nvm-sh/nvm)),
     but older or newer versions would likely work fine
 - [Rust](https://www.rust-lang.org/) toolchain
   - Cargo
   - `rustc`
   - [rust-analyzer](https://rust-analyzer.github.io/)
-    - Could also be installed with [mason.nvim](https://github.com/williamboman/mason.nvim), and there is a commented out line in [`init.lua`](./init.lua) to do so,
-      but installing as a part of your toolchain (`rustup compent add rust-analyzer`) helps to [avoid version inconsistencies](https://github.com/mrcjkb/rustaceanvim/blob/master/doc/mason.txt)
+    - Could also be installed with [mason.nvim](https://github.com/williamboman/mason.nvim),
+      and there is a commented out line in [`init.lua`](./init.lua) to do so,
+      but installing as a part of your toolchain (`rustup compent add rust-analyzer`)
+      helps to [avoid version inconsistencies](https://github.com/mrcjkb/rustaceanvim/blob/master/doc/mason.txt)
 - A Java Development Kit
   - This project is built and developed on [OpenJDK](https://openjdk.org/) 21,
     but older or newer versions would likely work fine
-  - Specifically, this project is built and developed on [`openjdk-21-jdk`](https://packages.ubuntu.com/noble/openjdk-21-jdk) from the Ubuntu 24.04 repositories
+  - Specifically, this project is built and developed
+    on [`openjdk-21-jdk`](https://packages.ubuntu.com/noble/openjdk-21-jdk) from the Ubuntu 24.04 repositories
   - This project is not tested on Windows,
     but [Eclipse Temurin](https://adoptium.net/) is my go-to OpenJDK distribution on Windows
+- [Ripgrep](https://github.com/burntsushi/ripgrep)
 - A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
 - Neovim 0.11.0
-  (built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04)
+  - As of Telescope commit `85922dd`,
+    Neovim [must be compiled with LuaJIT](https://github.com/nvim-telescope/telescope.nvim/blob/85922dd/README.md#getting-started)
+  - This project is built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04
+- [`fd`](https://github.com/sharkdp/fd) (optional)
 
 ### Manual installation
 
