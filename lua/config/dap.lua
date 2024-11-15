@@ -46,6 +46,8 @@ function module.setup()
     }
 
     dap.configurations.c = dap.configurations.cpp
+
+    require("dapui").setup()
 end
 
 return module
