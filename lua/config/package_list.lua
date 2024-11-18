@@ -198,11 +198,7 @@ list.lazy = {
             telescope.setup({})
             telescope.load_extension("fzf")
 
-            require("config.keymap").set({
-                mode = "n",
-                key = "ff",
-                effect = require("telescope.builtin").find_files
-            })
+            require("config.keymap").telescope().setup()
         end
     },
     { -- startup

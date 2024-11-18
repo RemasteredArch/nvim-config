@@ -212,4 +212,30 @@ function module.rust()
     return { mapping = mappings, setup = setup }
 end
 
+--- Key mappings for Telescope.
+---
+--- @return KeyMappingsAndSetup
+function module.telescope()
+    --- @type KeymapTuple[]
+    local mappings = {
+        -- Open file picker for current directory
+        { "n", "ff", require("telescope.builtin").find_files },
+
+        -- Open file picker for Git files
+        { "n", "fg", require("telescope.builtin").git_files },
+
+        -- Open live regex search
+        { "n", "flg", require("telescope.builtin").live_grep },
+
+        -- Open live regex search
+        { "n", "fls", require("telescope.builtin").lsp_document_symbols }
+    }
+
+    local function setup()
+        module.set_all(mappings)
+    end
+
+    return { mapping = mappings, setup = setup }
+end
+
 return module
