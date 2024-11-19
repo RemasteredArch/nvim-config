@@ -281,7 +281,7 @@ list.lazy = {
         "chomosuke/typst-preview.nvim",
         ft = "typst",
         build = function()
-            require("typst-preview").update()
+            require("typst-preview").setup()
         end
     }
 }
