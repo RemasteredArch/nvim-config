@@ -41,6 +41,7 @@ local list = {
         "cmake",
         "cpp",
         "css",
+        "editorconfig",
         "html",
         "java",
         "javascript",
