@@ -138,7 +138,7 @@ list.lazy = {
     },
 
     -- Code screenshots
-    require("config.silicon"),
+    require("plugins.silicon"),
 
     {
         "ziontee113/icon-picker.nvim",
@@ -202,20 +202,9 @@ list.lazy = {
             require("config.keymap").telescope().setup()
         end
     },
-    { -- startup
-        "goolord/alpha-nvim",
-        dependencies = {
-            {
-                "nvim-tree/nvim-web-devicons",
-                config = function()
-                    require("nvim-web-devicons").setup()
-                end
-            }
-        },
-        config = function()
-            require("config.alpha")
-        end
-    },
+
+    -- Startup
+    require("plugins.alpha"),
 
     -- Package management
     { "williamboman/mason.nvim" },
