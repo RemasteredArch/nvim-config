@@ -156,24 +156,7 @@ list.lazy = {
         "stevearc/dressing.nvim"
         -- opts = {} -- e.g. insert_only = true by default
     },
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = {
-            { "nvim-lua/plenary.nvim" },
-            {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release"
-                    .. "&& cmake --build build --config Release"
-            }
-        },
-        config = function()
-            local telescope = require("telescope")
-            telescope.setup({})
-            telescope.load_extension("fzf")
-
-            require("config.keymap").telescope().setup()
-        end
-    },
+    require("plugins.telescope"),
 
     -- Startup
     require("plugins.alpha"),
