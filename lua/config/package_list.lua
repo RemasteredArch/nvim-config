@@ -209,18 +209,7 @@ list.lazy = {
     { "mrcjkb/rustaceanvim" },
     { "mfussenegger/nvim-jdtls", lazy = true },
     { "folke/neodev.nvim" }, -- EOL, see https://github.com/folke/lazydev.nvim
-    {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        build = "cd app && npm install && git restore .",
-        init = function()
-            vim.g.mkdp_filetypes = { "markdown" }
-        end,
-        config = function()
-            vim.keymap.set("n", "<leader>p", "<cmd>MarkdownPreviewToggle<cr>")
-        end,
-        ft = { "markdown" }
-    },
+    require("plugins.markdown_preview"),
     {
         "chomosuke/typst-preview.nvim",
         ft = "typst",

@@ -238,4 +238,20 @@ function module.telescope()
     return { mapping = mappings, setup = setup }
 end
 
+--- Key mappings for `iamcco/markdown-preview.nvim`.
+---
+--- @return KeyMappingsAndSetup
+function module.markdown_preview()
+    --- @type KeymapTuple[]
+    local mappings = {
+        { "n", "<leader>p", "<cmd>MarkdownPreviewToggle<cr>" }
+    }
+
+    local function setup()
+        module.set_all(mappings)
+    end
+
+    return { mapping = mappings, setup = setup }
+end
+
 return module
