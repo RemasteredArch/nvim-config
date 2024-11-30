@@ -254,4 +254,25 @@ function module.markdown_preview()
     return { mapping = mappings, setup = setup }
 end
 
+--- Key mappings for Typst editing.
+---
+--- <https://typst.app/>
+---
+--- @return KeyMappingsAndSetup
+function module.typst()
+    --- @type KeymapTuple[]
+    local mappings = {
+        -- Open a preview of the current document in the browser.
+        --
+        -- <https://github.com/chomosuke/typst-preview.nvim>
+        { "n", "<leader>p", "<cmd>TypstPreview<cr>" }
+    }
+
+    local function setup()
+        module.set_all(mappings)
+    end
+
+    return { mapping = mappings, setup = setup }
+end
+
 return module

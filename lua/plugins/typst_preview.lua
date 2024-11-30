@@ -18,12 +18,19 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `typst.lua`: configurations for Typst editing
--- <https://typst.app/>
+-- `typst-preview.lua`: `chomosuke/typst-preview.nvim` configuration.
 
--- Tinymist formats it to this and I don't really feel like fixing that.
---
--- It might also just be built into Typst, I'm not sure.
-require("config.options").spaces(2)
-
-require("config.keymap").typst().setup()
+return {
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    config = function()
+        require("typst-preview").setup({
+            dependencies_bin = {
+                -- Use the Mason installed version of tinymist instead.
+                --
+                -- Does still install a websocat binary.
+                ["tinymist"] = "tinymist"
+            }
+        })
+    end
+}

@@ -210,13 +210,7 @@ list.lazy = {
     { "mfussenegger/nvim-jdtls", lazy = true },
     { "folke/neodev.nvim" }, -- EOL, see https://github.com/folke/lazydev.nvim
     require("plugins.markdown_preview"),
-    {
-        "chomosuke/typst-preview.nvim",
-        ft = "typst",
-        build = function()
-            require("typst-preview").setup()
-        end
-    }
+    require("plugins.typst_preview")
 }
 
 return list
