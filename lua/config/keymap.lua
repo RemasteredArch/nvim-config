@@ -121,6 +121,47 @@ function module.cmp()
     })
 end
 
+--- Key mappings for LSPs.
+---
+--- @param buffnr integer
+--- @return KeyMappingsAndSetup
+function module.lsp()
+    --- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
+    ---
+    --- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#default-keymaps>
+    --- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/60a66bf/LICENSE>
+    ---
+    --- @type KeymapTuple[]
+    local mappings = {
+        -- Open documentation in a floating window
+        { "n", "K", vim.lsp.buf.hover },
+        -- Expand diagnostic in a floating window
+        { "n", "<leader>gl", vim.diagnostic.open_float },
+        -- Go to definition
+        { "n", "gd", vim.lsp.buf.definition },
+        -- Go to declaration
+        { "n", "gD", vim.lsp.buf.declaration },
+        -- Go to implementation
+        { "n", "gi", vim.lsp.buf.implementation },
+        -- Go to type definition
+        { "n", "go", vim.lsp.buf.type_definition },
+        -- Go to reference
+        { "n", "gr", vim.lsp.buf.references },
+        -- Show function signature in a floating window
+        { "n", "gs", vim.lsp.buf.signature_help },
+        -- Rename symbol
+        { "n", "<F2>", vim.lsp.buf.rename },
+        -- Execute code action
+        { "n", "<F4>", vim.lsp.buf.code_action }
+    }
+
+    local function setup()
+        module.set_all(mappings, buffnr)
+    end
+
+    return { mapping = mappings, setup = setup }
+end
+
 --- Key mappings for Java.
 ---
 --- @param buffnr integer
@@ -181,9 +222,6 @@ end
 function module.rust()
     --- @type KeymapTuple[]
     local mappings = {
-        -- Expand diagnostics
-        { "n", "<leader>gl", function() vim.diagnostic.open_float() end },
-
         -- Run project
         { "n", "<leader>r", "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
         {

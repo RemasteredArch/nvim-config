@@ -26,6 +26,16 @@ function module.setup()
     local mapping = require("config.keymap").cmp()
 
     require("cmp").setup({
+        sources = {
+            {
+                name = "nvim_lsp"
+            }
+        },
+        snippet = {
+            expand = function(args)
+                require("luasnip").lsp_expand(args.body)
+            end
+        },
         mapping = mapping
     })
 end
