@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- keymap.lua: various key mappings
+-- `keymap.lua`: various key mappings
 
 --- @alias VimModeShort # See |modes()|
 --- | "n" Normal
@@ -68,9 +68,9 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ---
 --- @alias KeymapTuple [VimModeShort | VimModeShort[], string , string | function, vim.keymap.set.Opts?] A Neovim keymap represented as a tuple
 ---
---- @class (exact) KeyMappingsAndSetup
---- @field mappings KeymapTuple[]
---- @field setup fun()
+--- @class (exact) KeyMappingsAndSetup Some keymappings and a function to register them
+--- @field mappings KeymapTuple[] The associated keymappings
+--- @field setup fun(buffnr: integer?) A function to register the associated keymappings
 
 local module = {}
 
@@ -106,6 +106,20 @@ function module.set_all(binds, buffnr)
     vim.tbl_map(expand_keymap, binds)
 end
 
+--- Construct a `KeyMappingsAndSetup`.
+---
+--- @see KeyMappingsAndSetup
+---
+--- @param mappings KeymapTuple[]
+--- @return KeyMappingsAndSetup
+local function mappings_and_setup(mappings)
+    local function setup(buffnr)
+        module.set_all(mappings, buffnr)
+    end
+
+    return { mapping = mappings, setup = setup }
+end
+
 --- Key mappings for nvim-cmp.
 ---
 --- @return table<string, cmp.Mapping>
@@ -123,16 +137,15 @@ end
 
 --- Key mappings for LSPs.
 ---
+--- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
+---
+--- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#default-keymaps>
+--- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/60a66bf/LICENSE>
+---
 --- @param buffnr integer
 --- @return KeyMappingsAndSetup
 function module.lsp()
-    --- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
-    ---
-    --- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#default-keymaps>
-    --- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/60a66bf/LICENSE>
-    ---
-    --- @type KeymapTuple[]
-    local mappings = {
+    return mappings_and_setup({
         -- Open documentation in a floating window
         { "n", "K", vim.lsp.buf.hover },
         -- Expand diagnostic in a floating window
@@ -153,36 +166,30 @@ function module.lsp()
         { "n", "<F2>", vim.lsp.buf.rename },
         -- Execute code action
         { "n", "<F4>", vim.lsp.buf.code_action }
-    }
-
-    local function setup()
-        module.set_all(mappings, buffnr)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 --- Key mappings for Java.
 ---
---- @param buffnr integer
 --- @param root_files path[]
 --- @return KeyMappingsAndSetup
-function module.java(buffnr, root_files)
-    --- @type KeymapTuple[]
-    local mappings = {
+function module.java(root_files)
+    local jdtls = require("jdtls")
+
+    return mappings_and_setup({
         -- In normal mode, press alt+o[rganize] to organize imports
-        { "n", "<A-o>", function() require("jdtls").organize_imports() end },
+        { "n", "<A-o>", jdtls.organize_imports },
 
         -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-        { "n", "crv", function() require("jdtls").extract_variable() end },
-        { "x", "crv", function() require("jdtls").extract_variable({ visual = true }) end },
+        { "n", "crv", jdtls.extract_variable },
+        { "x", "crv", function() jdtls.extract_variable({ visual = true }) end },
 
         -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-        { "n", "crc", function() require("jdtls").extract_constant() end },
-        { "x", "crc", function() require("jdtls").extract_constant({ visual = true }) end },
+        { "n", "crc", jdtls.extract_constant },
+        { "x", "crc", function() jdtls.extract_constant({ visual = true }) end },
 
         -- In visual mode, press c,r[efactor],m[ethod] to extract a method
-        { "x", "crm", function() require("jdtls").extract_method({ visual = true }) end },
+        { "x", "crm", function() jdtls.extract_method({ visual = true }) end },
 
         -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
         { "n", "<leader>r", "<cmd>split | term java %<cr>" },
@@ -197,31 +204,24 @@ function module.java(buffnr, root_files)
 
         --[[
       -- same but space,f[ull],r[un] (or space,f[ull],c[onfig],r[un]) for multiple files
-      -- see: https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html
-      -- see: https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e1f6e1b598b5d9cb5ef00b3783b7ee458a/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47
-      -- see: incremental builds https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2FIncrementalProjectBuilder.html&anchor=FULL_BUILD
+      -- see: <https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html>
+      -- see: <https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47>
+      -- see: incremental builds <https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2FIncrementalProjectBuilder.html&anchor=FULL_BUILD>
       { "n", "<leader>fr", function()
         vim.api.nvim_command("JdtCompile")
-        local bin_dir = require("jdtls").setup.find_root(root_files) .. "/bin"
+        local bin_dir = jdtls.setup.find_root(root_files) .. "/bin"
         vim.print(bin_dir)
         --vim.api.nvim_command("split | term java % <cr>")
       end }
     ]]
-    }
-
-    local function setup()
-        module.set_all(mappings, buffnr)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 --- Key mappings for Rust.
 ---
 --- @return KeyMappingsAndSetup
 function module.rust()
-    --- @type KeymapTuple[]
-    local mappings = {
+    return mappings_and_setup({
         -- Run project
         { "n", "<leader>r", "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
         {
@@ -241,21 +241,14 @@ function module.rust()
         {
             "n", "<leader>d", "<cmd>RustLsp renderDiagnostic<cr>"
         }
-    }
-
-    local function setup()
-        module.set_all(mappings)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 --- Key mappings for Telescope.
 ---
 --- @return KeyMappingsAndSetup
 function module.telescope()
-    --- @type KeymapTuple[]
-    local mappings = {
+    return mappings_and_setup({
         -- Open file picker for current directory
         { "n", "ff", require("telescope.builtin").find_files },
 
@@ -267,29 +260,16 @@ function module.telescope()
 
         -- Open live regex search
         { "n", "fls", require("telescope.builtin").lsp_document_symbols }
-    }
-
-    local function setup()
-        module.set_all(mappings)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 --- Key mappings for `iamcco/markdown-preview.nvim`.
 ---
 --- @return KeyMappingsAndSetup
 function module.markdown_preview()
-    --- @type KeymapTuple[]
-    local mappings = {
+    return mappings_and_setup({
         { "n", "<leader>p", "<cmd>MarkdownPreviewToggle<cr>" }
-    }
-
-    local function setup()
-        module.set_all(mappings)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 --- Key mappings for Typst editing.
@@ -298,19 +278,12 @@ end
 ---
 --- @return KeyMappingsAndSetup
 function module.typst()
-    --- @type KeymapTuple[]
-    local mappings = {
+    return mappings_and_setup({
         -- Open a preview of the current document in the browser.
         --
         -- <https://github.com/chomosuke/typst-preview.nvim>
         { "n", "<leader>p", "<cmd>TypstPreview<cr>" }
-    }
-
-    local function setup()
-        module.set_all(mappings)
-    end
-
-    return { mapping = mappings, setup = setup }
+    })
 end
 
 return module

@@ -27,6 +27,8 @@ return {
     init = function()
         vim.g.mkdp_filetypes = { "markdown" }
     end,
-    config = require("config.keymap").markdown_preview().setup,
+    config = function()
+        require("config.keymap").markdown_preview().setup()
+    end,
     ft = { "markdown" }
 }

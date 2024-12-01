@@ -86,7 +86,7 @@ local function jdtls_on_attach(client, buffnr)
         enable_codelens(buffnr)
     end
 
-    require("config.keymap").java(buffnr, root_files).setup()
+    require("config.keymap").java(root_files).setup(buffnr)
 
     enable_format_on_write(buffnr)
 end

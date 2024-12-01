@@ -30,7 +30,7 @@ function module.setup(packages)
     -- <https://lsp-zero.netlify.app/docs/getting-started.html>
     lsp_zero.extend_lspconfig({
         lsp_attach = function(client, buffnr)
-            require("config.keymap").lsp(buffnr).setup()
+            require("config.keymap").lsp().setup(buffnr)
 
             if client.name ~= "vtsls" then
                 lsp_zero.buffer_autoformat()
