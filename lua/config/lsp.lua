@@ -22,6 +22,41 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
+--- Enable format on write for an LSP in a buffer.
+---
+--- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
+---
+--- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#enable-format-on-save>
+--- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/35421bd/lua/lsp-zero/format.lua#L117-L166>
+--- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/35421bd/LICENSE>
+---
+--- @param buffnr integer The buffer ID to register the formatting autocmd in.
+--- @param client vim.lsp.Client The LSP client to register formatting for.
+local function autofmt(buffnr, client)
+    local group = "autofmt"
+
+    client = client or {}
+    buffnr = buffnr or vim.api.nvim_get_current_buf()
+
+    vim.api.nvim_create_augroup(group, { clear = false })
+    vim.api.nvim_clear_autocmds({ group = group, buffer = buffnr })
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = group,
+        buffer = buffnr,
+        desc = "Format on write",
+        callback = function()
+            vim.lsp.buf.format({
+                bufnr = buffnr,
+                async = false,
+                timeout_ms = 10 * 1000,
+                id = client.id,
+                name = client.name
+            })
+        end
+    })
+end
+
 function module.setup(packages)
     local lsp_zero = require("lsp-zero")
 
@@ -33,7 +68,7 @@ function module.setup(packages)
             require("config.keymap").lsp().setup(buffnr)
 
             if client.name ~= "vtsls" then
-                lsp_zero.buffer_autoformat()
+                autofmt(buffnr, client)
             end
         end,
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
