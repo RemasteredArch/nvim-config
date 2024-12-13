@@ -235,11 +235,11 @@ function module.rust()
         },
         -- Open error information from the Rust error codes index in a pop-up
         {
-            "n", "<leader>e", "<cmd>RustLsp explainError<cr>"
+            "n", "<leader>ee", "<cmd>RustLsp explainError<cr>"
         },
         -- Render diagnostics as they come from Cargo
         {
-            "n", "<leader>d", "<cmd>RustLsp renderDiagnostic<cr>"
+            "n", "<leader>ed", "<cmd>RustLsp renderDiagnostic<cr>"
         }
     })
 end
@@ -283,6 +283,19 @@ function module.typst()
         --
         -- <https://github.com/chomosuke/typst-preview.nvim>
         { "n", "<leader>p", "<cmd>TypstPreview<cr>" }
+    })
+end
+
+--- Key mappings for `mfussenegger/nvim-dap` and `rcarriga/nvim-dap-ui`.
+---
+--- @return KeyMappingsAndSetup
+function module.dap()
+    return mappings_and_setup({
+        { "n", "<leader>dt", require("dapui").toggle },
+        { "n", "<leader>do", require("dap").step_over },
+        { "n", "<leader>di", require("dap").step_into },
+        { "n", "<leader>dO", require("dap").step_out },
+        { "n", "<leader>db", require("dap").step_back }
     })
 end
 

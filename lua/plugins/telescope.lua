@@ -33,7 +33,11 @@ return {
     },
     config = function()
         local telescope = require("telescope")
-        telescope.setup({})
+        telescope.setup({
+            defaults = {
+                wrap_results = true
+            }
+        })
         telescope.load_extension("fzf")
 
         require("config.keymap").telescope().setup()

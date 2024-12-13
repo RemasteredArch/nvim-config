@@ -48,6 +48,7 @@ function module.setup()
     dap.configurations.c = dap.configurations.cpp
 
     require("dapui").setup()
+    require("config.keymap").dap().setup()
 end
 
 return module

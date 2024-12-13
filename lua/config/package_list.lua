@@ -152,10 +152,7 @@ list.lazy = {
     require("plugins.nvim-rip-substitute"),
 
     -- UI
-    {
-        "stevearc/dressing.nvim"
-        -- opts = {} -- e.g. insert_only = true by default
-    },
+    { "stevearc/dressing.nvim" },
     require("plugins.telescope"),
 
     -- Startup
