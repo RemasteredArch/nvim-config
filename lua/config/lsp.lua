@@ -32,7 +32,7 @@ local module = {}
 ---
 --- @param buffnr integer The buffer ID to register the formatting autocmd in.
 --- @param client vim.lsp.Client The LSP client to register formatting for.
-local function autofmt(buffnr, client)
+local function enable_autofmt(buffnr, client)
     local group = "autofmt"
 
     client = client or {}
@@ -41,10 +41,15 @@ local function autofmt(buffnr, client)
     vim.api.nvim_create_augroup(group, { clear = false })
     vim.api.nvim_clear_autocmds({ group = group, buffer = buffnr })
 
+    local desc = "Format on write"
+    if client.name then
+        desc = string.format("Format on write using %s", client.name)
+    end
+
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = group,
         buffer = buffnr,
-        desc = "Format on write",
+        desc = desc,
         callback = function()
             vim.lsp.buf.format({
                 bufnr = buffnr,
@@ -55,23 +60,38 @@ local function autofmt(buffnr, client)
             })
         end
     })
+
+    vim.api.nvim_buf_create_user_command(
+        buffnr,
+        "Write",
+        "noautocmd write",
+        { desc = "Write without LSP formatting or other autocmds" }
+    )
 end
 
 function module.setup(packages)
-    local lsp_zero = require("lsp-zero")
+    local capabilities = require("lspconfig").util.default_config.capabilities
+    capabilities = vim.tbl_deep_extend(
+        "force",
+        capabilities,
+        require("cmp_nvim_lsp").default_capabilities()
+    )
 
-    -- lsp-zero setup
-    --
-    -- <https://lsp-zero.netlify.app/docs/getting-started.html>
-    lsp_zero.extend_lspconfig({
-        lsp_attach = function(client, buffnr)
+    vim.api.nvim_create_autocmd("LspAttach", {
+        desc = "LSP buffer-specific configurations",
+        callback = function(event)
+            local client = vim.lsp.get_client_by_id(event.data.client_id) or {}
+            local buffnr = event.buf
+
             require("config.keymap").lsp().setup(buffnr)
 
-            if client.name ~= "vtsls" then
-                autofmt(buffnr, client)
+            if client.name ~= "vtsls" and client.supports_method("textDocument/formatting") then
+                enable_autofmt(buffnr, client)
             end
-        end,
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        end
+    })
+
+    require("lsp-zero.server").ui({
         float_border = "rounded",
         sign_text = true
     })
@@ -81,7 +101,7 @@ function module.setup(packages)
 
     --- Setup an LSP using `nvim-lspconfig`.
     ---
-    --- @param lsp string An LSP server's name
+    --- @param lsp string An LSP server's name.
     local function setup_lsp(lsp)
         local success, config = pcall(require, "config.lsp_configurations." .. lsp)
         if not success then config = {} end -- Default to empty table
@@ -94,9 +114,6 @@ function module.setup(packages)
     --- Usually done so that another plugin can handle it.
     local function no_config() end
 
-    -- For more on Mason + lsp-zero:
-    --
-    -- <https://lsp-zero.netlify.app/docs/guide/integrate-with-mason-nvim.html>
     require("mason-lspconfig").setup({
         ensure_installed = packages.list.mason.lsp,
         automatic_installation = false,
@@ -119,11 +136,9 @@ function module.setup(packages)
     })
 
     vim.g.rustaceanvim = {
-        -- tools = {}, -- plugins
-        server = { -- lsp
-            capabilities = lsp_zero.get_capabilities()
+        server = {
+            capabilities = capabilities
         }
-        -- dap = {}
     }
 end
 
