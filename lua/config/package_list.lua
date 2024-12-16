@@ -107,28 +107,7 @@ local list = {
 }
 
 list.lazy = {
-    -- Tree-sitter
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        config = function()
-            local configs = require("nvim-treesitter.configs")
-
-            --- @diagnostic disable-next-line:missing-fields
-            configs.setup({
-                -- List of parsers to always have installed, the first 5 are required
-                -- List with :TSInstallInfo
-                ensure_installed = list.treesitter,
-                -- Install the above ensured parsers synchronously
-                sync_install = false,
-
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false
-                }
-            })
-        end
-    },
+    require("plugins.nvim-treesitter").with_ensure_installed(list.treesitter),
 
     -- Color scheme
     {
