@@ -299,4 +299,21 @@ function module.dap()
     })
 end
 
+--- Key mappings for shell scripts.
+---
+--- @return KeyMappingsAndSetup
+function module.sh()
+    return mappings_and_setup({
+        { "n", "<leader>r", "<cmd>split | term ./" .. vim.fn.expand("%") .. "<cr>" },
+        {
+            "n",
+            "<leader>cr",
+            function()
+                local user_input = vim.fn.input("Args: ")
+                vim.api.nvim_command("split | term ./" .. vim.fn.expand("%") .. " " .. user_input)
+            end
+        }
+    })
+end
+
 return module

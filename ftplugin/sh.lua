@@ -18,12 +18,6 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- sh.lua: configuration for writing shell scripts
+-- `sh.lua`: configuration for writing shell scripts
 
-local current_file = vim.fn.expand("%")
-
-vim.keymap.set("n", "<leader>r", "<cmd>split | term ./" .. current_file .. "<cr>")
-vim.keymap.set("n", "<leader>cr", function()
-    local user_input = vim.fn.input("Args: ")
-    vim.api.nvim_command("split | term ./" .. current_file .. " " .. user_input)
-end)
+require("config.keymap").sh().setup()
