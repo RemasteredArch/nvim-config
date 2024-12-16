@@ -26,12 +26,20 @@ local project_root = require("project_root")
 
 --- Find the project's CMake build file.
 ---
---- @return path
+--- @return path?
 local function find_cmake_file()
-    local current_file = vim.fn.expand("%")
-    local files = { "CMakeLists.txt" }
-    local case = "home"
-    return project_root.find_project_root(current_file, files, case)
+    local result = vim.fs.find("CMakeLists.txt", {
+        upwards = true,
+        stop = "home",
+        type = "file",
+        limit = 1
+    })
+
+    if vim.tbl_isempty(result) then
+        return nil
+    end
+
+    return result[1]
 end
 
 --- Builds the project.
