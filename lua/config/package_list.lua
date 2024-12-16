@@ -134,6 +134,11 @@ list.lazy = {
     {
         "catppuccin/nvim",
         name = "catppuccin",
+        opts = {
+            integrations = {
+                mason = true
+            }
+        },
         priority = 1000
     },
 
