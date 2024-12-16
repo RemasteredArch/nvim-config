@@ -18,18 +18,18 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- project_root.lua: find the search parent directories until one contains any of a list of files or you hit an end case
+-- `files.lua`: various utilities for filesystem operations.
 
 local module = {}
 
---- @alias path string A Unix-style file or directory path
+--- @alias path string A Unix-style file or directory path.
 
 --- Get the parent directory of a given path.
 ---
---- Examples:
+--- # Examples:
 ---
---- `path/to/file.ext` -> `path/to`
---- `path/to/dir` -> `path/to`
+--- - `path/to/file.ext` -> `path/to`
+--- - `path/to/dir` -> `path/to`
 ---
 --- @param path path
 --- @return path
@@ -55,7 +55,7 @@ end
 
 --- Checks whether or not a directory contains any one of a list of files.
 ---
---- Returns the path of the first files in the array that matches.
+--- Returns the path of the first file in the array that matches.
 ---
 --- @param directory path
 --- @param files path[]
