@@ -316,4 +316,62 @@ function module.sh()
     })
 end
 
+--- Key mappings for C++.
+---
+--- @return KeyMappingsAndSetup
+function module.cpp()
+    local cpp = require("util.cpp")
+    local compiler = cpp.get_compiler()
+
+    return mappings_and_setup({
+        -- Compile and run file.
+        {
+            "n",
+            "<leader>r",
+            string.format("<cmd>split | term %s %% -o %s; %s; rm %s<cr>", compiler, cpp.output,
+                cpp.output,
+                cpp.output)
+        },
+        -- Compile and run file with args.
+        {
+            "n",
+            "<leader>cr",
+            function()
+                local user_input = vim.fn.input("Args: ")
+                vim.api.nvim_command(
+                    string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, cpp.output,
+                        cpp.output,
+                        user_input,
+                        cpp.output))
+            end
+        },
+
+        -- Compile and run file with args and compiler args.
+        {
+            "n",
+            "<leader>crr",
+            function()
+                local compiler_input = vim.fn.input("Compiler Args: ")
+                local program_input = vim.fn.input("Program Args: ")
+                vim.api.nvim_command(
+                    string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, cpp.output,
+                        compiler_input,
+                        cpp.output,
+                        program_input,
+                        cpp.output))
+            end
+        },
+
+
+        -- Build CMake config (only if necessary) and compile project.
+        { "n", "<leader>ccb", cpp.cmake_build },
+
+        -- Run compiled project.
+        --
+        -- This doesn't actually need to be like this -- Ninja will detect no changes!
+        { "n", "<leader>ccr", cpp.cmake_run }
+
+    })
+end
+
 return module

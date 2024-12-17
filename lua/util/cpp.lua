@@ -18,7 +18,9 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `cpp.lua`: configuration for C++ and clangd
+-- `cpp.lua`: configuration and utilities for C++ and clangd
+
+local M = {}
 
 local paths = {}
 local generator = {}
@@ -43,7 +45,7 @@ end
 --- Builds the project.
 ---
 --- If necessary, generates the build script using CMake.
-local function cmake_build()
+function M.cmake_build()
     paths.cmake_file = find_cmake_file()
 
     if paths.cmake_file == nil then
@@ -78,13 +80,13 @@ local function cmake_build()
     vim.api.nvim_command(string.format("!cd \"%s\"; %s", paths.build_dir, generator.build_cmd))
 end
 
---- Runs the output of `cmake_build()`.
+--- Runs the output of `M.cmake_build()`.
 ---
---- If there is no output, it will trigger `cmake_build()`.
-local function cmake_run()
+--- If there is no output, it will trigger `M.cmake_build()`.
+function M.cmake_run()
     if paths.build_dir == nil or fs.directory_contains(paths.build_dir, { paths.output }) == nil then
         vim.notify("No build detecting! Building...")
-        cmake_build()
+        M.cmake_build()
     end
 
     vim.api.nvim_command(string.format("split | term cd \"%s\"; ./%s", paths.build_dir,
@@ -97,7 +99,7 @@ end
 --- Assumes that the compiler takes arguments like so: `<compiler> ExampleFile.cpp -o <output> <args>`.
 ---
 --- @return string
-local function get_compiler()
+function M.get_compiler()
     --- @type { preferred: string, other: string[] }
     local compilers = {
         preferred = "g++",
@@ -119,37 +121,4 @@ local function get_compiler()
     error("No suitable C++ compiler found!", 1)
 end
 
-local compiler = get_compiler();
-local output = "./a.out"
-
--- Compile and run file.
-vim.keymap.set("n", "<leader>r",
-    string.format("<cmd>split | term %s %% -o %s; %s; rm %s<cr>", compiler, output, output, output))
-
--- Compile and run file with args.
-vim.keymap.set("n", "<leader>cr", function()
-    local user_input = vim.fn.input("Args: ")
-    vim.api.nvim_command(
-        string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, output, output, user_input,
-            output))
-end)
-
--- Compile and run file with args and compiler args.
-vim.keymap.set("n", "<leader>crr", function()
-    local compiler_input = vim.fn.input("Compiler Args: ")
-    local program_input = vim.fn.input("Program Args: ")
-    vim.api.nvim_command(
-        string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, output, compiler_input,
-            output,
-            program_input,
-            output))
-end)
-
-
--- Build CMake config (only if necessary) and compile project.
-vim.keymap.set("n", "<leader>ccb", cmake_build)
-
--- Run compiled project.
---
--- This doesn't actually need to be like this -- Ninja will detect no changes!
-vim.keymap.set("n", "<leader>ccr", cmake_run)
+M.output = "./a.out"
