@@ -51,6 +51,7 @@ local list = {
         "lua",
         "markdown",
         "markdown_inline",
+        "nix",
         "python",
         "query",
         "regex",
@@ -80,16 +81,18 @@ local list = {
             "bashls",         -- Integrates with shellcheck
             "biome",          -- JS, TS, JSX, TSX, JSON, and JSONC
             "clangd",         -- C and C++
-            "gradle_ls",      -- Gradle build scripts
-            "html",           -- HTML
             "cssls",          -- CSS
+            "gradle_ls",      -- Gradle build scripts
             "harper_ls",      -- Spelling and grammar checking
+            "html",           -- HTML
             "jdtls",          -- Java, see also see ftplugin/java.lua
             "lemminx",        -- XML
             "lua_ls",         -- Lua, also configured by Neodev for Neovim configuration files
             "markdown_oxide", -- Markdown
             "marksman",       -- Markdown
             "neocmake",       -- CMake build scripts
+            vim.fn.executable("nix") == 1
+            and "nil" or nil, -- Nix (build fails without Nix installed, so the ternary skips it)
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
             "taplo",          -- TOML
             "tinymist",       -- Typst
