@@ -89,8 +89,6 @@ local function config_ui()
 
         local buffnr, winid = original_fn(contents, syntax, opts, ...)
 
-        vim.print(winid)
-
         -- Override the `FloatBorder` highlight group for this new floating window.
         vim.api.nvim_set_option_value(
             "winhighlight",
