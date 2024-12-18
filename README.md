@@ -12,7 +12,6 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 
 - Plugin installation with [lazy.nvim](https://github.com/folke/lazy.nvim)
 - LSP installation with [mason.nvim](https://github.com/williamboman/mason.nvim)
-- LSP configuration with [LSP Zero](https://github.com/VonHeikemen/lsp-zero.nvim)
 - Code screenshots with [nvim-silicon](https://github.com/michaelrommel/nvim-silicon)
 - Java LSP configuration with [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 - Rust LSP configuration with [rustaceanvim](https://github.com/mrcjkb/rustaceanvim)

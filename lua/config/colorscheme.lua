@@ -50,7 +50,7 @@ end
 --- Setup colorschemes.
 ---
 --- @param opts { use_light_mode: boolean?, silent: boolean? }?
---- @return boolean # Exit code, true = sucess
+--- @return boolean # Exit code, true = success
 function module.setup(opts)
     vim.api.nvim_create_user_command(
         "ColorschemeToggle",

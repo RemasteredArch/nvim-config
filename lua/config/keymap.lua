@@ -124,7 +124,6 @@ end
 ---
 --- @return table<string, cmp.Mapping>
 function module.cmp()
-    -- local cmp_action = require("lsp-zero").cmp_action() -- A few helper actions
     local cmp = require("cmp")
 
     -- Adds keybinds onto the existing preset
@@ -249,17 +248,20 @@ end
 --- @return KeyMappingsAndSetup
 function module.telescope()
     return mappings_and_setup({
-        -- Open file picker for current directory
+        -- Open file picker for current directory.
         { "n", "ff", require("telescope.builtin").find_files },
 
-        -- Open file picker for Git files
+        -- Open file picker for Git files.
         { "n", "fg", require("telescope.builtin").git_files },
 
-        -- Open live regex search
+        -- Open live regex search.
         { "n", "flg", require("telescope.builtin").live_grep },
 
-        -- Open live regex search
-        { "n", "fls", require("telescope.builtin").lsp_document_symbols }
+        -- Open live document symbol search from LSP.
+        { "n", "fls", require("telescope.builtin").lsp_document_symbols },
+
+        -- Open help tag search.
+        { "n", "flh", require("telescope.builtin").help_tags }
     })
 end
 

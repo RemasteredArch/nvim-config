@@ -69,6 +69,39 @@ local function enable_autofmt(buffnr, client)
     )
 end
 
+--- Configure options and enable hooks to properly style LSP-related UIs.
+local function config_ui()
+    vim.opt.signcolumn = "yes"
+
+    -- This could better integrate with `colorscheme.lua`.
+    local colors = require("catppuccin.palettes.mocha")
+    -- Used to set the borders of floating windows to the same color as the background of the
+    -- content of the window.
+    --
+    -- It's possible they're not *always* mantle, but `NormalFloat` does use that,
+    -- so completion pop-ups and Lazy.nvim both use it.
+    vim.api.nvim_set_hl(0, "CustomFloatBorder", { fg = colors.blue, bg = colors.mantle })
+
+    local original_fn = vim.lsp.util.open_floating_preview
+    function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+
+        local buffnr, winid = original_fn(contents, syntax, opts, ...)
+
+        vim.print(winid)
+
+        -- Override the `FloatBorder` highlight group for this new floating window.
+        vim.api.nvim_set_option_value(
+            "winhighlight",
+            "FloatBorder:CustomFloatBorder",
+            { win = winid }
+        )
+
+        return buffnr, winid
+    end
+end
+
 function module.setup(packages)
     local capabilities = require("lspconfig").util.default_config.capabilities
     capabilities = vim.tbl_deep_extend(
@@ -91,10 +124,7 @@ function module.setup(packages)
         end
     })
 
-    require("lsp-zero.server").ui({
-        float_border = "rounded",
-        sign_text = true
-    })
+    config_ui()
 
     -- Neovim-specific additions to `lua_ls`
     require("neodev").setup()

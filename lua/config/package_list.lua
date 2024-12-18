@@ -116,7 +116,15 @@ list.lazy = {
         opts = {
             integrations = {
                 mason = true
-            }
+            },
+            custom_highlights = function(colors)
+                return {
+                    FloatTitle = {
+                        link = "FloatBorder"
+                    }
+                }
+            end
+
         },
         priority = 1000
     },
@@ -168,7 +176,6 @@ list.lazy = {
 
     -- LSP/DAP
     { "williamboman/mason-lspconfig.nvim" },
-    { "VonHeikemen/lsp-zero.nvim", branch = "v4.x" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
