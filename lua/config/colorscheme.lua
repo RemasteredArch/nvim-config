@@ -85,7 +85,7 @@ function module.toggle_light_dark()
     local background = "dark"
     local colorscheme = module.scheme.dark
 
-    --- @diagnostic disable-next-line This is actually defined, see |vim.opt:get()|
+    --- @diagnostic disable-next-line:undefined-field This is actually defined, see |vim.opt:get()|.
     if vim.opt.background:get() == "dark" then
         background = "light"
         colorscheme = module.scheme.light
