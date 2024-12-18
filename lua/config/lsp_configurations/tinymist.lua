@@ -24,7 +24,7 @@ return {
     single_file_support = true,
     root_dir = function(file)
         return require("lspconfig").util.root_pattern("typst.toml", ".git")(file)
-            or vim.fn.getcwd()
+            or require("util.files").get_parent_directory(file)
     end,
     settings = {
         --- Enables a built-in formatter.
