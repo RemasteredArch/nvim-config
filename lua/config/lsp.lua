@@ -24,7 +24,7 @@ local module = {}
 
 --- Enable format on write for an LSP in a buffer.
 ---
---- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
+--- Modified from LSP Zero. Copyright © 2024 Heiker Curiel, MIT license.
 ---
 --- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#enable-format-on-save>
 --- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/35421bd/lua/lsp-zero/format.lua#L117-L166>

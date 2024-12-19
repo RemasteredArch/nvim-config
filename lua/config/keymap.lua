@@ -136,7 +136,7 @@ end
 
 --- Key mappings for LSPs.
 ---
---- Modified from lsp-zero. Copyright (c) 2024 Heiker Curiel, MIT license.
+--- Modified from LSP Zero. Copyright © 2024 Heiker Curiel, MIT license.
 ---
 --- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#default-keymaps>
 --- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/60a66bf/LICENSE>
