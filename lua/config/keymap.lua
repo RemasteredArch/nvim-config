@@ -197,22 +197,6 @@ function module.java(root_files)
             "<leader>cr",
             function() vim.api.nvim_command("split | term java % " .. vim.fn.input("Args: ")) end
         }
-
-        -- Look into binding JdtCompile, JdtJshell, and maybe JdtJol
-        -- https://github.com/mfussenegger/nvim-jdtls#usage
-
-        --[[
-      -- same but space,f[ull],r[un] (or space,f[ull],c[onfig],r[un]) for multiple files
-      -- see: <https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2Fpackage-summary.html>
-      -- see: <https://github.com/eclipse-jdtls/eclipse.jdt.ls/blob/27a1a1e/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/handlers/BuildWorkspaceHandler.java#L47>
-      -- see: incremental builds <https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fresources%2FIncrementalProjectBuilder.html&anchor=FULL_BUILD>
-      { "n", "<leader>fr", function()
-        vim.api.nvim_command("JdtCompile")
-        local bin_dir = jdtls.setup.find_root(root_files) .. "/bin"
-        vim.print(bin_dir)
-        --vim.api.nvim_command("split | term java % <cr>")
-      end }
-    ]]
     })
 end
 
@@ -221,25 +205,21 @@ end
 --- @return KeyMappingsAndSetup
 function module.rust()
     return mappings_and_setup({
-        -- Run project
-        { "n", "<leader>r", "<cmd>split | term cargo run<cr>" }, -- Maybe cd into the file's directory first
+        -- Run project.
+        --
+        -- Maybe `cd` into the file's directory first?
+        { "n", "<leader>r", "<cmd>split | term cargo run<cr>" },
         {
             "n",
             "<leader>cr",
             function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end
         },
-        -- Expand macros in a split
-        {
-            "n", "<F3>", "<cmd>RustLsp expandMacro<cr>"
-        },
-        -- Open error information from the Rust error codes index in a pop-up
-        {
-            "n", "<leader>ee", "<cmd>RustLsp explainError<cr>"
-        },
-        -- Render diagnostics as they come from Cargo
-        {
-            "n", "<leader>ed", "<cmd>RustLsp renderDiagnostic<cr>"
-        }
+        -- Expand macros in a split.
+        { "n", "<F3>", "<cmd>RustLsp expandMacro<cr>" },
+        -- Open error information from the Rust error codes index in a pop-up.
+        { "n", "<leader>ee", "<cmd>RustLsp explainError<cr>" },
+        -- Render diagnostics as they come from Cargo.
+        { "n", "<leader>ed", "<cmd>RustLsp renderDiagnostic<cr>" }
     })
 end
 
@@ -247,21 +227,23 @@ end
 ---
 --- @return KeyMappingsAndSetup
 function module.telescope()
+    local builtin = require("telescope.builtin")
+
     return mappings_and_setup({
         -- Open file picker for current directory.
-        { "n", "ff", require("telescope.builtin").find_files },
+        { "n", "ff", builtin.find_files },
 
         -- Open file picker for Git files.
-        { "n", "fg", require("telescope.builtin").git_files },
+        { "n", "fg", builtin.git_files },
 
         -- Open live regex search.
-        { "n", "flg", require("telescope.builtin").live_grep },
+        { "n", "flg", builtin.live_grep },
 
         -- Open live document symbol search from LSP.
-        { "n", "fls", require("telescope.builtin").lsp_document_symbols },
+        { "n", "fls", builtin.lsp_document_symbols },
 
         -- Open help tag search.
-        { "n", "flh", require("telescope.builtin").help_tags }
+        { "n", "flh", builtin.help_tags }
     })
 end
 
@@ -292,12 +274,14 @@ end
 ---
 --- @return KeyMappingsAndSetup
 function module.dap()
+    local dap = require("dap")
+
     return mappings_and_setup({
         { "n", "<leader>dt", require("dapui").toggle },
-        { "n", "<leader>do", require("dap").step_over },
-        { "n", "<leader>di", require("dap").step_into },
-        { "n", "<leader>dO", require("dap").step_out },
-        { "n", "<leader>db", require("dap").step_back }
+        { "n", "<leader>do", dap.step_over },
+        { "n", "<leader>di", dap.step_into },
+        { "n", "<leader>dO", dap.step_out },
+        { "n", "<leader>db", dap.step_back }
     })
 end
 
@@ -330,21 +314,29 @@ function module.cpp()
         {
             "n",
             "<leader>r",
-            string.format("<cmd>split | term %s %% -o %s; %s; rm %s<cr>", compiler, cpp.output,
+            string.format(
+                "<cmd>split | term %s %% -o %s; %s; rm %s<cr>",
+                compiler,
                 cpp.output,
-                cpp.output)
+                cpp.output,
+                cpp.output
+            )
         },
+
         -- Compile and run file with args.
         {
             "n",
             "<leader>cr",
             function()
                 local user_input = vim.fn.input("Args: ")
-                vim.api.nvim_command(
-                    string.format("split | term %s %% -o %s; %s %s; rm %s", compiler, cpp.output,
-                        cpp.output,
-                        user_input,
-                        cpp.output))
+                vim.api.nvim_command(string.format(
+                    "split | term %s %% -o %s; %s %s; rm %s",
+                    compiler,
+                    cpp.output,
+                    cpp.output,
+                    user_input,
+                    cpp.output
+                ))
             end
         },
 
@@ -355,15 +347,17 @@ function module.cpp()
             function()
                 local compiler_input = vim.fn.input("Compiler Args: ")
                 local program_input = vim.fn.input("Program Args: ")
-                vim.api.nvim_command(
-                    string.format("split | term %s %% -o %s %s; %s %s; rm %s", compiler, cpp.output,
-                        compiler_input,
-                        cpp.output,
-                        program_input,
-                        cpp.output))
+                vim.api.nvim_command(string.format(
+                    "split | term %s %% -o %s %s; %s %s; rm %s",
+                    compiler,
+                    cpp.output,
+                    compiler_input,
+                    cpp.output,
+                    program_input,
+                    cpp.output
+                ))
             end
         },
-
 
         -- Build CMake config (only if necessary) and compile project.
         { "n", "<leader>ccb", cpp.cmake_build },
@@ -374,6 +368,20 @@ function module.cpp()
         { "n", "<leader>ccr", cpp.cmake_run }
 
     })
+end
+
+--- @return LazyKeysSpec[]
+function module.nvim_rip_substitute()
+    return {
+        {
+            "<leader>rs",
+            function()
+                require("rip-substitute").sub()
+            end,
+            mode = { "n", "x" },
+            desc = " substitute with ripgrep"
+        }
+    }
 end
 
 return module

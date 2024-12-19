@@ -23,16 +23,7 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 return {
     "chrisgrieser/nvim-rip-substitute",
     cmd = "RipSubstitute",
-    keys = {
-        {
-            "<leader>rs",
-            function()
-                require("rip-substitute").sub()
-            end,
-            mode = { "n", "x" },
-            desc = " substitute with ripgrep"
-        }
-    },
+    keys = require("config.keymap").nvim_rip_substitute(),
     config = function()
         require("rip-substitute").setup({
             popupWin = {
