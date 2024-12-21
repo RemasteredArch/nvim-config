@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- lint.lua: linter configurations. Intended to be called by packages.lua
+-- `lint.lua`: linter configurations. Intended to be called by `packages.lua`.
 
 local module = {}
 

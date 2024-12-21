@@ -18,7 +18,8 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- package_list.lua: lists of all Treesitter, Mason, and Lazy packages, intended only for use in packages.lua
+-- `package_list.lua`: lists of all Tree-sitter, Mason, and Lazy packages, intended only for use in
+-- `packages.lua`.
 
 --- @class (exact) PackageListMason
 --- @field linter table<string, string[]>
@@ -85,7 +86,7 @@ local list = {
             "gradle_ls",      -- Gradle build scripts
             "harper_ls",      -- Spelling and grammar checking
             "html",           -- HTML
-            "jdtls",          -- Java, see also see ftplugin/java.lua
+            "jdtls",          -- Java, see also `ftplugin/java.lua`
             "lemminx",        -- XML
             "lua_ls",         -- Lua, also configured by Neodev for Neovim configuration files
             "markdown_oxide", -- Markdown

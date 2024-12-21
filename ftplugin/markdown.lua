@@ -18,6 +18,6 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- markdown.lua: configuration markdown editign
+-- `markdown.lua`: configuration for Markdown editing.
 
 require("config.options").spaces(2)

@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- format.lua: formatter configurations. Intended to be called by packages.lua
+-- `format.lua`: formatter configurations. Intended to be called by `packages.lua`.
 
 local module = {}
 

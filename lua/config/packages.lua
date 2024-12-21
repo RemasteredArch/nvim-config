@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- packages.lua: package lists and related helper utilities
+-- `packages.lua`: package lists and related helper utilities
 
 local module = {}
 

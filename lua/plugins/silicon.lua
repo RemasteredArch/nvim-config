@@ -18,7 +18,8 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- silicon.lua: configuration for nvim-silicon, intended to be used directly in package_list.lua
+-- `silicon.lua`: configuration for `michaelrommel/nvim-silicon`, intended to be used directly in
+-- `package_list.lua`.
 
 return {
     "michaelrommel/nvim-silicon",

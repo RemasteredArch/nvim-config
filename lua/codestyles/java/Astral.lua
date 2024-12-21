@@ -18,6 +18,6 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- Astral.lua: custom config to adhere to the code style of https://github.com/Jaxydog/Astral
+-- `Astral.lua`: custom config to adhere to the code style of <https://github.com/Jaxydog/Astral>.
 
 require("config.options").spaces(4)

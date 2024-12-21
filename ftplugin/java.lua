@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- java.lua: sets up JDTLS
+-- `java.lua`: sets up JDTLS
 
 local root_files = {
     ".classpath", -- Is this only ever in the project root?

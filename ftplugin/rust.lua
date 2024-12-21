@@ -18,6 +18,6 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- rust.lua: configuration for rust-analyzer & rustacean
+-- `rust.lua`: configuration for rust-analyzer & rustaceanvim.
 
 require("config.keymap").rust().setup()
