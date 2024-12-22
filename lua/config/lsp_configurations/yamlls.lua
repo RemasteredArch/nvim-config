@@ -25,7 +25,7 @@ return {
                 --- Enables the built-in formatter.
                 ---
                 --- @type BoolStr
-                enable = "true",
+                enable = "false",
                 --- Use single quotes (`'`) instead of double quotes (`"`).
                 ---
                 --- @type BoolStr
