@@ -9,17 +9,17 @@
   "gradle-language-server": "3.15.0",
   "harper-ls": "v0.12.0",
   "html-lsp": "4.10.0",
-  "jdtls": "v1.41.0",
+  "jdtls": "v1.43.0",
   "lemminx": "0.27.2",
   "lua-language-server": "3.13.5",
   "markdown-oxide": "v0.25.0",
   "marksman": "2024-12-18",
-  "neocmakelsp": "0.8.13",
+  "mdformat": "0.7.21",
+  "neocmakelsp": "0.8.14",
   "shellcheck": "v0.10.0",
   "taplo": "0.9.3",
   "tinymist": "v0.12.12",
   "vtsls": "0.2.6",
   "yaml-language-server": "1.15.0",
-  "yamlfmt": "v0.14.0",
-
+  "yamlfmt": "v0.14.0"
 }
