@@ -57,6 +57,7 @@ local list = {
         "query",
         "regex",
         "rust",
+        "ssh_config",
         "tmux",
         "toml",
         "typescript",
