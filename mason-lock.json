@@ -1,7 +1,7 @@
 {
-  "actionlint": "v1.7.5",
+  "actionlint": "v1.7.6",
   "astro-language-server": "2.15.4",
-  "bash-language-server": "5.4.2",
+  "bash-language-server": "5.4.3",
   "biome": "1.9.4",
   "clangd": "19.1.2",
   "codelldb": "v1.11.1",
@@ -18,8 +18,8 @@
   "neocmakelsp": "0.8.15",
   "shellcheck": "v0.10.0",
   "taplo": "0.9.3",
-  "tinymist": "v0.12.14",
-  "vtsls": "0.2.7",
+  "tinymist": "v0.12.16",
+  "vtsls": "0.2.8",
   "yaml-language-server": "1.15.0",
   "yamlfmt": "v0.14.0"
 }
