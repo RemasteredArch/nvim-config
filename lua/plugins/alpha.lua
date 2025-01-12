@@ -67,6 +67,8 @@ local function setup()
         dashboard.button("e", "  > Open Netrw", ":Explore <CR>"),
         dashboard.button("l", "󰒲  > Open Lazy", ":Lazy <CR>"),
         dashboard.button("m", "  > Open Mason", ":Mason <CR>"),
+        dashboard.button("F", "󰥩  > Open fzf", ":Telescope find_files <CR>"),
+        dashboard.button("g", "󱎸  > Open live grep", ":Telescope live_grep <CR>"),
         dashboard.button("q", "󰈆  > Quit Neovim", ":qa <CR>")
     }
 
