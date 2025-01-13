@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2025 RemasteredArch
 
 This file is part of nvim-config.
 
