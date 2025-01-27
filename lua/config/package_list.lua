@@ -60,6 +60,7 @@ local list = {
         "regex",
         "rust",
         "ssh_config",
+        "sql",
         "tmux",
         "toml",
         "typescript",
