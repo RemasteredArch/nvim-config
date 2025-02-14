@@ -68,4 +68,7 @@ require("config.cmp").setup()
 --[ DAP ]--
 require("config.dap").setup()
 
+--[ Miscellaneous user commands ]--
+require("config.commands").setup()
+
 -- spiders🕷️🕸️
