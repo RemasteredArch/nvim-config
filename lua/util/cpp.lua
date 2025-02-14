@@ -122,3 +122,5 @@ function M.get_compiler()
 end
 
 M.output = "./a.out"
+
+return M
