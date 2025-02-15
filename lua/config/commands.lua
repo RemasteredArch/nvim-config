@@ -22,7 +22,11 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
-local function normalize_whitespace()
+--- Register a command, `NormalizeWhitespace`, to replace whitespace with spaces (`U+0020`), fold
+--- successive spaces into one, and strip trailing spaces.
+---
+--- @param buffnr integer The buffer ID to register the command in.
+local function normalize_whitespace(buffnr)
     --- The 25 characters defined as whitespace.
     ---
     --- - <https://vi.stackexchange.com/a/33312>
@@ -66,18 +70,71 @@ local function normalize_whitespace()
     local replace_whitespace_with_space =
         "s/\\(" .. table.concat(whitespace_codepoints, "\\|") .. "\\)/ /g"
 
-    vim.api.nvim_create_user_command(
+    --- Reduces all instances of two or more successive spaces to one single space.
+    local flatten_repeat_spaces = "s/  \\+/ /g"
+
+    --- Strips all spaces at the end of lines.
+    ---
+    --- Assumes it will be run *after* `flatten_repeat_spaces`.
+    local strip_trailing_spaces = "s/ $//g"
+
+    vim.api.nvim_buf_create_user_command(
+        buffnr,
         "NormalizeWhitespace",
-        replace_whitespace_with_space,
+        function(opts)
+            local range = ""
+
+            -- `opts` is guaranteed to have the following, no need for a null check.
+            --
+            -- See `:help lua-guide-commands-create` or `:help nvim_create_user_command()`.
+            if opts.range == 2 then
+                range = opts.line1 .. "," .. opts.line2
+            end
+
+            for _, substitution in ipairs({
+                replace_whitespace_with_space,
+                flatten_repeat_spaces,
+                strip_trailing_spaces
+            }) do
+                -- `e` suppresses E486 "Pattern not found" from unmatched substitutions.
+                --
+                -- See `:help s_e`.
+                vim.cmd(range .. substitution .. "e")
+            end
+        end,
         {
+            desc = "Replace whitespace with spaces (`U+0020`), "
+                .. "fold successive spaces into one, and "
+                .. "strip trailing spaces",
             force = true,
             range = true
         }
     )
 end
 
-function module.setup()
-    normalize_whitespace()
+--- Register a command to write without LSP formatting or other autocmds.
+---
+--- @param buffnr integer The buffer ID to register the command in.
+local function write(buffnr)
+    vim.api.nvim_buf_create_user_command(
+        buffnr,
+        "Write",
+        "noautocmd write",
+        {
+            desc = "Write without LSP formatting or other autocmds",
+            force = true
+        }
+    )
+end
+
+--- Register miscellaneous user commands.
+---
+--- @param buffnr integer? The buffer ID to register the commands in. Defaults to current buffer.
+function module.setup(buffnr)
+    buffnr = buffnr or vim.api.nvim_get_current_buf()
+
+    normalize_whitespace(buffnr)
+    write(buffnr)
 end
 
 return module

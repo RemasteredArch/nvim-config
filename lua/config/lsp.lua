@@ -60,13 +60,6 @@ local function enable_autofmt(buffnr, client)
             })
         end
     })
-
-    vim.api.nvim_buf_create_user_command(
-        buffnr,
-        "Write",
-        "noautocmd write",
-        { desc = "Write without LSP formatting or other autocmds" }
-    )
 end
 
 --- Configure options and enable hooks to properly style LSP-related UIs.
