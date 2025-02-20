@@ -21,6 +21,14 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 -- `harper_ls.lua`: LSP configurations for Harper, a spelling and grammar checker
 
 return {
+    settings = {
+        ["harper-ls"] = {
+            linters = {
+                long_sentences = false
+            }
+        }
+    },
+
     commands = {
         --- Harper is necessarily pretty aggressive, here's something to toggle it when it gets too
         --- loud
