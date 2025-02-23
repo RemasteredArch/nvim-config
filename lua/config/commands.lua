@@ -22,11 +22,13 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
+local commands = {}
+
 --- Register a command, `NormalizeWhitespace`, to replace whitespace with spaces (`U+0020`), fold
 --- successive spaces into one, and strip trailing spaces.
 ---
 --- @param buffnr integer The buffer ID to register the command in.
-local function normalize_whitespace(buffnr)
+function commands.normalize_whitespace(buffnr)
     --- The 25 characters defined as whitespace.
     ---
     --- - <https://vi.stackexchange.com/a/33312>
@@ -115,7 +117,7 @@ end
 --- Register a command to write without LSP formatting or other autocmds.
 ---
 --- @param buffnr integer The buffer ID to register the command in.
-local function write(buffnr)
+function commands.write(buffnr)
     vim.api.nvim_buf_create_user_command(
         buffnr,
         "Write",
@@ -127,14 +129,33 @@ local function write(buffnr)
     )
 end
 
+--- @param commands table<string, function> The list of commands to register.
+--- @param buffnr integer The buffer ID to register the commands in.
+--- @return table
+local function register_all(commands, buffnr)
+    for _, register in pairs(commands) do
+        register(buffnr)
+    end
+end
+
 --- Register miscellaneous user commands.
 ---
---- @param buffnr integer? The buffer ID to register the commands in. Defaults to current buffer.
+--- @param buffnr integer? The buffer ID to register the commands in. Defaults to all buffers.
 function module.setup(buffnr)
-    buffnr = buffnr or vim.api.nvim_get_current_buf()
+    if buffnr then
+        register_all(commands, buffnr)
 
-    normalize_whitespace(buffnr)
-    write(buffnr)
+        return
+    end
+
+    vim.api.nvim_create_autocmd("BufNew", {
+        desc = "Register various miscellaneous autocommands",
+        callback = function(event)
+            register_all(commands, event.buf)
+        end
+    })
+
+    register_all(commands, vim.api.nvim_get_current_buf())
 end
 
 return module
