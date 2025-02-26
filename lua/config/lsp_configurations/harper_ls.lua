@@ -24,7 +24,7 @@ return {
     settings = {
         ["harper-ls"] = {
             linters = {
-                long_sentences = false
+                LongSentences = false
             }
         }
     },
