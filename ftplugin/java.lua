@@ -95,19 +95,20 @@ local cache_vars = {}
 
 --- Attempt to find a codestyle associated with the current project or fallback to a default style.
 ---
---- For example, if given `path/to/Astral`, it will search for `CONFIG/codestyle/java/Astral.xml`.
+--- For example, if given `"path/to/Astral"`, it will search for
+--- `"CONFIG/codestyle/java/Astral.xml"`.
 ---
---- Defaults to `CONFIG/codestyle/java/eclipse-java-google-style.xml`.
+--- Defaults to `"CONFIG/codestyle/java/eclipse-java-google-style.xml"`.
 ---
 --- @param project_root path? A path to the root directory of the current project
 --- @return path
 local function get_codestyle_path(project_root)
-    --- Search for a codestyle in `CONFIG/codestyles/java/CODESTYLE.xml`.
+    --- Search for a codestyle in `"CONFIG/codestyles/java/CODESTYLE.xml"`.
     ---
-    --- @param codestyle string The file name (without `.xml`) of the codestyle to search for
+    --- @param codestyle string The file name (without `".xml"`) of the codestyle to search for
     --- @return path codestyle_path A possible path to a codestyle definition
     local function generate_codestyle_path(codestyle)
-        return vim.fn.stdpath("config") .. "/codestyles/java/" .. codestyle .. ".xml"
+        return vim.fs.joinpath(vim.fn.stdpath("config"), "codestyles", "java", codestyle .. ".xml")
     end
 
     project_root = vim.fs.basename(project_root)
@@ -115,8 +116,9 @@ local function get_codestyle_path(project_root)
     local codestyle_path = generate_codestyle_path(project_root or "")
 
     if vim.fn.filereadable(codestyle_path) == 1 then
-        -- Project specific nvim settings, located in `CONFIG/lua/codestyles/java/PROJECT_ROOT.lua`
-        if pcall(require, "codestyles/java/" .. project_root) then
+        -- Project-specific Neovim settings, located in
+        -- `"CONFIG/lua/codestyles/java/PROJECT_ROOT.lua"`.
+        if pcall(require, "codestyles.java." .. project_root) then
             vim.notify("Using codestyle '" .. project_root .. "' and settings from project.")
         else
             vim.notify("Using codestyle '" .. project_root .. "'.")
@@ -128,8 +130,12 @@ local function get_codestyle_path(project_root)
         if vim.fn.filereadable(codestyle_path) == 1 then
             vim.notify("Using codestyle '" .. default_codestyle .. "'.")
         else
-            error(string.format("Could not find codestyle '%s' or '%s'!", default_codestyle,
-                project_root), 1)
+            error(
+                string.format(
+                    "Could not find codestyle '%s' or '%s'!", default_codestyle, project_root
+                ),
+                1
+            )
         end
     end
 
@@ -142,27 +148,28 @@ end
 --- @return { base_data_dir: path, java_agent: path, launcher_jar: path, platform_config: path, runtimes: path?, bundles: path? }
 local function get_paths()
     if cache_vars.paths then
-        vim.notify("cache_vars existed")
+        vim.notify("`cache_vars` existed")
         return cache_vars.paths
     end
 
     local paths = {}
-    paths.base_data_dir = vim.fn.stdpath("cache") .. "/nvim-jdtls/"
+    paths.base_data_dir = vim.fs.joinpath(vim.fn.stdpath("cache"), "nvim-jdtls")
 
-    local jdtls_install = require("mason-registry").get_package("jdtls"):get_install_path()
+    -- E.g., `"/home/USER/.local/share/nvim/mason/share/jdtls"`.
+    local jdtls_share = vim.fs.joinpath(vim.fn.expand("$MASON"), "share", "jdtls")
 
-    paths.java_agent = jdtls_install .. "/lombok.jar"
+    paths.java_agent = vim.fs.joinpath(jdtls_share, "lombok.jar")
 
-    paths.launcher_jar = vim.fn.glob(jdtls_install .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+    paths.launcher_jar = vim.fn.glob(
+        vim.fs.joinpath(jdtls_share, "plugins", "org.eclipse.equinox.launcher_*.jar")
+    )
 
 
-    if vim.fn.has("unix") == 1 then
-        paths.platform_config = jdtls_install .. "/config_linux"
-    elseif vim.fn.has("win32") == 1 then
-        paths.platform_config = jdtls_install .. "/config_win"
-    elseif vim.fn.has("mac") == 1 then
-        paths.platform_config = jdtls_install .. "/config_mac"
-    end
+    -- Previously, platform selection was handled in Lua, but mason.nvim's package for JDTLS
+    -- handles it:
+    --
+    -- <https://github.com/mason-org/mason-registry/blob/bc456ee/packages/jdtls/package.yaml#L42>
+    paths.platform_config = vim.fs.joinpath(jdtls_share, "config")
 
     -- paths.runtimes = ... -- If you're using multiple java runtimes
     -- paths.bundles = ... -- DAP and other JDTLS plugins
@@ -171,14 +178,17 @@ local function get_paths()
     return paths
 end
 
---- The main JTDLS setup.
+--- The main JDTLS setup.
 local function jdtls_setup()
     local jdtls = require("jdtls")
 
     local paths = get_paths()
 
-    local current_data_dir = paths.base_data_dir ..
-        vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") -- Gets parent directory (e.g. path/to/file.extension returns "to")
+    local current_data_dir = vim.fs.joinpath(
+        paths.base_data_dir,
+        -- Gets parent directory (e.g., `"path/to/file.extension"` returns `"to"`).
+        vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+    )
 
     local root_path = jdtls.setup.find_root(root_files)
 
