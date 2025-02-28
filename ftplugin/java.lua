@@ -157,13 +157,8 @@ local function get_paths()
 
     -- E.g., `"/home/USER/.local/share/nvim/mason/share/jdtls"`.
     local jdtls_share = vim.fs.joinpath(vim.fn.expand("$MASON"), "share", "jdtls")
-
     paths.java_agent = vim.fs.joinpath(jdtls_share, "lombok.jar")
-
-    paths.launcher_jar = vim.fn.glob(
-        vim.fs.joinpath(jdtls_share, "plugins", "org.eclipse.equinox.launcher_*.jar")
-    )
-
+    paths.launcher_jar = vim.fs.joinpath(jdtls_share, "plugins", "org.eclipse.equinox.launcher.jar")
 
     -- Previously, platform selection was handled in Lua, but mason.nvim's package for JDTLS
     -- handles it:
