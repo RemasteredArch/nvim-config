@@ -28,15 +28,19 @@ local module = {}
 ---
 --- # Examples:
 ---
---- - `path/to/file.ext` -> `path/to`
---- - `path/to/dir` -> `path/to`
+--- - `"path/to/file.ext"` -> `"path/to"`
+--- - `"path/to/dir"` -> `"path/to"`
 ---
 --- @param path path
 --- @return path
 function module.get_parent_directory(path)
+    -- Expand path to an absolute path.
     local physical = vim.fn.fnamemodify(path, ":p")
-    physical = physical:gsub("/$", "") -- Strip leading "/"
+    -- Strip leading forward or backslash.
+    physical = physical:gsub("[/\\]$", "")
 
+    -- Strip the last item from the path, i.e., the file or directory being pointed to, leaving the
+    -- parent directory.
     return vim.fn.fnamemodify(physical, ":h")
 end
 
@@ -44,8 +48,8 @@ end
 ---
 --- Examples:
 ---
---- `path/to/file.ext` -> `file.ext`
---- `path/to/dir` -> `dir`
+--- - `"path/to/file.ext"` -> `"file.ext"`
+--- - `"path/to/dir"` -> `"dir"`
 ---
 --- @param path path
 --- @return string
@@ -62,7 +66,7 @@ end
 --- @return path?
 function module.directory_contains(directory, files)
     for _, file in ipairs(files) do
-        local detect_file = vim.fn.glob(directory .. "/" .. file)
+        local detect_file = vim.fn.glob(vim.fs.joinpath(directory, file))
 
         if string.len(detect_file) > 0 then
             return detect_file
