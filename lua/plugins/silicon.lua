@@ -26,7 +26,7 @@ return {
     lazy = true,
     cmd = "Silicon",
     config = function()
-        local output_path = vim.fn.stdpath("data") .. "/silicon"
+        local output_path = vim.fs.joinpath(vim.fn.stdpath("data"), "silicon")
 
         if vim.fn.isdirectory(output_path) == 0 then
             vim.fn.mkdir(output_path)
@@ -40,7 +40,7 @@ return {
                 return args.line1
             end,
             output = function()
-                return output_path .. "/" .. vim.fn.expand("%:t") .. ".silicon.png"
+                return vim.fs.joinpath(output_path, vim.fn.expand("%:t") .. ".silicon.png")
             end,
             window_title = function()
                 return vim.fn.expand("%:t")
