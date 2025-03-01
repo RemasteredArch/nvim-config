@@ -56,9 +56,9 @@ function M.cmake_build()
     vim.notify("CMake build file: " .. paths.cmake_file)
 
     paths.project_root = fs.get_parent_directory(paths.cmake_file)
-    paths.build_dir = paths.project_root .. "/build"
+    paths.build_dir = vim.fs.joinpath(paths.project_root, "build")
     paths.output_file_name = "*.out"
-    paths.output = paths.build_dir .. "/" .. paths.output_file_name
+    paths.output = vim.fs.joinpath(paths.build_dir, paths.output_file_name)
 
     if vim.fn.isdirectory(paths.build_dir) == 0 then
         vim.notify("No build directory found! Creating " .. paths.build_dir)
