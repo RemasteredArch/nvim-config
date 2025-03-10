@@ -24,6 +24,12 @@ return {
     "folke/lazydev.nvim",
     ft = "lua",
     cmd = "LazyDev",
+    dependencies = {
+        {
+            "gonstoll/wezterm-types",
+            lazy = true
+        }
+    },
     opts = {
         library = {
             -- Load Luvit types when `vim.uv` is found in a line of code in the file.
