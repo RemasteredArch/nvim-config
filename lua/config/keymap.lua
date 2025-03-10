@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -18,9 +18,11 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `keymap.lua`: various key mappings
+-- `keymap.lua`: various key mappings.
 
---- @alias VimModeShort # See |modes()|
+--- @module "lazy"
+
+--- @alias VimModeShort # See |modes()|.
 --- | "n" Normal
 --- | "no" Operator-pending
 --- | "nov" Operator-pending (forced charwise |o_v|)
@@ -141,7 +143,6 @@ end
 --- - <https://lsp-zero.netlify.app/docs/language-server-configuration.html#default-keymaps>
 --- - <https://github.com/VonHeikemen/lsp-zero.nvim/blob/60a66bf/LICENSE>
 ---
---- @param buffnr integer
 --- @return KeyMappingsAndSetup
 function module.lsp()
     return mappings_and_setup({

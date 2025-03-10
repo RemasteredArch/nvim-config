@@ -204,7 +204,7 @@ list.lazy = {
     -- Language-specific
     { "mrcjkb/rustaceanvim" },
     { "mfussenegger/nvim-jdtls", lazy = true },
-    { "folke/neodev.nvim" }, -- EOL, see https://github.com/folke/lazydev.nvim
+    require("plugins.lazydev"),
     require("plugins.markdown_preview"),
     require("plugins.typst_preview")
 }

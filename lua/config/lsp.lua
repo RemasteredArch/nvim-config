@@ -118,9 +118,6 @@ function module.setup(packages)
 
     config_ui()
 
-    -- Neovim-specific additions to `lua_ls`
-    require("neodev").setup()
-
     --- Setup an LSP using `nvim-lspconfig`.
     ---
     --- @param lsp string An LSP server's name.
