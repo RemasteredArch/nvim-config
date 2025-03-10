@@ -91,8 +91,9 @@ local list = {
             "harper_ls",      -- Spelling and grammar checking
             "html",           -- HTML
             "jdtls",          -- Java, see also `ftplugin/java.lua`
+            "jsonls",         -- JSON
             "lemminx",        -- XML
-            "lua_ls",         -- Lua, also configured by Neodev for Neovim configuration files
+            "lua_ls",         -- Lua, also configured by lazydev for Neovim configuration files
             "markdown_oxide", -- Markdown
             "marksman",       -- Markdown
             "neocmake",       -- CMake build scripts
