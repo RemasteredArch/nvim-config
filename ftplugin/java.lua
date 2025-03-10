@@ -263,7 +263,7 @@ local function jdtls_setup()
         -- -- Always provide autocomplete with methods, etc. from specified packages, even if not imported
         -- completion = { favoriteStaticMembers = {} }
         contentProvider = {
-            preferred = "fernflower" -- Usually a third party decomplier ID
+            preferred = "fernflower" -- Usually a third party decompiler ID
         },
         extendedClientCapabilities = jdtls.extendedClientCapabilities,
         sources = { -- What does this mean/do?
@@ -280,6 +280,8 @@ local function jdtls_setup()
         capabilities = cache_vars.capabilities,
         root_dir = root_path,
         flags = {
+            exit_timeout = false, -- Default
+            debounce_text_changes = 150, -- Default
             allow_incremental_sync = true
         },
         init_options = {
