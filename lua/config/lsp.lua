@@ -66,7 +66,7 @@ end
 local function config_ui()
     vim.opt.signcolumn = "yes"
 
-    -- This could better integrate with `colorscheme.lua`.
+    -- This could better integrate with `colors_cheme.lua`.
     local colors = require("catppuccin.palettes.mocha")
     -- Used to set the borders of floating windows to the same color as the background of the
     -- content of the window.

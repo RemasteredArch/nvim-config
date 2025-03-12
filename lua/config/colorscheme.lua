@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `colorscheme.lua`: settings and helpers for colorschemes
+-- `color_scheme.lua`: settings and helpers for color schemes.
 
 local module = {}
 
@@ -28,17 +28,17 @@ module.scheme = {
     fallback = "slate"
 }
 
---- Sets a given colorscheme.
+--- Sets a given color scheme.
 ---
---- A `vim.cmd.colorscheme(colorscheme)` wrapper with better errors.
+--- A `vim.cmd.colorscheme(color_scheme)` wrapper with better errors.
 ---
---- @param colorscheme string The colorscheme to set
+--- @param color_scheme string The color scheme to set
 --- @param silent boolean? Whether or not to throw an error
---- @return boolean # Exit code, true = sucess
-function module.set(colorscheme, silent)
-    if not pcall(vim.cmd.colorscheme, colorscheme) then
+--- @return boolean # Exit code; `true` indicates success
+function module.set(color_scheme, silent)
+    if not pcall(vim.cmd.colorscheme, color_scheme) then
         if not silent then
-            vim.api.nvim_err_writeln("Colorscheme '" .. colorscheme .. "' was not found!")
+            vim.api.nvim_err_writeln("Color scheme '" .. color_scheme .. "' was not found!")
         end
 
         return false
@@ -47,13 +47,13 @@ function module.set(colorscheme, silent)
     return true
 end
 
---- Setup colorschemes.
+--- Setup color schemes.
 ---
 --- @param opts { use_light_mode: boolean?, silent: boolean? }?
 --- @return boolean # Exit code, true = success
 function module.setup(opts)
     vim.api.nvim_create_user_command(
-        "ColorschemeToggle",
+        "ColorSchemeToggle",
         module.toggle_light_dark,
         { force = true }
     )
@@ -65,34 +65,34 @@ function module.setup(opts)
 
     --- @type "dark" | "light"
     local background = "dark"
-    local colorscheme = module.scheme.dark
+    local color_scheme = module.scheme.dark
 
     if use_light_mode then
         background = "light"
-        colorscheme = module.scheme.light
+        color_scheme = module.scheme.light
     end
 
     vim.opt.termguicolors = true -- True color
     vim.opt.background = background
 
-    return module.set(module.scheme.fallback, silent) -- Fallback default value
-        and module.set(colorscheme, silent)           -- Preferred value
+    return module.set(module.scheme.fallback, silent) -- Fallback default value.
+        and module.set(color_scheme, silent)          -- Preferred value.
 end
 
---- Toggle between light and dark for the background and colorscheme.
+--- Toggle between light and dark for the background and color_scheme.
 function module.toggle_light_dark()
     --- @type "dark" | "light"
     local background = "dark"
-    local colorscheme = module.scheme.dark
+    local color_scheme = module.scheme.dark
 
     --- @diagnostic disable-next-line:undefined-field This is actually defined, see |vim.opt:get()|.
     if vim.opt.background:get() == "dark" then
         background = "light"
-        colorscheme = module.scheme.light
+        color_scheme = module.scheme.light
     end
 
     vim.opt.background = background
-    require("config.colorscheme").set(colorscheme)
+    module.set(color_scheme)
 end
 
 return module

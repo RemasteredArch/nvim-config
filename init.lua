@@ -23,10 +23,10 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 --[ OPTIONS ]--
 require("config.options").setup()
 
---[ Colorscheme ]--
+--[ Color scheme ]--
 -- Initial setup before package installation
 -- Might miss Catppuccin so it is retried later if it fails
-local colorscheme_success = require("config.colorscheme").setup({ silent = true })
+local color_scheme_success = require("config.colorscheme").setup({ silent = true })
 
 --[ PLUGINS ]--
 
@@ -53,8 +53,8 @@ require("lazy").setup({
     spec = packages.list.lazy
 })
 
---[ Colorscheme ]--
-if not colorscheme_success then
+--[ Color scheme ]--
+if not color_scheme_success then
     require("config.colorscheme").setup()
 end
 
