@@ -26,7 +26,7 @@ require("config.options").setup()
 --[ Color scheme ]--
 -- Initial setup before package installation
 -- Might miss Catppuccin so it is retried later if it fails
-local color_scheme_success = require("config.colorscheme").setup({ silent = true })
+local color_scheme_success = require("config.color_scheme").setup({ silent = true })
 
 --[ PLUGINS ]--
 
@@ -55,7 +55,7 @@ require("lazy").setup({
 
 --[ Color scheme ]--
 if not color_scheme_success then
-    require("config.colorscheme").setup()
+    require("config.color_scheme").setup()
 end
 
 --[ General package management ]--
