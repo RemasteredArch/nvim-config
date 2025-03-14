@@ -77,25 +77,27 @@ local function catch_dynamic_formatting_registration()
     ---
     --- @param err lsp.ResponseError? Should be `nil`.
     --- @param params lsp.RegistrationParams
-    --- @param contex lsp.HandlerContext
+    --- @param context lsp.HandlerContext
     --- @param cfg table? Should be `nil`.
     vim.lsp.handlers["client/registerCapability"] = function(
         err,
         params,
-        contex,
+        context,
         cfg
     )
         for _, registration in ipairs(params.registrations) do
             if registration.method == "textDocument/formatting" then
-                local client = assert(vim.lsp.get_client_by_id(contex.client_id))
+                local client = assert(vim.lsp.get_client_by_id(context.client_id))
 
                 for buffnr in pairs(client.attached_buffers) do
                     enable_autofmt(buffnr, client)
                 end
+
+                break
             end
         end
 
-        return original_handler(err, params, contex, cfg)
+        return original_handler(err, params, context, cfg)
     end
 end
 
