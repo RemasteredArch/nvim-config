@@ -35,8 +35,8 @@ local module = {}
 local function enable_autofmt(buffnr, client)
     local group = "autofmt"
 
-    client = client or {}
     buffnr = buffnr or vim.api.nvim_get_current_buf()
+    client = client or {}
 
     vim.api.nvim_create_augroup(group, { clear = false })
     vim.api.nvim_clear_autocmds({ group = group, buffer = buffnr })
@@ -60,6 +60,43 @@ local function enable_autofmt(buffnr, client)
             })
         end
     })
+end
+
+--- Enables format on write if the server indicates support for
+--- `textDocument/formatting` with a `client/registerCapability` request to the client.
+---
+--- <https://microsoft.github.io/language-server-protocol/specifications/specification-current/#client_registerCapability>
+local function catch_dynamic_formatting_registration()
+    local original_handler = vim.lsp.handlers["client/registerCapability"]
+
+    --- Enables format on write if the server indicates support for
+    --- `textDocument/formatting` with a `client/registerCapability` request to the client,
+    --- then calls the original handler for `client/RegisterCapability`.
+    ---
+    --- <https://microsoft.github.io/language-server-protocol/specifications/specification-current/#client_registerCapability>
+    ---
+    --- @param err lsp.ResponseError? Should be `nil`.
+    --- @param params lsp.RegistrationParams
+    --- @param contex lsp.HandlerContext
+    --- @param cfg table? Should be `nil`.
+    vim.lsp.handlers["client/registerCapability"] = function(
+        err,
+        params,
+        contex,
+        cfg
+    )
+        for _, registration in ipairs(params.registrations) do
+            if registration.method == "textDocument/formatting" then
+                local client = assert(vim.lsp.get_client_by_id(contex.client_id))
+
+                for buffnr in pairs(client.attached_buffers) do
+                    enable_autofmt(buffnr, client)
+                end
+            end
+        end
+
+        return original_handler(err, params, contex, cfg)
+    end
 end
 
 --- Configure options and enable hooks to properly style LSP-related UIs.
@@ -115,6 +152,8 @@ function module.setup(packages)
             end
         end
     })
+
+    catch_dynamic_formatting_registration()
 
     config_ui()
 
