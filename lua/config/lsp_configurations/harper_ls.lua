@@ -18,8 +18,28 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `harper_ls.lua`: LSP configurations for Harper, a spelling and grammar checker
+-- `harper_ls.lua`: LSP configurations for Harper, a spelling and grammar checker.
 
+--- Harper is necessarily pretty aggressive, this returns a callback to toggle it when it gets too
+--- loud.
+---
+--- It will detach and reattach Harper (or any other given LSP client) from the given buffer, with
+--- the intention of disabling their diagnostics.
+---
+--- @param client vim.lsp.Client The LSP client being toggled.
+--- @param buffnr integer The buffer to attach and detach the client from.
+--- @return fun() callback The callback that actually toggles the client.
+local function toggle_callback(client, buffnr)
+    return function()
+        if client.attached_buffers[buffnr] then
+            vim.lsp.buf_detach_client(buffnr, client.id)
+        else
+            vim.lsp.buf_attach_client(buffnr, client.id)
+        end
+    end
+end
+
+--- @type vim.lsp.Config
 return {
     settings = {
         ["harper-ls"] = {
@@ -29,24 +49,15 @@ return {
         }
     },
 
-    commands = {
-        --- Harper is necessarily pretty aggressive, here's something to toggle it when it gets too
-        --- loud
-        HarperToggle = {
-            function()
-                local filter = { name = "harper_ls" } --- @type vim.lsp.get_clients.Filter
-                local client = vim.lsp.get_clients(filter)[1]
-
-                local current_buffer = vim.api.nvim_get_current_buf()
-
-                -- If it is attached to the current buffer
-                if client.attached_buffers[current_buffer] then
-                    vim.lsp.buf_detach_client(current_buffer, client.id)
-                else
-                    vim.lsp.buf_attach_client(current_buffer, client.id)
-                end
-            end,
-            description = "Toggle harper_ls"
-        }
-    }
+    on_attach = function(client, buffnr)
+        vim.api.nvim_buf_create_user_command(
+            buffnr,
+            "HarperToggle",
+            toggle_callback(client, buffnr),
+            {
+                desc = "Toggle diagnostics from Harper by attaching/detaching it from the buffer",
+                force = true
+            }
+        )
+    end
 }
