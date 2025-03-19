@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `commands.lua`: miscellaneous user commands
+-- `commands.lua`: miscellaneous user commands.
 
 local module = {}
 
@@ -114,7 +114,7 @@ function commands.normalize_whitespace(buffnr)
     )
 end
 
---- Register a command to write without LSP formatting or other autocmds.
+--- Register a user command, `Write` to write without LSP formatting or other autocommands.
 ---
 --- @param buffnr integer The buffer ID to register the command in.
 function commands.write(buffnr)
@@ -129,9 +129,12 @@ function commands.write(buffnr)
     )
 end
 
+--- Registers triggers the registration function for a given buffer for every provided user
+--- command.
+---
+---
 --- @param commands table<string, function> The list of commands to register.
 --- @param buffnr integer The buffer ID to register the commands in.
---- @return table
 local function register_all(commands, buffnr)
     for _, register in pairs(commands) do
         register(buffnr)
@@ -144,12 +147,11 @@ end
 function module.setup(buffnr)
     if buffnr then
         register_all(commands, buffnr)
-
         return
     end
 
     vim.api.nvim_create_autocmd("BufNew", {
-        desc = "Register various miscellaneous autocommands",
+        desc = "Register various miscellaneous user commands",
         callback = function(event)
             register_all(commands, event.buf)
         end
