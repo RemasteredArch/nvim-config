@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -213,7 +213,10 @@ list.lazy = {
     { "mfussenegger/nvim-jdtls", lazy = true },
     require("plugins.lazydev"),
     require("plugins.markdown_preview"),
-    require("plugins.typst_preview")
+    require("plugins.typst_preview"),
+
+    -- Write files with superuser permissions.
+    { "lambdalisue/vim-suda" }
 }
 
 return list
