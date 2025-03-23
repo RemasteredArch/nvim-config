@@ -115,7 +115,7 @@ local function config_ui()
     vim.api.nvim_set_hl(0, "CustomFloatBorder", { fg = colors.blue, bg = colors.mantle })
 
     local original_fn = vim.lsp.util.open_floating_preview
-    --- @diagnostic disable-next-line:duplicate-set-field Resetting the field to insert a hook.
+    --- @diagnostic disable-next-line: duplicate-set-field Resetting the field to insert a hook.
     function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
         opts = opts or {}
         opts.border = opts.border or "rounded"

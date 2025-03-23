@@ -46,7 +46,7 @@ local function setup_caddy()
 
     --- @type table<string, ParserInfo>
     local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-    --- @diagnostic disable-next-line:missing-fields
+    --- @diagnostic disable-next-line: missing-fields
     parser_configs.caddyfile = { install_info = install_info }
 
     if not vim.tbl_contains(require("nvim-treesitter.info").installed_parsers(), "caddyfile") then
@@ -148,7 +148,7 @@ function M.with_ensure_installed(list)
         config = function()
             local configs = require("nvim-treesitter.configs")
 
-            --- @diagnostic disable-next-line:missing-fields
+            --- @diagnostic disable-next-line: missing-fields
             configs.setup({
                 --- List of parsers to always have installed.
                 ---
