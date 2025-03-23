@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -76,6 +76,8 @@ function module.setup(formatters_by_ft)
         list.stop_after_first = true
     end
 
+    formatters_by_ft.caddyfile = { "caddy_fmt" }
+
     require("conform").setup({
         formatters = {
             yamlfmt = {
@@ -84,6 +86,10 @@ function module.setup(formatters_by_ft)
                     "-formatter",
                     "indent=4,line_ending=lf,retain_line_breaks_single=true"
                 }
+            },
+            caddy_fmt = {
+                command = "caddy",
+                args = { "fmt", "-" }
             }
         },
         formatters_by_ft = formatters_by_ft,
