@@ -1,1 +1,1 @@
-require("config.options").tabs(4)
+require("config.options").tabs(4, true)

@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -22,8 +22,6 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 local module = {}
 
-local opt = vim.opt
-
 --- The default number of spaces.
 ---
 --- Used either for indentation width (when using tabs) or indent rendering width (when using
@@ -35,7 +33,13 @@ local default_spaces = 4
 --- Sets Neovim to use spaces instead of tabs.
 ---
 --- @param number_of_spaces integer?
-function module.spaces(number_of_spaces)
+--- @param register_locally boolean? Whether to register these options locally (`true`) or globally (`false` or `nil`)
+function module.spaces(number_of_spaces, register_locally)
+    local opt = vim.opt
+    if register_locally then
+        opt = vim.opt_local
+    end
+
     -- Width in columns that tab characters render as.
     opt.tabstop = 8
     opt.softtabstop = 0
@@ -46,7 +50,13 @@ end
 --- Sets Neovim to use tabs instead of spaces.
 ---
 --- @param tab_render_length integer?
-function module.tabs(tab_render_length)
+--- @param register_locally boolean? Whether to register these options locally (`true`) or globally (`false` or `nil`)
+function module.tabs(tab_render_length, register_locally)
+    local opt = vim.opt
+    if register_locally then
+        opt = vim.opt_local
+    end
+
     -- Width in columns that tab characters render as.
     opt.tabstop = tab_render_length or default_spaces
     opt.softtabstop = 0
@@ -54,7 +64,13 @@ function module.tabs(tab_render_length)
     opt.shiftwidth = 0 -- Uses `tabstop` when 0
 end
 
-function module.setup()
+--- @param register_locally boolean? Whether to register these options locally (`true`) or globally (`false` or `nil`)
+function module.setup(register_locally)
+    local opt = vim.opt
+    if register_locally then
+        opt = vim.opt_local
+    end
+
     -- Global options
     vim.g.mapleader = " " -- Sets starting key for custom keybinds.
 
@@ -66,7 +82,7 @@ function module.setup()
     -- Wrap lines on whitespace, etc. instead of at the last character that fits.
     opt.linebreak = true
 
-    module.spaces()
+    module.spaces(nil, register_locally)
 end
 
 return module

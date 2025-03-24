@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -24,6 +24,6 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 -- Tinymist formats it to this and I don't really feel like fixing that.
 --
 -- It might also just be built into Typst, I'm not sure.
-require("config.options").spaces(2)
+require("config.options").spaces(2, true)
 
 require("config.keymap").typst().setup()

@@ -20,4 +20,4 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 -- `Astral.lua`: custom config to adhere to the code style of <https://github.com/Jaxydog/Astral>.
 
-require("config.options").spaces(4)
+require("config.options").spaces(4, true)
