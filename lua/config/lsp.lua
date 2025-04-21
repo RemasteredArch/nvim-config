@@ -163,16 +163,6 @@ function module.setup(packages)
 
     config_ui()
 
-    --- Setup an LSP using `nvim-lspconfig`.
-    ---
-    --- @param lsp string An LSP server's name.
-    local function setup_lsp(lsp)
-        local success, config = pcall(require, "config.lsp_configurations." .. lsp)
-        if not success then config = {} end -- Default to empty table
-
-        require("lspconfig")[lsp].setup(config)
-    end
-
     --- Dummy function to avoid configuring an LSP.
     ---
     --- Usually done so that another plugin can handle it.
@@ -183,30 +173,12 @@ function module.setup(packages)
         automatic_installation = false,
         handlers = {
             -- Default
-            function(server_name)
-                require("lspconfig")[server_name].setup({})
-            end,
+            vim.lsp.enable,
             -- Handled by other plugins
             jdtls = no_config,
-            rust_analyzer = no_config,
-            -- Custom configuration file
-            lua_ls = setup_lsp,
-            html = setup_lsp,
-            cssls = setup_lsp,
-            harper_ls = setup_lsp,
-            yamlls = setup_lsp,
-            tinymist = setup_lsp
+            rust_analyzer = no_config
         }
     })
-
-    require("rustaceanvim")
-    vim.g.rustaceanvim = {
-        --- @type rustaceanvim.lsp.ClientOpts
-        server = {
-            -- TODO: remove
-            capabilities = capabilities
-        }
-    }
 end
 
 return module
