@@ -141,6 +141,10 @@ function module.setup(packages)
         require("cmp_nvim_lsp").default_capabilities()
     )
 
+    vim.lsp.config("*", {
+        capabilities = capabilities
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", {
         desc = "LSP buffer-specific configurations",
         callback = function(event)
@@ -195,8 +199,11 @@ function module.setup(packages)
         }
     })
 
+    require("rustaceanvim")
     vim.g.rustaceanvim = {
+        --- @type rustaceanvim.lsp.ClientOpts
         server = {
+            -- TODO: remove
             capabilities = capabilities
         }
     }
