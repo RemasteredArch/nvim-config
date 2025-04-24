@@ -20,11 +20,83 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 -- `tinymist.lua`: LSP configurations for tinymist, a Typst language server.
 
+--- Return a map of command names and their callbacks.
+---
+--- @param client vim.lsp.Client The Tinymist client to execute commands against
+--- @param buffnr integer The buffer to register the commands in
+--- @return table<string, { callback: fun(), description: string }>
+local function create_commands(client, buffnr)
+    return {
+        TypstPinMain = {
+            callback = function()
+                client:exec_cmd(
+                    {
+                        title = "pin main",
+                        command = "tinymist.pinMain",
+                        arguments = {
+                            vim.api.nvim_buf_get_name(buffnr) -- The buffer's full filename.
+                        }
+                    },
+                    { bufnr = buffnr }
+                )
+            end,
+            description = "Mark a file as the main file in a multi-file Typst project"
+        },
+        TypstUnpinMain = {
+            callback = function()
+                client:exec_cmd(
+                    {
+                        title = "unpin main",
+                        command = "tinymist.pinMain",
+                        arguments = { vim.v.null }
+                    },
+                    { bufnr = buffnr }
+                )
+            end,
+            description = "Stop marking a file as the main file in a multi-file Typst project"
+        }
+    }
+end
+
+--- Register the commands provided by `create_commands`.
+---
+--- @param client vim.lsp.Client The Tinymist client to execute commands against
+--- @param buffnr integer The buffer to register the commands in
+local function register_user_commands(client, buffnr)
+    for name, command in pairs(create_commands(client, buffnr)) do
+        vim.api.nvim_buf_create_user_command(
+            buffnr,
+            name,
+            command.callback,
+            {
+                desc = command.description,
+                force = true
+            }
+        )
+    end
+end
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    desc = "Register Tinymist commands",
+    group = vim.api.nvim_create_augroup("tinymist_cmds", { clear = true }),
+    callback = function(event)
+        local client = vim.lsp.get_client_by_id(event.data.client_id) or {}
+        local buffnr = event.buf
+
+        register_user_commands(client, buffnr)
+    end
+})
+
+--- @type vim.lsp.Config
 return {
     single_file_support = true,
-    root_dir = function(file)
-        return require("lspconfig").util.root_pattern("typst.toml", ".git")(file)
+    root_dir = function(buffnr, callback)
+        local file = vim.api.nvim_buf_get_name(buffnr)
+
+        local root_dir = require("lspconfig").util.root_pattern("typst.toml", ".git")(file)
             or require("util.files").get_parent_directory(file)
+
+        callback(root_dir)
     end,
     settings = {
         --- Enables a built-in formatter.
@@ -33,29 +105,5 @@ return {
         ---
         --- @type "typstyle" | "typstfmt" | "disable"
         formatterMode = "typstyle"
-    },
-    commands = {
-        TypstPinMain = {
-            function()
-                vim.lsp.buf.execute_command({
-                    command = "tinymist.pinMain",
-                    arguments = {
-                        vim.api.nvim_buf_get_name(0) -- Current buffer's full file name.
-                    }
-                })
-            end,
-            description = "Mark a file as the main file in a multi-file Typst project"
-        },
-        TypstUnpinMain = {
-            function()
-                vim.lsp.buf.execute_command({
-                    command = "tinymist.pinMain",
-                    -- Setting to `nil` is supposed to remove the pin, but it seems to just trigger
-                    -- an error instead.
-                    arguments = { nil }
-                })
-            end,
-            description = "Stop marking a file as the main file in a multi-file Typst project"
-        }
     }
 }
