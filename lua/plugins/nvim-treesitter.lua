@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -29,13 +29,6 @@ local M = {}
 local function setup_caddy()
     local join = vim.fs.joinpath
     local exists = vim.uv.fs_stat
-
-    -- This shouldn't be here, but I'll move it when I get around to setting up the formatter.
-    vim.filetype.add({
-        filename = {
-            ["Caddyfile"] = "caddyfile"
-        }
-    })
 
     --- @type InstallInfo
     local install_info = {

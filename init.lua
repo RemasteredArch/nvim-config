@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2024-2025 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -22,6 +22,8 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 --[ OPTIONS ]--
 require("config.options").setup()
+require("config.filetype").setup()
+require("config.keymap").diagnostics().setup()
 
 --[ Color scheme ]--
 -- Initial setup before package installation

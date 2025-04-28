@@ -81,11 +81,15 @@ local list = {
         linter = {
             yaml = {
                 "actionlint" -- GitHub Actions workflow files
+            },
+            sql = {
+                "sqruff"
             }
         },
         formatter = {
             markdown = { "mdformat" },
-            yaml = { "yamlfmt" }
+            yaml = { "yamlfmt" },
+            sql = { "sqruff" }
         },
         lsp = {
             "astro",          -- Astro web framework

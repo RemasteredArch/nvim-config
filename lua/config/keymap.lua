@@ -122,6 +122,19 @@ local function mappings_and_setup(mappings)
     return { mapping = mappings, setup = setup }
 end
 
+--- Key mappings related to diagnostics.
+---
+--- These used to be a part of the LSP keybindings, but this would neglect filetypes with only
+--- linters. It's now a generic item.
+---
+--- @return KeyMappingsAndSetup
+function module.diagnostics()
+    return mappings_and_setup({
+        -- Expand diagnostic in a floating window
+        { "n", "<leader>gl", vim.diagnostic.open_float }
+    })
+end
+
 --- Key mappings for nvim-cmp.
 ---
 --- @return table<string, cmp.Mapping>
@@ -148,8 +161,6 @@ function module.lsp()
     return mappings_and_setup({
         -- Open documentation in a floating window
         { "n", "K", vim.lsp.buf.hover },
-        -- Expand diagnostic in a floating window
-        { "n", "<leader>gl", vim.diagnostic.open_float },
         -- Go to definition
         { "n", "gd", vim.lsp.buf.definition },
         -- Go to declaration
