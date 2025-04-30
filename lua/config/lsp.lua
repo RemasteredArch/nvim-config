@@ -153,7 +153,7 @@ function module.setup(packages)
 
             require("config.keymap").lsp().setup(buffnr)
 
-            if client.name ~= "vtsls" and client:supports_method("textDocument/formatting") then
+            if client.name ~= "vtsls" and client.name ~= "sqls" and client:supports_method("textDocument/formatting") then
                 enable_autofmt(buffnr, client)
             end
         end

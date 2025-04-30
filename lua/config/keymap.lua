@@ -396,4 +396,15 @@ function module.nvim_rip_substitute()
     }
 end
 
+--- Keybindings for [sqls](https://github.com/sqls-server/sqls), a SQL language server.
+---
+--- Depends on [sqls.nvim](https://github.com/nanotee/sqls.nvim/).
+---
+--- @return KeyMappingsAndSetup
+function module.sqls()
+    return mappings_and_setup({
+        { "n", "<leader>r", "<cmd>SqlsExecuteQuery<cr>" }
+    })
+end
+
 return module

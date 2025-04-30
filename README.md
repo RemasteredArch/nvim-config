@@ -54,6 +54,9 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
     on [`openjdk-21-jdk`](https://packages.ubuntu.com/noble/openjdk-21-jdk) from the Ubuntu 24.04 repositories
   - This project is not tested on Windows,
     but [Eclipse Temurin](https://adoptium.net/) is my go-to OpenJDK distribution on Windows
+- [Go](https://go.dev/) toolchain
+  - [sqls](https://github.com/sqls-server/sqls)
+    currently [needs Go >= 1.21](https://github.com/sqls-server/sqls/blob/efe7f66d16e9479e242d3876c2a4a878ee190568/go.mod#L3)
 - [Ripgrep](https://github.com/burntsushi/ripgrep)
 - A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
 - Neovim 0.11.0

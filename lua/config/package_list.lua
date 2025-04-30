@@ -110,6 +110,7 @@ local list = {
             vim.fn.executable("nix") == 1
             and "nil" or nil, -- Nix (build fails without Nix installed, so the ternary skips it)
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
+            "sqls",           -- SQL
             "taplo",          -- TOML
             "tinymist",       -- Typst
             "vtsls",          -- JS and TS
@@ -218,6 +219,10 @@ list.lazy = {
     require("plugins.lazydev"),
     require("plugins.markdown_preview"),
     require("plugins.typst_preview"),
+    {
+        "nanotee/sqls.nvim",
+        ft = { "sql" }
+    },
 
     -- Write files with superuser permissions.
     { "lambdalisue/vim-suda" }
