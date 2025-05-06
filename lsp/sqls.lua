@@ -35,6 +35,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Register sqls configurations",
     group = vim.api.nvim_create_augroup("sqls_config", { clear = true }),
     callback = function(event)
+        local client = vim.lsp.get_client_by_id(event.data.client_id) or {}
+
+        if client.name ~= "sqls" then
+            return
+        end
+
         require("config.keymap").sqls().setup(event.buf)
     end
 })
