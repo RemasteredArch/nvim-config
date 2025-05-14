@@ -11,7 +11,7 @@
   "html-lsp": "4.10.0",
   "jdtls": "v1.46.1",
   "json-lsp": "4.10.0",
-  "lemminx": "0.28.1",
+  "lemminx": "0.29.0",
   "lua-language-server": "3.14.0",
   "markdown-oxide": "v0.25.1",
   "marksman": "2024-12-18",
@@ -23,6 +23,6 @@
   "taplo": "0.9.3",
   "tinymist": "v0.13.10",
   "vtsls": "0.2.8",
-  "yaml-language-server": "1.17.0",
-  "yamlfmt": "v0.16.0"
+  "yamlfmt": "v0.16.0",
+
 }
