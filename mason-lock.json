@@ -7,7 +7,7 @@
   "codelldb": "v1.11.4",
   "css-lsp": "4.10.0",
   "gradle-language-server": "3.15.0",
-  "harper-ls": "v0.29.1",
+  "harper-ls": "v0.34.1",
   "html-lsp": "4.10.0",
   "jdtls": "v1.46.1",
   "json-lsp": "4.10.0",
@@ -21,8 +21,8 @@
   "sqls": "v0.2.28",
   "sqruff": "v0.25.28",
   "taplo": "0.9.3",
-  "tinymist": "v0.13.10",
+  "tinymist": "v0.13.12",
   "vtsls": "0.2.8",
-  "yamlfmt": "v0.16.0",
-
+  "yaml-language-server": "1.18.0",
+  "yamlfmt": "v0.16.0"
 }
