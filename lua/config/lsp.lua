@@ -153,6 +153,16 @@ function module.setup(packages)
 
             require("config.keymap").lsp().setup(buffnr)
 
+            -- Enable LSP-based folding if the server supports it.
+            if client:supports_method("textDocument/foldingRange") then
+                local window = vim.api.nvim_get_current_win()
+                assert(
+                    vim.api.nvim_win_get_buf(window) == buffnr,
+                    "tried to configure an unfocused window"
+                )
+                vim.wo[window][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+            end
+
             if client.name ~= "vtsls" and client.name ~= "sqls" and client:supports_method("textDocument/formatting") then
                 enable_autofmt(buffnr, client)
             end

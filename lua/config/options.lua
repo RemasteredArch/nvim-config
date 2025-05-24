@@ -64,6 +64,23 @@ function module.tabs(tab_render_length, register_locally)
     opt.shiftwidth = 0 -- Uses `tabstop` when 0
 end
 
+--- Configure folding.
+---
+--- @param opt table `vim.opt` or `vim.opt_local`
+local function setup_folding(opt)
+    -- We default to Tree-sitter formatting, but `/lua/config/lsp.lua` will enable LSP folding.
+    opt.foldmethod = "expr"
+    opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+    -- Default to everything unfolded.
+    --
+    -- Attempting to fold with `zf` will spit out an error: "E350: Cannot create fold with current
+    -- 'foldmethod'". However, it seems that because these folds exist and this setting just makes
+    -- them default to being open, one can simply _close_ them (instead of _creating_ them) with
+    -- `zc`.
+    opt.foldlevel = 99
+end
+
 --- @param register_locally boolean? Whether to register these options locally (`true`) or globally (`false` or `nil`)
 function module.setup(register_locally)
     local opt = vim.opt
@@ -81,6 +98,8 @@ function module.setup(register_locally)
 
     -- Wrap lines on whitespace, etc. instead of at the last character that fits.
     opt.linebreak = true
+
+    setup_folding(opt)
 
     module.spaces(nil, register_locally)
 end
