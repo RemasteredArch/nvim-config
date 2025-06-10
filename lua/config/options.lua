@@ -72,6 +72,11 @@ local function setup_folding(opt)
     opt.foldmethod = "expr"
     opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
+    -- Do nothing to buffer text of first line except a background highlight.
+    opt.foldtext = ""
+    -- Spaces (instead of dots) filling the blank space to the right of the line.
+    opt.fillchars = "fold: "
+
     -- Default to everything unfolded.
     --
     -- Attempting to fold with `zf` will spit out an error: "E350: Cannot create fold with current
