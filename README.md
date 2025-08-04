@@ -59,10 +59,11 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
     currently [needs Go >= 1.21](https://github.com/sqls-server/sqls/blob/efe7f66d16e9479e242d3876c2a4a878ee190568/go.mod#L3)
 - [Ripgrep](https://github.com/burntsushi/ripgrep)
 - A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
-- Neovim 0.11.0
+- Neovim 0.12.0
   - As of Telescope commit `85922dd`,
     Neovim [must be compiled with LuaJIT](https://github.com/nvim-telescope/telescope.nvim/blob/85922dd/README.md#getting-started)
-  - This project is built and used on [Neovim Unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) on Ubuntu 24.04
+  - This project is built and used on Neovim nightly on Ubuntu 24.04
+    using [bob](https://github.com/MordechaiHadad/bob).
 - [`fd`](https://github.com/sharkdp/fd) (optional)
 
 ### Manual installation

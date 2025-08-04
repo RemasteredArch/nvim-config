@@ -127,21 +127,17 @@ has_font "CaskaydiaCove" || {
 
 
 has "nvim" || {
-    announce "Adding the Neovim nightly PPA"
-    sudo add-apt-repository ppa:neovim-ppa/unstable \
-    && sudo apt update
+    announce "Installing the bob version manager"
+    cargo install bob-nvim
 
+    announce "Installing Neovim nightly"
+    bob use nightly
 
-    announce "Installing and updating Neovim"
-    sudo apt install neovim
+    announce "Installing plugins and packages"
     nvim --headless "+Lazy! sync" +qa
     nvim --headless "+MasonInstallAll" +qa
     nvim --headless "+TSInstallAll" +qa
 }
-
-
-announce "Updating again"
-sudo apt update && sudo apt upgrade
 
 
 [ -d "${dirs[xdg_config]}/nvim}" ] || {
