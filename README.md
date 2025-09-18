@@ -57,39 +57,41 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 - [Go](https://go.dev/) toolchain
   - [sqls](https://github.com/sqls-server/sqls)
     currently [needs Go >= 1.21](https://github.com/sqls-server/sqls/blob/efe7f66d16e9479e242d3876c2a4a878ee190568/go.mod#L3)
+- Python 3, including virtual environments
+  - Not sure what minor version exactly,
+    but what the Ubuntu 24.04 packages `python3` and `python3-venv` provide something new enough.
 - [Ripgrep](https://github.com/burntsushi/ripgrep)
-- A POSIX-compatible shell (provides `sh`), Bash, curl, wget, tar, gzip, and unzip
+- A POSIX-compatible shell (provides `sh`), Bash, Git, curl, GNU Wget, GNU tar, gzip, and unzip
 - Neovim 0.12.0
   - As of Telescope commit `85922dd`,
     Neovim [must be compiled with LuaJIT](https://github.com/nvim-telescope/telescope.nvim/blob/85922dd/README.md#getting-started)
   - This project is built and used on Neovim nightly on Ubuntu 24.04
     using [bob](https://github.com/MordechaiHadad/bob).
-- [`fd`](https://github.com/sharkdp/fd) (optional)
+- [`fd`](https://github.com/sharkdp/fd),
+  [`inotifywait`](https://github.com/inotify-tools/inotify-tools)
+  (optional, but significantly improve performance)
 
 ### Manual installation
 
-- Assumes `$XDG_CONFIG_HOME` == `~/.config`.
-  Adjust accordingly if this is otherwise
-- Assumes `~/.config/nvim` does not already exist.
+- Assumes `$XDG_CONFIG_HOME/nvim` does not already exist.
   If it does, remove it (preferably with a backup) before installation
-- Assumes that you have installed the [requirements](#requirements)
+  or override it with `$NVIM_APPNAME`.
+- Assumes that you have installed the [requirements](#requirements).
 
 ```bash
 mkdir ~/.config
-cd ~/.config
-git clone https://github.com/RemasteredArch/nvim-config.git nvim/
+git clone 'https://github.com/RemasteredArch/nvim-config.git' "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 ```
 
 ### Automatic installation
 
-- Designed for Ubuntu 24.04, but would probably work on other versions or other `apt`-based distributions
-- This is currently COMPLETELY UNTESTED!
-  Feel free to use it as a reference, but it is currently only a part of this repository in order to facilitate development
+- Designed for Ubuntu 24.04, but _might_ work on other versions or other `apt`-based distributions
+- This is only lightly tested!
+  You should probably read the source code before running it.
 
 ```bash
-# Again, this is COMPLETELY untested!
-curl https://raw.githubusercontent.com/RemasteredArch/nvim-config/main/setup.sh | bash
-# DO NOT RUN THIS if you are not certain that it is okay!
+# Practice good hygiene, DO NOT RUN THIS if you are not certain that it is okay!
+. <(curl -fsSL 'https://raw.githubusercontent.com/RemasteredArch/nvim-config/main/setup.sh')
 ```
 
 ## License
