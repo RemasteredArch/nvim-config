@@ -39,6 +39,7 @@ local list = {
         "astro",
         "bash",
         "c",
+        "caddy",
         "cmake",
         "cpp",
         "css",
