@@ -97,7 +97,9 @@ local list = {
         formatter = {
             markdown = { "mdformat" },
             yaml = { "yamlfmt" },
-            sql = { "sqruff" }
+            sql = { "sqruff" },
+            bash = { "shfmt" },
+            sh = { "shfmt" }
         },
         lsp = {
             "astro",          -- Astro web framework
