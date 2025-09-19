@@ -45,6 +45,7 @@ local list = {
         "css",
         "dart",
         "diff",
+        "dockerfile",
         "editorconfig",
         "git_config",
         "git_rebase",
@@ -88,6 +89,9 @@ local list = {
             },
             sql = {
                 "sqruff"
+            },
+            dockerfile = {
+                "hadolint"
             }
         },
         formatter = {
