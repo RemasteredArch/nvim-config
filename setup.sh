@@ -101,7 +101,7 @@
         # `v0.12.0-dev-1234+gff777f9a8`. Strips all other text from the matching line and uses `-n`
         # and `/p` print only the matching lines, then returns only the first matching line.
         sed -n 's/.*NVIM \(v[0-9]\+.[0-9]\+.[0-9]\+\(-dev-[0-9]\++[a-z0-9]\+\)\?\).*/\1/p' \
-            | head -n 1S
+            | head -n 1
     }
 
     declare -a maybe_sudo=('sudo')
