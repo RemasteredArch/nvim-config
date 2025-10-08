@@ -181,7 +181,7 @@ list.lazy = {
     require("plugins.alpha"),
 
     -- Package management
-    { "williamboman/mason.nvim" },
+    { "mason-org/mason.nvim" },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         lazy = true
@@ -205,7 +205,7 @@ list.lazy = {
     },
 
     -- LSP/DAP
-    { "williamboman/mason-lspconfig.nvim" },
+    { "mason-org/mason-lspconfig.nvim" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },

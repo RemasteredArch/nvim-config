@@ -173,20 +173,10 @@ function module.setup(packages)
 
     config_ui()
 
-    --- Dummy function to avoid configuring an LSP.
-    ---
-    --- Usually done so that another plugin can handle it.
-    local function no_config() end
-
     require("mason-lspconfig").setup({
         ensure_installed = packages.list.mason.lsp,
-        automatic_installation = false,
-        handlers = {
-            -- Default
-            vim.lsp.enable,
-            -- Handled by other plugins
-            jdtls = no_config,
-            rust_analyzer = no_config
+        automatic_enable = {
+            exclude = { "jdtls", "rust_analyzer" }
         }
     })
 end
