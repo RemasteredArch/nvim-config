@@ -214,6 +214,12 @@ EOF
         cargo install silicon
     }
 
+    has 'tree-sitter' || {
+        announce 'Installing the Tree-sitter CLI'
+
+        cargo install 'tree-sitter-cli'
+    }
+
     has_font 'Noto Color Emoji' || "${maybe_sudo[@]}" apt install 'fonts-noto-color-emoji'
 
     has_font 'CaskaydiaCove' || {
