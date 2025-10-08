@@ -34,6 +34,7 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
   - [`g++`](https://gcc.gnu.org/) or [`clang++`](https://clang.llvm.org/)
     (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
   - [Ninja](https://ninja-build.org/) (configurable, see [`ftplugin/cpp.lua`](./ftplugin/cpp.lua))
+- A [C compiler](https://docs.rs/cc/latest/cc/#compile-time-requirements)
 - [Node.js](https://nodejs.org/en)
   - [npm](https://www.npmjs.com/)
   - This config is built and used with node.js v20.12.2
@@ -67,6 +68,8 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
     Neovim [must be compiled with LuaJIT](https://github.com/nvim-telescope/telescope.nvim/blob/85922dd/README.md#getting-started)
   - This project is built and used on Neovim nightly on Ubuntu 24.04
     using [bob](https://github.com/MordechaiHadad/bob).
+- [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter/tree/master/crates/cli)
+  (currently 0.25.0 or later)
 - [`fd`](https://github.com/sharkdp/fd),
   [`inotifywait`](https://github.com/inotify-tools/inotify-tools)
   (optional, but significantly improve performance)

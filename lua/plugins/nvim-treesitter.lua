@@ -20,28 +20,35 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 
 -- `nvim-treesitter.lua`: `nvim-treesitter/nvim-treesitter` configuration.
 
+--- @require "lazy"
+
 local M = {}
 
+--- @param list string[] List of parsers to always have installed. List with `:TSInstallInfo`.
+--- @return LazyPluginSpec
 function M.with_ensure_installed(list)
     return {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main",
         build = ":TSUpdate",
         config = function()
-            local configs = require("nvim-treesitter.configs")
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("register_treesitter", { clear = false }),
+                desc = "register Tree-sitter features in new buffers",
+                callback = function(args)
+                    -- If a parser doesn't exist for this filetype, don't try to register it.
+                    if not pcall(vim.treesitter.start) then
+                        return
+                    end
 
-            --- @diagnostic disable-next-line: missing-fields
-            configs.setup({
-                --- List of parsers to always have installed.
-                ---
-                --- List with `:TSInstallInfo`.
-                ensure_installed = list,
-                --- Install the above ensured parsers (a)synchronously.
-                sync_install = false,
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false
-                }
+                    -- This probably assumes that every parser can do folding and indenting, which
+                    -- is not true.
+                    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                    vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+                end
             })
+
+            require("nvim-treesitter").install(list)
 
             -- Register the Caddyfile parser for the `caddyfile` filetype in addition to the `caddy`
             -- filetype.
