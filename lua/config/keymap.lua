@@ -141,10 +141,11 @@ end
 function module.cmp()
     local cmp = require("cmp")
 
-    -- Adds keybinds onto the existing preset
+    -- Adds keybinds onto the existing preset.
     return cmp.mapping.preset.insert({
-        -- Selects and confirms the current item
-        -- Use select = false to require manual selection
+        -- Selects and confirms the current item.
+        --
+        -- Use `select = false` to require manual selection.
         ["<Tab>"] = cmp.mapping.confirm({ select = true })
     })
 end
