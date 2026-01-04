@@ -78,7 +78,7 @@
         [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
         announce 'Installing latest Node.js LTS'
-        nvm install --lts
+        nvm install --lts --latest-npm
     }
 
     install_nvim() {
@@ -188,6 +188,17 @@ EOF
         install_node
     fi
 
+    has 'npm' || {
+        announce 'Installing npm'
+
+        if has 'nvm'; then
+            nvm install-latest-npm
+        else
+            echo 'nvm not installed, please either install nvm first or install npm manually!' >&2
+            exit 1
+        fi
+    }
+
     has 'cargo' || {
         announce "Installing Rust"
         curl --proto '=https' --tlsv1.2 --fail --silent --show-error 'https://sh.rustup.rs' | sh
@@ -212,6 +223,18 @@ EOF
         # shellcheck disable=SC2086
         "${maybe_sudo[@]}" apt install ${packages[silicon_build_dependencies]}
         cargo install silicon
+
+        clipboard_utility_x11='xclip'
+        clipboard_utility_wayland='wl-clipboard'
+        if [ "${XDG_SESSION_TYPE:-}" = 'wayland' ]; then
+            announce "Installing \`$clipboard_utility_wayland\`"
+            echo "Detected Wayland, but you should also install \`$clipboard_utility_x11\` if you use X11"
+            "${maybe_sudo[@]}" apt install "$clipboard_utility_wayland"
+        else
+            announce "Installing \`$clipboard_utility_x11\`"
+            echo "Assuming X11, but you should also install \`$clipboard_utility_wayland\` if you use Wayland"
+            "${maybe_sudo[@]}" apt install "$clipboard_utility_x11"
+        fi
     }
 
     has 'tree-sitter' || {

@@ -28,6 +28,8 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 ### Requirements
 
 - [Silicon](https://github.com/Aloxaf/silicon)
+  - [`xclip`](https://github.com/astrand/xclip) for Linux on X11
+    or [`wl-copy`](https://github.com/bugaevc/wl-clipboard) for Linux on Wayland
   - [Caskaydia Cove](https://github.com/eliheuer/caskaydia-cove)
   - [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)
 - [CMake](https://cmake.org/)
@@ -38,7 +40,7 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 - [Node.js](https://nodejs.org/en)
   - [npm](https://www.npmjs.com/)
   - This config is built and used with node.js v20.12.2
-    (installed through [`nvm install --lts`](https://github.com/nvm-sh/nvm)),
+    (installed through [`nvm install --lts --latest-npm`](https://github.com/nvm-sh/nvm)),
     but older or newer versions would likely work fine
 - [Rust](https://www.rust-lang.org/) toolchain
   - Cargo
