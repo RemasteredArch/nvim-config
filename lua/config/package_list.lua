@@ -224,7 +224,7 @@ list.lazy = {
     },
 
     -- Language-specific
-    { "mrcjkb/rustaceanvim" },
+    { "mrcjkb/rustaceanvim", lazy = false },
     { "mfussenegger/nvim-jdtls", lazy = true },
     require("plugins.lazydev"),
     require("plugins.markdown_preview"),

@@ -27,3 +27,35 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 require("config.options").spaces(2, true)
 
 require("config.keymap").typst().setup()
+
+vim.api.nvim_buf_create_user_command(
+    vim.api.nvim_get_current_buf(),
+    "SubstituteAll",
+    function(opts)
+        local range = ""
+
+        -- `opts` is guaranteed to have the following, no need for a null check.
+        --
+        -- See `:help lua-guide-commands-create` or `:help nvim_create_user_command()`.
+        if opts.range == 2 then
+            range = opts.line1 .. "," .. opts.line2
+        end
+
+        -- `opts` is guaranteed to have the following, no need for a null check.
+        for _, substitution in ipairs(opts.fargs) do
+            -- `e` suppresses E486 "Pattern not found" from unmatched substitutions.
+            --
+            -- See `:help s_e`.
+            vim.cmd(range .. substitution .. "e")
+        end
+    end,
+    {
+        desc = "Replace a series of patterns with values",
+        force = true,
+        range = true,
+        -- Ideally, we'd use `1`, which indicates that it needs exactly one argument, which can
+        -- include spaces. This would allow for our own parsing. Unfortunately, I don't have the time
+        -- to do string parsing in Lua. Escape your whitespace for now, I guess.
+        nargs = "+"
+    }
+)

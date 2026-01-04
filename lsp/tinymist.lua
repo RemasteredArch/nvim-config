@@ -104,6 +104,13 @@ return {
         --- Default `"disable"`.
         ---
         --- @type "typstyle" | "typstfmt" | "disable"
-        formatterMode = "typstyle"
+        formatterMode = "typstyle",
+        -- A soft limit of characters per line, alike to Prettier's philosophy:
+        -- <https://prettier.io/docs/options.html#print-width>.
+        formatterPrintWidth = "100",
+        -- Never wrap prose. Allows for [Semantic Line Breaks](https://sembr.org/).
+        --
+        -- @type BoolStr
+        formatterProseWrap = "false",
     }
 }
