@@ -117,8 +117,8 @@ local list = {
             "markdown_oxide", -- Markdown
             "marksman",       -- Markdown
             "neocmake",       -- CMake build scripts
-            vim.fn.executable("nix") == 1
-            and "nil" or nil, -- Nix (build fails without Nix installed, so the ternary skips it)
+            -- vim.fn.executable("nix") == 1
+            -- and "nil" or nil, -- Nix (build fails without Nix installed, so the ternary skips it)
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
             "sqls",           -- SQL
             "taplo",          -- TOML
