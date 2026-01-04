@@ -26,7 +26,7 @@ return {
     cmd = "LazyDev",
     dependencies = {
         {
-            "gonstoll/wezterm-types",
+            "DrKJeff16/wezterm-types",
             lazy = true
         }
     },
