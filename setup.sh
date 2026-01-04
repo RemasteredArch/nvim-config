@@ -20,6 +20,10 @@
 # Perform the actual install process in a subshell to avoid setting variables in the host. Also has
 # the effect of not allowing the sensitive parts of this script to execute without the whole script
 # being downloaded.
+#
+# SC2030 (variable modified in subshell) _could_ be disabled for this subshell, but I want to
+# disable it on a case-by-case basis to remind myself to not accidentally set something in a nested
+# subshell instead of this subshell.
 (
     set -euo pipefail
 
@@ -73,8 +77,11 @@
         announce 'Installing nvm'
 
         curl --fail --location 'https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh' | bash
+        # shellcheck disable=SC2030
         export NVM_DIR="$HOME/.nvm"
+        # shellcheck disable=SC1091
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+        # shellcheck disable=SC1091
         [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
         announce 'Installing latest Node.js LTS'
@@ -87,6 +94,7 @@
 
         announce 'Installing Neovim nightly'
         bob use nightly
+        # shellcheck disable=SC2030
         export PATH="${dirs[xdg_data]}/bob/nvim-bin:$PATH"
 
         announce 'Installing plugins and packages'
@@ -202,6 +210,7 @@ EOF
     has 'cargo' || {
         announce "Installing Rust"
         curl --proto '=https' --tlsv1.2 --fail --silent --show-error 'https://sh.rustup.rs' | sh
+        # shellcheck disable=1091
         . "$HOME/.cargo/env"
     }
 
@@ -245,6 +254,7 @@ EOF
 
     has_font 'Noto Color Emoji' || "${maybe_sudo[@]}" apt install 'fonts-noto-color-emoji'
 
+    # TO-DO: this didn't work, it installs anyways!
     has_font 'CaskaydiaCove' || {
         announce 'Installing Caskaydia Cove Nerd Font'
         cd "${dirs[temp_dir]}" || exit
@@ -312,11 +322,19 @@ EOF
     exit 0
 )
 
-# Outside of the subshell, set the relevant environment variables again. These should have been
-# set be the relevant tools already using Bash's configuration files, but setting these again
-# allows the host to start Neovim without launching a new shell.
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-export PATH="${XDG_DATA_HOME:-"$HOME/.local/share"}/bob/nvim-bin:$PATH"
-. "$HOME/.cargo/env"
+# Outside of the subshell, set the relevant environment variables again. These should have been set
+# by the relevant tools already using Bash's configuration files, but setting these again allows the
+# host to start Neovim without launching a new shell.
+#
+# SC2031 (environment variable set in a subshell) can be ignored because this script is supposed to
+# be sourced, not executed as a subshell. I just have to be careful not to spawn a subshell in the
+# process.
+#
+# shellcheck disable=SC2031,1091
+{
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+    export PATH="${XDG_DATA_HOME:-"$HOME/.local/share"}/bob/nvim-bin:$PATH"
+    . "$HOME/.cargo/env"
+}
