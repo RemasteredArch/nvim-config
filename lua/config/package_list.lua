@@ -58,7 +58,6 @@ local list = {
         "java",
         "javascript",
         "json",
-        "jsonc",
         "just",
         "kotlin",
         "lua",

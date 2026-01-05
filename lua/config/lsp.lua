@@ -101,6 +101,7 @@ local function catch_dynamic_formatting_registration()
     end
 end
 
+-- TO-DO: `nvim-cmp` supports the `winborder` option now. How much of this is useful?
 --- Configure options and enable hooks to properly style LSP-related UIs.
 local function config_ui()
     vim.opt.signcolumn = "yes"
