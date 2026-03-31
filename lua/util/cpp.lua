@@ -102,8 +102,8 @@ end
 function M.get_compiler()
     --- @type { preferred: string, other: string[] }
     local compilers = {
-        preferred = "g++",
-        other = { "clang++" }
+        preferred = "clang++",
+        other = { "g++" }
     }
 
     if vim.fn.executable(compilers.preferred) == 1 then
