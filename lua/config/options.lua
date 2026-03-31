@@ -68,7 +68,7 @@ end
 ---
 --- @param opt table `vim.opt` or `vim.opt_local`
 local function setup_folding(opt)
-    -- We default to Tree-sitter formatting, but `/lua/config/lsp.lua` will enable LSP folding.
+    -- We default to Tree-sitter folding, but `/lua/config/lsp.lua` will enable LSP folding.
     opt.foldmethod = "expr"
     opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
