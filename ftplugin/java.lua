@@ -207,6 +207,8 @@ local function jdtls_setup()
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
         "-Dlog.protocol=true",
         "-Dlog.level=ALL",
+        -- Stop dumping `.settings`, `.project`, `.classpath`, and `bin/` at the project root.
+        "-Djava.import.generatesMetadataFilesAtProjectRoot=false",
 
         "-Xmx1g",
 
@@ -254,7 +256,7 @@ local function jdtls_setup()
         format = {
             enabled = true,
             settings = {
-                profile = get_codestyle_path(root_path)
+                url = get_codestyle_path(root_path),
             }
         },
         signatureHelp = { -- Seems to provide the info for popups with method info when using it
@@ -275,7 +277,7 @@ local function jdtls_setup()
     --- @type vim.lsp.ClientConfig
     local config = {
         cmd = cmd,
-        settings = lsp_settings,
+        settings = { java = lsp_settings },
         on_attach = jdtls_on_attach,
         capabilities = cache_vars.capabilities,
         root_dir = root_path,
