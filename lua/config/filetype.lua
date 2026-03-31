@@ -24,6 +24,9 @@ local M = {}
 
 --- @type vim.filetype.add.filetypes
 M.filetypes = {
+    extension = {
+        x = "linkerscript",
+    },
     filename = {
         [".sqruff"] = "ini",
         -- There is an existing pull request to add this filetype:
