@@ -33,6 +33,8 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 --- @field lazy LazySpec
 --- @field mason PackageListMason
 
+local nix = require("util.nix")
+
 --- @type PackageList
 local list = {
     treesitter = {
@@ -107,7 +109,7 @@ local list = {
             "astro",          -- Astro web framework
             "bashls",         -- Integrates with shellcheck
             "biome",          -- JS, TS, JSX, TSX, JSON, and JSONC
-            "clangd",         -- C and C++
+            not nix.is_nixos() and "clangd" or nil, -- C and C++ (should be installed with Nix on NixOS).
             "cssls",          -- CSS
             "gradle_ls",      -- Gradle build scripts
             "harper_ls",      -- Spelling and grammar checking
@@ -119,8 +121,7 @@ local list = {
             "markdown_oxide", -- Markdown
             "marksman",       -- Markdown
             "neocmake",       -- CMake build scripts
-            -- vim.fn.executable("nix") == 1
-            -- and "nil" or nil, -- Nix (build fails without Nix installed, so the ternary skips it)
+            nix.has_nix() and "nil_ls" or nil,  -- Nix
             -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
             "sqls",           -- SQL
             "taplo",          -- TOML

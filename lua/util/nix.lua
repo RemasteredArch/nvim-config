@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024 RemasteredArch
+Copyright © 2026 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -18,27 +18,25 @@ You should have received a copy of the GNU Affero General Public License along
 with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- `telescope.lua`: `nvim-telescope/telescope.nvim` configuration
+-- `nix.lua`: utilities for handling configuration under Nix/NixOS.
 
+local M = {}
 
-return {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-        { "nvim-lua/plenary.nvim" },
-        {
-            "nvim-telescope/telescope-fzf-native.nvim",
-            build = "make"
-        }
-    },
-    config = function()
-        local telescope = require("telescope")
-        telescope.setup({
-            defaults = {
-                wrap_results = true
-            }
-        })
-        telescope.load_extension("fzf")
+--- Detects whether the current operating system is NixOS.
+---
+--- This is useful, for example, for determining whether to install packages that require an FHS
+--- system.
+---
+--- @return boolean
+function M.is_nixos()
+    return vim.fn.isdirectory("/etc/nixos") == 1
+end
 
-        require("config.keymap").telescope().setup()
-    end
-}
+--- Detects whether Nix is installed by checking for `nix`.
+---
+--- @return boolean
+function M.has_nix()
+    return vim.fn.executable("nix") == 1
+end
+
+return M

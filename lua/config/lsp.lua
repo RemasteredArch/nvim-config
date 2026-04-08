@@ -180,6 +180,9 @@ function module.setup(packages)
             exclude = { "jdtls", "rust_analyzer" }
         }
     })
+
+    -- In case it was installed as a system package instead of a Mason package.
+    vim.lsp.enable("clangd")
 end
 
 return module

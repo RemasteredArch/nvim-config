@@ -27,6 +27,10 @@ or [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/) for a build-you
 
 ### Requirements
 
+- If you're using NixOS,
+  clangd must be installed through the `clang-tools` package
+  - Non-NixOS systems automatically receive clangd from Mason,
+    no need to install it to your system
 - [Silicon](https://github.com/Aloxaf/silicon)
   - [`xclip`](https://github.com/astrand/xclip) for Linux on X11
     or [`wl-copy`](https://github.com/bugaevc/wl-clipboard) for Linux on Wayland
