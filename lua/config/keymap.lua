@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024-2025 RemasteredArch
+Copyright © 2024-2026 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -61,15 +61,15 @@ with nvim-config. If not, see <https://www.gnu.org/licenses/>.
 --- | "r?" A |:confirm| query of some sort
 --- | "!" Shell or external command is executing
 --- | "t" Terminal mode: keys go to the job
----
+
 --- @class (exact) Keymap A Neovim keymap, similar to the parameters of `vim.keymap.set()`
 --- @field mode VimModeShort | VimModeShort[] Vim mode(s) the keybind should be active in
 --- @field key string The actual keybind
 --- @field effect string | function The effect of the keymap, either a Neovim Ex command or a function
 --- @field opts vim.keymap.set.Opts? The options of the keymap
----
+
 --- @alias KeymapTuple [VimModeShort | VimModeShort[], string , string | function, vim.keymap.set.Opts?] A Neovim keymap represented as a tuple
----
+
 --- @class (exact) KeyMappingsAndSetup Some keymappings and a function to register them
 --- @field mappings KeymapTuple[] The associated keymappings
 --- @field setup fun(buffnr: integer?) A function to register the associated keymappings
@@ -160,23 +160,23 @@ end
 --- @return KeyMappingsAndSetup
 function module.lsp()
     return mappings_and_setup({
-        -- Open documentation in a floating window
-        { "n", "K", vim.lsp.buf.hover },
-        -- Go to definition
-        { "n", "gd", vim.lsp.buf.definition },
-        -- Go to declaration
-        { "n", "gD", vim.lsp.buf.declaration },
-        -- Go to implementation
-        { "n", "gi", vim.lsp.buf.implementation },
-        -- Go to type definition
-        { "n", "go", vim.lsp.buf.type_definition },
-        -- Go to reference
-        { "n", "gr", vim.lsp.buf.references },
-        -- Show function signature in a floating window
-        { "n", "gs", vim.lsp.buf.signature_help },
-        -- Rename symbol
+        -- Open documentation in a floating window.
+        { "n", "K",    vim.lsp.buf.hover },
+        -- Go to definition.
+        { "n", "gd",   vim.lsp.buf.definition },
+        -- Go to declaration.
+        { "n", "gD",   vim.lsp.buf.declaration },
+        -- Go to implementation.
+        { "n", "gi",   vim.lsp.buf.implementation },
+        -- Go to type definition.
+        { "n", "go",   vim.lsp.buf.type_definition },
+        -- Go to reference.
+        { "n", "gr",   vim.lsp.buf.references },
+        -- Show function signature in a floating window.
+        { "n", "gs",   vim.lsp.buf.signature_help },
+        -- Rename symbol.
         { "n", "<F2>", vim.lsp.buf.rename },
-        -- Execute code action
+        -- Execute code action.
         { "n", "<F4>", vim.lsp.buf.code_action }
     })
 end
@@ -189,21 +189,22 @@ function module.java(root_files)
     local jdtls = require("jdtls")
 
     return mappings_and_setup({
-        -- In normal mode, press alt+o[rganize] to organize imports
-        { "n", "<A-o>", jdtls.organize_imports },
+        -- In normal mode, press alt+o[rganize] to organize imports.
+        { "n", "<A-o>",     jdtls.organize_imports },
 
-        -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable
-        { "n", "crv", jdtls.extract_variable },
-        { "x", "crv", function() jdtls.extract_variable({ visual = true }) end },
+        -- In normal and visual mode mode, press c,r[efactor],v[ariable] to extract a variable.
+        { "n", "crv",       jdtls.extract_variable },
+        { "x", "crv",       function() jdtls.extract_variable({ visual = true }) end },
 
-        -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant
-        { "n", "crc", jdtls.extract_constant },
-        { "x", "crc", function() jdtls.extract_constant({ visual = true }) end },
+        -- In normal and visual mode, press c,r[efactor],c[onstant] to extract a constant.
+        { "n", "crc",       jdtls.extract_constant },
+        { "x", "crc",       function() jdtls.extract_constant({ visual = true }) end },
 
-        -- In visual mode, press c,r[efactor],m[ethod] to extract a method
-        { "x", "crm", function() jdtls.extract_method({ visual = true }) end },
+        -- In visual mode, press c,r[efactor],m[ethod] to extract a method.
+        { "x", "crm",       function() jdtls.extract_method({ visual = true }) end },
 
-        -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or c[onfig]r[un] to run with input)
+        -- In normal mode, press space,r[un] to run the single-file code in the current buffer (or
+        -- c[onfig]r[un] to run with input).
         { "n", "<leader>r", "<cmd>split | term java %<cr>" },
         {
             "n",
@@ -221,14 +222,16 @@ function module.rust()
         -- Run project.
         --
         -- Maybe `cd` into the file's directory first?
-        { "n", "<leader>r", "<cmd>split | term cargo run<cr>" },
+        { "n", "<leader>r",  "<cmd>split | term cargo run<cr>" },
         {
             "n",
             "<leader>cr",
-            function() vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: ")) end
+            function()
+                vim.api.nvim_command("split | term cargo run -- " .. vim.fn.input("Args: "))
+            end
         },
         -- Expand macros in a split.
-        { "n", "<F3>", "<cmd>RustLsp expandMacro<cr>" },
+        { "n", "<F3>",       "<cmd>RustLsp expandMacro<cr>" },
         -- Open error information from the Rust error codes index in a pop-up.
         { "n", "<leader>ee", "<cmd>RustLsp explainError<cr>" },
         -- Render diagnostics as they come from Cargo.
@@ -243,19 +246,19 @@ function module.telescope()
     local builtin = require("telescope.builtin")
 
     return mappings_and_setup({
-        -- Open file picker for current directory.
-        { "n", "ff", builtin.find_files },
+        -- Open a file picker for the current directory.
+        { "n", "ff",  builtin.find_files },
 
-        -- Open file picker for Git files.
-        { "n", "fg", builtin.git_files },
+        -- Open a file picker for Git files.
+        { "n", "fg",  builtin.git_files },
 
-        -- Open live regex search.
+        -- Open a live regex search.
         { "n", "flg", builtin.live_grep },
 
-        -- Open live document symbol search from LSP.
+        -- Open a live document symbol search from LSP.
         { "n", "fls", builtin.lsp_document_symbols },
 
-        -- Open help tag search.
+        -- Open a help tag search.
         { "n", "flh", builtin.help_tags }
     })
 end
@@ -377,7 +380,7 @@ function module.cpp()
 
         -- Run compiled project.
         --
-        -- This doesn't actually need to be like this -- Ninja will detect no changes!
+        -- This doesn't actually need to be like this --- Ninja will detect no changes!
         { "n", "<leader>ccr", cpp.cmake_run }
 
     })
