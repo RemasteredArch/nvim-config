@@ -1,7 +1,7 @@
 --[[
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright © 2024-2025 RemasteredArch
+Copyright © 2024-2026 RemasteredArch
 
 This file is part of nvim-config.
 
@@ -106,35 +106,35 @@ local list = {
             sh = { "shfmt" }
         },
         lsp = {
-            "astro",          -- Astro web framework
-            "bashls",         -- Integrates with shellcheck
-            "biome",          -- JS, TS, JSX, TSX, JSON, and JSONC
-            not nix.is_nixos() and "clangd" or nil, -- C and C++ (should be installed with Nix on NixOS).
-            "cssls",          -- CSS
-            "gradle_ls",      -- Gradle build scripts
-            "harper_ls",      -- Spelling and grammar checking
-            "html",           -- HTML
-            "jdtls",          -- Java, see also `ftplugin/java.lua`
-            "jsonls",         -- JSON
-            "lemminx",        -- XML
-            "lua_ls",         -- Lua, also configured by lazydev for Neovim configuration files
-            "markdown_oxide", -- Markdown
-            "marksman",       -- Markdown
-            "neocmake",       -- CMake build scripts
-            nix.has_nix() and "nil_ls" or nil,  -- Nix
-            -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead where possible
-            "sqls",           -- SQL
-            "taplo",          -- TOML
-            "tinymist",       -- Typst
-            "vtsls",          -- JS and TS
-            "yamlls"          -- YAML
+            "astro",                                -- Astro web framework.
+            "bashls",                               -- Integrates with ShellCheck.
+            "biome",                                -- JS, TS, JSX, TSX, JSON, and JSONC.
+            not nix.is_nixos() and "clangd" or nil, -- C and C++ (needs NixOS-specific package).
+            "cssls",                                -- CSS.
+            "gradle_ls",                            -- Gradle build scripts.
+            "harper_ls",                            -- Spelling and grammar checking.
+            "html",                                 -- HTML.
+            "jdtls",                                -- Java, see also `ftplugin/java.lua`.
+            "jsonls",                               -- JSON.
+            "lemminx",                              -- XML.
+            "lua_ls",                               -- Lua, also configured by lazydev.nvim.
+            "markdown_oxide",                       -- Markdown.
+            "marksman",                             -- Markdown.
+            "neocmake",                             -- CMake build scripts.
+            nix.has_nix() and "nil_ls" or nil,      -- Nix.
+            -- "rust_analyzer", -- Install with `rustup compent add rust-analyzer` instead.
+            "sqls",                                 -- SQL.
+            "taplo",                                -- TOML.
+            "tinymist",                             -- Typst.
+            "vtsls",                                -- JavaScript and TypeScript.
+            "yamlls"                                -- YAML.
         },
         dap = {
             "codelldb" -- C++ and Rust are first-class, but also supports C, Swift, Zig, Ada, etc.
         },
         other = {
-            "shellcheck", -- Bash and SH linter
-            "mdformat"    -- Markdown formatter
+            "shellcheck", -- Shell script (Bash, POSIX, etc.) linter.
+            "mdformat"    -- Markdown formatter.
         }
     }
 }
@@ -142,7 +142,7 @@ local list = {
 list.lazy = {
     require("plugins.nvim-treesitter").with_ensure_installed(list.treesitter),
 
-    -- Color scheme
+    -- Color scheme.
     {
         "catppuccin/nvim",
         name = "catppuccin",
@@ -173,24 +173,25 @@ list.lazy = {
         end
     },
 
-    -- Searching
+    -- Searching.
     require("plugins.nvim-rip-substitute"),
 
-    -- UI
+    -- UI.
     { "stevearc/dressing.nvim" },
     require("plugins.telescope"),
 
-    -- Startup
+    -- Startup.
     require("plugins.alpha"),
 
-    -- Package management
+    -- Package management.
     { "mason-org/mason.nvim" },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         lazy = true
     },
-    -- Lockfile for Mason
-    -- Creates `:MasonLock` and `:MasonLockRestore`, autoupdates on updates/installs with `:Mason`
+    -- Lockfile for Mason.
+    --
+    -- Creates `:MasonLock` and `:MasonLockRestore`, autoupdates on updates/installs with `:Mason`.
     {
         "zapling/mason-lock.nvim",
         init = function()
@@ -198,16 +199,16 @@ list.lazy = {
         end
     },
 
-    -- Linters
+    -- Linters.
     { "mfussenegger/nvim-lint" },
 
-    -- Formatters
+    -- Formatters.
     {
         "stevearc/conform.nvim"
         -- maybe call config.format here instead of config.packages for lazy loading?
     },
 
-    -- LSP/DAP
+    -- LSP/DAP.
     { "mason-org/mason-lspconfig.nvim" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
@@ -226,8 +227,8 @@ list.lazy = {
         }
     },
 
-    -- Language-specific
-    { "mrcjkb/rustaceanvim", lazy = false },
+    -- Language-specific.
+    { "mrcjkb/rustaceanvim",     lazy = false },
     { "mfussenegger/nvim-jdtls", lazy = true },
     require("plugins.lazydev"),
     require("plugins.markdown_preview"),
