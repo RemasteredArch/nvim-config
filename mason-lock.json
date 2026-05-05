@@ -19,6 +19,7 @@
   "mdformat": "1.0.0",
   "neocmakelsp": "v0.9.0",
   "nil": "2025-06-13",
+  "nixfmt": "v1.2.0",
   "shellcheck": "v0.11.0",
   "shfmt": "v3.12.0",
   "sqls": "v0.2.30",

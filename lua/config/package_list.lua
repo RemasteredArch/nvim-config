@@ -133,8 +133,9 @@ local list = {
             "codelldb" -- C++ and Rust are first-class, but also supports C, Swift, Zig, Ada, etc.
         },
         other = {
-            "shellcheck", -- Shell script (Bash, POSIX, etc.) linter.
-            "mdformat"    -- Markdown formatter.
+            "shellcheck",                     -- Shell script (Bash, POSIX, etc.) linter.
+            "mdformat",                       -- Markdown formatter.
+            nix.has_nix() and "nixfmt" or nil -- Nix (used by `nil_ls`).
         }
     }
 }
