@@ -35,8 +35,8 @@ local root_files = {
 }
 
 local features = {
-    codelens = true, -- Finds references to symbols throughout a project
-    debug = false    -- Relies on nvim-dap, java-test, and java-debug-adapter
+    codelens = false, -- Finds references to symbols throughout a project
+    debug = false -- Relies on nvim-dap, java-test, and java-debug-adapter
 }
 
 local java_cmds = vim.api.nvim_create_augroup("java_cmds", { clear = true })
@@ -262,8 +262,19 @@ local function jdtls_setup()
         signatureHelp = { -- Seems to provide the info for popups with method info when using it
             enabled = true
         },
-        -- -- Always provide autocomplete with methods, etc. from specified packages, even if not imported
-        -- completion = { favoriteStaticMembers = {} }
+        completion = {
+            filteredTypes = {
+                "com.sun.*",
+                "io.micrometer.shaded.*",
+                "java.awt.*",
+                "jdk.*",
+                "org.graalvm.*",
+                "sun.*",
+                "org.jcp.*"
+            },
+            -- Always provide autocomplete with methods, etc. from specified packages, even if not imported
+            favoriteStaticMembers = {}
+        },
         contentProvider = {
             preferred = "fernflower" -- Usually a third party decompiler ID
         },
