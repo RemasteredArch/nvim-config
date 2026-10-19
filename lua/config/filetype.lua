@@ -38,7 +38,10 @@ M.filetypes = {
         -- expects the `caddy` filetype, so there's a line in `/lua/plugins/nvim-treesitter.lua` to
         -- also register that parser for the `caddyfile` filetype.
         ["Caddyfile"] = "caddyfile",
-    }
+    },
+    pattern = {
+        [".*/.vscode/settings.json"] = "jsonc",
+    },
 }
 
 function M.setup()
