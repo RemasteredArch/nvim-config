@@ -183,6 +183,7 @@ function module.setup(packages)
 
     -- In case it was installed as a system package instead of a Mason package.
     vim.lsp.enable("clangd")
+    vim.lsp.enable("racket_langserver")
 end
 
 return module

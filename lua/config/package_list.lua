@@ -72,6 +72,7 @@ local list = {
         "nix",
         "python",
         "query",
+        "racket",
         "regex",
         "rust",
         "sql",
@@ -103,7 +104,8 @@ local list = {
             yaml = { "yamlfmt" },
             sql = { "sqruff" },
             bash = { "shfmt" },
-            sh = { "shfmt" }
+            sh = { "shfmt" },
+            python = { "ruff" }
         },
         lsp = {
             "astro",                                -- Astro web framework.
@@ -126,6 +128,7 @@ local list = {
             "sqls",                                 -- SQL.
             "taplo",                                -- TOML.
             "tinymist",                             -- Typst.
+            "ty",                                   -- Python.
             "vtsls",                                -- JavaScript and TypeScript.
             "yamlls"                                -- YAML.
         },
