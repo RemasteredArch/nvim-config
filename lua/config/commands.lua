@@ -129,6 +129,50 @@ function commands.write(buffnr)
     )
 end
 
+--- Stop all LSP clients.
+local function kill_all_lsps()
+    vim.iter(vim.lsp.get_clients()):each(function(client)
+        client:stop()
+    end)
+end
+
+--- Register a command, `KilLsp`, to kill all LSPs.
+---
+--- @param buffnr integer The buffer ID to register the command in.
+function commands.kill_lsp(buffnr)
+    vim.api.nvim_buf_create_user_command(
+        buffnr,
+        "KillLsp",
+        kill_all_lsps,
+        {
+            desc = "Kill all attached LSPs",
+            force = true
+        }
+    )
+end
+
+--- Register a command, `DisableSmartFeatures`, to stop LSPs and disable autoformatting.
+---
+--- Disabling autoformatting is not actually implemented yet. This is considered a bug, but I'm not
+--- quite sure how I'm even going to implement that.
+---
+--- @param buffnr integer The buffer ID to register the command in.
+function commands.disable_smart_features(buffnr)
+    vim.api.nvim_buf_create_user_command(
+        buffnr,
+        "DisableSmartFeatures",
+        function()
+            vim.api.nvim_create_autocmd('LspAttach', { callback = kill_all_lsps })
+            kill_all_lsps()
+            vim.notify_once("TO-DO: disable formatting", vim.log.levels.WARN)
+        end,
+        {
+            desc = "Disable LSPs and formatting",
+            force = true
+        }
+    )
+end
+
 --- Registers triggers the registration function for a given buffer for every provided user
 --- command.
 ---
